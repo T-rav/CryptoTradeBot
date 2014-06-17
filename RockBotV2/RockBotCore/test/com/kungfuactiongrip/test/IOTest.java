@@ -68,7 +68,7 @@ public class IOTest {
         
         List<BuyOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173);
         
-        assertTrue(orders.isEmpty());
+        assertFalse(orders.isEmpty());
     }
     
     @Test
@@ -77,7 +77,7 @@ public class IOTest {
         
         List<SellOrder> orders = botIO.FetchOpenSellOrdersForMarket(173);
         
-        assertTrue(orders.isEmpty());
+        assertFalse(orders.isEmpty());
     }
     
     /*** Helper Methods ***/

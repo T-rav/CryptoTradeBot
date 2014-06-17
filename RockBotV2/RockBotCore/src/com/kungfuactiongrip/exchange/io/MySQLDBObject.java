@@ -17,6 +17,14 @@ import java.util.List;
  */
 class MySQLDBObject implements IBotIO {
 
+     // JDBC driver name and database URL
+   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   static final String DB_URL = "jdbc:mysql://localhost/EMP";
+
+   //  Database credentials
+   static final String USER = "username";
+   static final String PASS = "password";
+    
     MySQLDBObject() {
         this(null);
     }
