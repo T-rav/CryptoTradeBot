@@ -32,12 +32,12 @@ public class IOTest {
     
     @Test
     public void CanCreateBotIOObject_WithPropertiesFile_ExpectValidObject(){
-        IBotIO botIO = IOFactory.CreateDBObject("testing_db");
+        IBotIO botIO = CreateIOObject();
         
         assertNotNull(botIO);
     }
     
-     @Test
+    @Test
     public void CanCreateBotIOObject_WithNullPropertiesFile_ExpectNull(){
         IBotIO botIO = IOFactory.CreateDBObject(null);
         
@@ -45,8 +45,8 @@ public class IOTest {
     }
     
     @Test
-    public void CanFetchOpenBuyOrders_ExpectNoErrorOrOrders(){
-        IBotIO botIO = IOFactory.CreateDBObject();
+    public void CanFetchOpenBuyOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
+        IBotIO botIO = CreateIOObject();
         
         List<BuyOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173);
         
@@ -54,12 +54,37 @@ public class IOTest {
     }
     
     @Test
-    public void CanFetchOpenSellOrders_ExpectNoErrorOrOrders(){
-        IBotIO botIO = IOFactory.CreateDBObject();
+    public void CanFetchOpenSellOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
+        IBotIO botIO = CreateIOObject();
         
         List<SellOrder> orders = botIO.FetchOpenSellOrdersForMarket(173);
         
         assertTrue(orders.isEmpty());
     }
+    
+    @Test
+    public void CanFetchOpenBuyOrders_WithMarketIDWhereOrder_ExpectFiveOrders(){
+        IBotIO botIO = CreateIOObject();
+        
+        List<BuyOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173);
+        
+        assertTrue(orders.isEmpty());
+    }
+    
+    @Test
+    public void CanFetchOpenSellOrders_WithMarketIDWhereOrder_ExpectFiveOrders(){
+        IBotIO botIO = CreateIOObject();
+        
+        List<SellOrder> orders = botIO.FetchOpenSellOrdersForMarket(173);
+        
+        assertTrue(orders.isEmpty());
+    }
+    
+    /*** Helper Methods ***/
+    private IBotIO CreateIOObject() {
+        IBotIO botIO = IOFactory.CreateDBObject("testing_db");
+        return botIO;
+    }
+    
     
 }
