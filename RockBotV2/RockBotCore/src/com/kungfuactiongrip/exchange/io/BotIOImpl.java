@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Administrator
  */
-public class MySQLDBObject implements IBotIO {
+public class BotIOImpl implements IBotIO {
 
      // JDBC driver name and database URL
    String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -26,7 +26,7 @@ public class MySQLDBObject implements IBotIO {
    String USER = "username";
    String PASS = "password";
     
-    protected MySQLDBObject() {
+    protected BotIOImpl() {
         this(null);
     }
     
@@ -34,7 +34,7 @@ public class MySQLDBObject implements IBotIO {
      *
      * @param propertyFileName
      */
-    protected MySQLDBObject(String propertyFileName){
+    protected BotIOImpl(String propertyFileName){
         
         if(propertyFileName != null){
             PropertyBag bg = PropertyBagFactory.GenerateFromConfig(propertyFileName);

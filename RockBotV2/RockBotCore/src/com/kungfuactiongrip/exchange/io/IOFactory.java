@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.kungfuactiongrip.exchange.io;
 
 /**
@@ -12,16 +11,16 @@ package com.kungfuactiongrip.exchange.io;
  */
 public class IOFactory {
 
-    public static IBotIO CreateDBObject(){
-        return new MySQLDBObject();
-    }    
+    public static IBotIO CreateIOObject() {
+        return new BotIOImpl();
+    }
 
-    public static IBotIO CreateDBObject(String propertyFile){
+    public static IBotIO CreateIOObject(String propertyFile) {
         // Use the properties file passed in to create the db stuff against ;)
-        if(propertyFile == null){
+        if (propertyFile == null) {
             return null;
         }
-        
-        return new MySQLDBObject(propertyFile);
+
+        return new BotIOImpl(propertyFile);
     }
 }

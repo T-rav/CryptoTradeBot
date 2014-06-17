@@ -6,9 +6,10 @@
 
 package com.kungfuactiongrip.test;
 
-import com.kungfuactiongrip.to.SellOrder;
-import com.kungfuactiongrip.exchange.io.*;
+import com.kungfuactiongrip.exchange.io.IBotIO;
+import com.kungfuactiongrip.exchange.io.IOFactory;
 import com.kungfuactiongrip.to.BuyOrder;
+import com.kungfuactiongrip.to.SellOrder;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class IOTest {
 
     @Test
     public void CanCreateBotIOObject_ExpectValidObject(){
-        IBotIO botIO = IOFactory.CreateDBObject();
+        IBotIO botIO = IOFactory.CreateIOObject();
         
         assertNotNull(botIO);
     }
@@ -39,7 +40,7 @@ public class IOTest {
     
     @Test
     public void CanCreateBotIOObject_WithNullPropertiesFile_ExpectNull(){
-        IBotIO botIO = IOFactory.CreateDBObject(null);
+        IBotIO botIO = IOFactory.CreateIOObject(null);
         
          assertNull(botIO);
     }
@@ -82,7 +83,7 @@ public class IOTest {
     
     /*** Helper Methods ***/
     private IBotIO CreateIOObject() {
-        IBotIO botIO = IOFactory.CreateDBObject("Test_DB");
+        IBotIO botIO = IOFactory.CreateIOObject("Test_DB");
         return botIO;
     }
     
