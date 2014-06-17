@@ -18,6 +18,14 @@ import java.util.List;
 class MySQLDBObject implements IBotIO {
 
     MySQLDBObject() {
+        this(null);
+    }
+    
+    MySQLDBObject(String propertyFileName){
+        
+        if(propertyFileName != null){
+            // TODO : Do something ;)
+        }
     }
 
     @Override

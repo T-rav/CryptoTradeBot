@@ -12,12 +12,16 @@ package com.kungfuactiongrip.exchange.io;
  */
 public class IOFactory {
 
-    public static IBotIO CreateDBObject() {
+    public static IBotIO CreateDBObject(){
         return new MySQLDBObject();
     }    
 
-    public static IBotIO CreateDBObject(String testingdb) {
+    public static IBotIO CreateDBObject(String propertyFile){
         // Use the properties file passed in to create the db stuff against ;)
-        return new MySQLDBObject();
+        if(propertyFile == null){
+            return null;
+        }
+        
+        return new MySQLDBObject(propertyFile);
     }
 }

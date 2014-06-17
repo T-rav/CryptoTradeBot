@@ -31,9 +31,17 @@ public class IOTest {
     }
     
     @Test
-    public void CanCreateBotIOObject_WithPropertiesFile_ExpectPropertiesConfigured(){
-        IBotIO botIO = IOFactory.CreateDBObject("testing.db");
+    public void CanCreateBotIOObject_WithPropertiesFile_ExpectValidObject(){
+        IBotIO botIO = IOFactory.CreateDBObject("testing_db");
         
+        assertNotNull(botIO);
+    }
+    
+     @Test
+    public void CanCreateBotIOObject_WithNullPropertiesFile_ExpectNull(){
+        IBotIO botIO = IOFactory.CreateDBObject(null);
+        
+         assertNull(botIO);
     }
     
     @Test
