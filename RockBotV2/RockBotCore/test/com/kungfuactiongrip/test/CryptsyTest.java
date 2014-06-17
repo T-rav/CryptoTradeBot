@@ -154,7 +154,7 @@ public class CryptsyTest {
        
        // Assert
        Assert.assertNotNull(amt);
-       Assert.assertTrue(amt.equals("{\"success\":\"0\",\"error\":\"This order is already cancelled.\"}"));
+       Assert.assertTrue(amt.equals("{\"success\":\"0\",\"error\":\"Order not found.\"}"));
    }
    
    @Test
