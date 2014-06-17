@@ -26,7 +26,7 @@ public class PropertyBag {
     }
     
     public String FetchKey(String key){
-        return _grid.get(key);
+        return _grid.get(key).replace("\"", "");
     }
     
 }
