@@ -18,7 +18,6 @@ public class CryptsyTest {
     
     public CryptsyTest() {
         
-        
     }
 
    @Test
