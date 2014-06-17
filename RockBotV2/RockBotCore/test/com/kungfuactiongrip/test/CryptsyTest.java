@@ -17,6 +17,8 @@ import org.junit.Test;
 public class CryptsyTest {
     
     public CryptsyTest() {
+        
+        
     }
 
    @Test
