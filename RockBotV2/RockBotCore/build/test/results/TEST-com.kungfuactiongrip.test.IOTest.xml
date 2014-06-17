@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="beta" name="com.kungfuactiongrip.test.IOTest" skipped="0" tests="1" time="0.078" timestamp="2014-06-03T14:09:53">
+<testsuite errors="0" failures="0" hostname="beta" name="com.kungfuactiongrip.test.IOTest" skipped="0" tests="4" time="0.078" timestamp="2014-06-17T17:40:57">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="US" />
@@ -8,11 +8,10 @@
     <property name="libs.jsf20.maven-pom" value="" />
     <property name="libs.junit.javadoc" value="C:\Program Files\NetBeans 8.0\java\docs\junit-3.8.2-api.zip" />
     <property name="libs.spring-webmvc4.0.src" value="" />
-    <property name="javac.includes" value="com/kungfuactiongrip/test/IOTest.java" />
     <property name="ant.core.lib" value="C:\Program Files\NetBeans 8.0\extide\ant\lib\ant.jar" />
     <property name="javadoc.windowtitle" value="" />
     <property name="libs.jsp-compilation.javadoc" value="" />
-    <property name="user.dir" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore" />
+    <property name="user.dir" value="C:\Projects\tradebot\RockBotV2\RockBotCore" />
     <property name="libs.javaee-api-7.0.src" value="" />
     <property name="java.vm.version" value="24.45-b08" />
     <property name="libs.MySQLDriver.classpath" value="C:\Program Files\NetBeans 8.0\ide\modules\ext\mysql-connector-java-5.1.23-bin.jar" />
@@ -39,7 +38,6 @@
     <property name="ant.file.type.RockBotCore" value="file" />
     <property name="libs.javac-api.javadoc" value="" />
     <property name="os.name" value="Windows XP" />
-    <property name="test.class" value="com.kungfuactiongrip.test.IOTest" />
     <property name="libs.beans-binding.classpath" value="C:\Program Files\NetBeans 8.0\java\modules\ext\beansbinding-1.2.1.jar" />
     <property name="libs.javaee-endorsed-api-7.0.maven-pom" value="" />
     <property name="ap.proc.none.internal" value="" />
@@ -61,7 +59,7 @@
     <property name="copylibs.rebase" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner com.kungfuactiongrip.test.IOTest methods=CanFetchOpenBuyOrders_ExpectNoErrorOrOrders filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\test\results\TEST-com.kungfuactiongrip.test.IOTest.xml crashfile=C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\junitvmwatcher3121833578825092562.properties propsfile=C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\junit202243221386229476.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner com.kungfuactiongrip.test.IOTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Projects\tradebot\RockBotV2\RockBotCore\build\test\results\TEST-com.kungfuactiongrip.test.IOTest.xml crashfile=C:\Projects\tradebot\RockBotV2\RockBotCore\build\junitvmwatcher4595256106233959003.properties propsfile=C:\Projects\tradebot\RockBotV2\RockBotCore\build\junit5397175592540944132.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -83,7 +81,6 @@
     <property name="libs.javaee-web-api-6.0.src" value="" />
     <property name="libs.jsp-compilation-syscp.classpath" value="C:\Program Files\NetBeans 8.0\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\servlet3.1-jsp2.3-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\glassfish-jspparser-4.0.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-2_2\javax.faces.jar" />
     <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\endorsed" />
-    <property name="test.method" value="CanFetchOpenBuyOrders_ExpectNoErrorOrOrders" />
     <property name="libs.Comet-GlassFish-v3.maven-pom" value="" />
     <property name="libs.groovy-all.src" value="" />
     <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans 8.0\platform\core\core.jar;C:\Program Files\NetBeans 8.0\platform\core\org-openide-filesystems.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\core_ja.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\core_pt_BR.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\core_ru.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\core_zh_CN.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\org-openide-filesystems_ja.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\org-openide-filesystems_pt_BR.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\org-openide-filesystems_ru.jar;C:\Program Files\NetBeans 8.0\platform\core\locale\org-openide-filesystems_zh_CN.jar;C:\Program Files\NetBeans 8.0\nb\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\core_nb.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\core_nb_ja.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\core_nb_pt_BR.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\core_nb_ru.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\core_nb_zh_CN.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\org-netbeans-upgrader_ja.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\org-netbeans-upgrader_pt_BR.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\org-netbeans-upgrader_ru.jar;C:\Program Files\NetBeans 8.0\nb\core\locale\org-netbeans-upgrader_zh_CN.jar" />
@@ -104,7 +101,6 @@
     <property name="file.reference.gson-2.2.4.jar" value="..\lib\gson-2.2.4.jar" />
     <property name="file.separator" value="\" />
     <property name="libs.Java-EE-GlassFish-v3-Prelude.maven-pom" value="" />
-    <property name="javac.includesfile.binary" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\null892785075" />
     <property name="libs.restlib_gfv3ee6.classpath" value="C:\Program Files\glassfish-3.1.1\glassfish\modules\jackson-core-asl.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jackson-jaxrs.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jackson-mapper-asl.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jersey-client.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jersey-core.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jersey-gf-server.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jersey-json.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jersey-multipart.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\jettison.jar;C:\Program Files\glassfish-3.1.1\glassfish\modules\mimepull.jar" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="mkdist.disabled" value="true" />
@@ -120,7 +116,7 @@
     <property name="libs.hibernate4-persistencemodelgen.javadoc" value="" />
     <property name="libs.jaxb.javadoc" value="C:\Program Files\NetBeans 8.0\ide\docs\jaxb-api-doc.zip" />
     <property name="libs.struts.classpath" value="C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\antlr-2.7.2.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\bsf-2.3.0.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-beanutils-1.8.0.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-chain-1.2.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-digester-1.8.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-fileupload-1.1.1.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-io-1.1.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-logging-1.0.4.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\commons-validator-1.3.1.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\jstl-1.0.2.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\oro-2.0.8.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\standard-1.0.6.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-core-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-el-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-extras-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-faces-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-mailreader-dao-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-scripting-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-taglib-1.3.10.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\struts\struts-tiles-1.3.10.jar" />
-    <property name="javac.includes.binary" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\test\classes\com\kungfuactiongrip\test\IOTest.class" />
+    <property name="org.openide.awt.SwingBrowserImpl.do-not-block-awt" value="false" />
     <property name="ant.home" value="C:\Program Files\NetBeans 8.0\extide\ant" />
     <property name="libs.junit_4.src" value="C:\Program Files\NetBeans 8.0\java\docs\junit-4.10-sources.jar" />
     <property name="libs.testng.classpath" value="C:\Program Files\NetBeans 8.0\platform\modules\ext\testng-6.8.1-dist.jar" />
@@ -134,11 +130,11 @@
     <property name="libs.spring-framework400.src" value="" />
     <property name="libs.PostgreSQLDriver.src" value="" />
     <property name="sun.arch.data.model" value="64" />
-    <property name="basedir" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore" />
+    <property name="basedir" value="C:\Projects\tradebot\RockBotV2\RockBotCore" />
     <property name="libs.jpa20-persistence.maven-pom" value="" />
     <property name="jar.compress" value="false" />
     <property name="libs.javaee-web-api-7.0.classpath" value="C:\Program Files\NetBeans 8.0\enterprise\modules\ext\javaee-web-api-7.0.jar" />
-    <property name="ant.file.RockBotCore" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build.xml" />
+    <property name="ant.file.RockBotCore" value="C:\Projects\tradebot\RockBotV2\RockBotCore\build.xml" />
     <property name="path.separator" value=";" />
     <property name="libs.javaee-web-api-6.0.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
     <property name="ant.junit.enabletestlistenerevents" value="true" />
@@ -154,7 +150,7 @@
     <property name="libs.primefaces.javadoc" value="" />
     <property name="libs.spring-framework300.maven-pom" value="" />
     <property name="run.test.classpath" value="C:\Documents and Settings\Administrator\My Documents\Dropbox\Crypto-Trader\RockBotV2\lib\gson-2.2.4.jar:..\lib\gson-2.2.4.jar:build/classes:C:\Program Files\NetBeans 8.0\platform\modules\ext\junit-4.10.jar:build/test/classes" />
-    <property name="ant.project.invoked-targets" value="test-single-method" />
+    <property name="ant.project.invoked-targets" value="test" />
     <property name="test.binaryexcludes" value="" />
     <property name="libs.swing-layout.javadoc" value="C:\Program Files\NetBeans 8.0\platform\docs\swing-layout-1.0.4-doc.zip" />
     <property name="sun.java2d.dpiaware" value="true" />
@@ -176,7 +172,7 @@
     <property name="libs.spring-webmvc4.0.maven-pom" value="" />
     <property name="libs.spring-framework300.src" value="" />
     <property name="libs.jstl.src" value="" />
-    <property name="empty.dir" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\empty" />
+    <property name="empty.dir" value="C:\Projects\tradebot\RockBotV2\RockBotCore\build\empty" />
     <property name="version-output" value="java version &quot;1.7" />
     <property name="test.binarytestincludes" value="" />
     <property name="libs.hibernate4-persistencemodelgen.src" value="" />
@@ -216,7 +212,7 @@
     <property name="libs.jsp-compiler.classpath" value="C:\Program Files\NetBeans 8.0\enterprise\ant\extra\jspcompile.jar" />
     <property name="javac.processorpath" value="C:\Documents and Settings\Administrator\My Documents\Dropbox\Crypto-Trader\RockBotV2\lib\gson-2.2.4.jar:..\lib\gson-2.2.4.jar" />
     <property name="javac.compilerargs" value="" />
-    <property name="ant.file" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build.xml" />
+    <property name="ant.file" value="C:\Projects\tradebot\RockBotV2\RockBotCore\build.xml" />
     <property name="libs.beans-binding.maven-pom" value="" />
     <property name="libs.hibernate4-support.javadoc" value="" />
     <property name="libs.jsf12.classpath" value="C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-1_2\commons-beanutils.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-1_2\commons-collections.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-1_2\commons-digester.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-1_2\commons-logging.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-1_2\jsf-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-1_2\jsf-impl.jar" />
@@ -255,7 +251,7 @@
     <property name="libs.spring-framework400.javadoc" value="" />
     <property name="libs.CopyLibs.javadoc" value="" />
     <property name="org.openide.specification.version" value="6.2" />
-    <property name="ant.file.RockBotCore-impl" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\nbproject\build-impl.xml" />
+    <property name="ant.file.RockBotCore-impl" value="C:\Projects\tradebot\RockBotV2\RockBotCore\nbproject\build-impl.xml" />
     <property name="user.home" value="C:\Documents and Settings\Administrator" />
     <property name="libs.Google JSON.classpath" value="C:\Documents and Settings\Administrator\My Documents\Dropbox\Crypto-Trader\RockBotV2\lib\gson-2.2.4.jar" />
     <property name="annotation.processing.processors.list" value="" />
@@ -291,7 +287,7 @@
     <property name="annotation.processing.processor.options" value="" />
     <property name="libs.testng.maven-pom" value="" />
     <property name="libs.jaxb.src" value="" />
-    <property name="work.dir" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore" />
+    <property name="work.dir" value="C:\Projects\tradebot\RockBotV2\RockBotCore" />
     <property name="libs.jaxb.classpath" value="C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\jaxb1-impl.jar;C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\api\jsr173_1.0_api.jar" />
     <property name="php.global.include.path" value="C:\Program Files (x86)\PHP\phpUnit" />
     <property name="do.depend" value="false" />
@@ -300,63 +296,64 @@
     <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 8.0\platform\modules\ext\swing-layout-1.0.4.jar" />
     <property name="libs.javaee-web-api-7.0.maven-pom" value="" />
     <property name="libs.restlib.src" value="" />
-    <property name="javac.source" value="1.7" />
     <property name="build.generated.dir" value="build/generated" />
+    <property name="javac.source" value="1.7" />
     <property name="line.separator" value="&#xd;&#xa;" />
     <property name="java.specification.version" value="1.7" />
     <property name="java.vm.info" value="mixed mode" />
     <property name="libs.jaxws21.maven-pom" value="" />
-    <property name="nb.junit.batch" value="false" />
+    <property name="nb.junit.batch" value="true" />
     <property name="junit.forkmode" value="perTest" />
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_45\jre\classes" />
     <property name="javac.target" value="1.7" />
-    <property name="built-jar.properties" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\built-jar.properties" />
+    <property name="built-jar.properties" value="C:\Projects\tradebot\RockBotV2\RockBotCore\build\built-jar.properties" />
     <property name="build.test.classes.dir" value="build/test/classes" />
     <property name="src.dir" value="src" />
+    <property name="annotation.processing.enabled" value="true" />
     <property name="libs.jpa2-persistence.src" value="" />
     <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
-    <property name="annotation.processing.enabled" value="true" />
     <property name="libs.jsf20.src" value="" />
     <property name="libs.jpa20-persistence.src" value="" />
     <property name="libs.jsf12.src" value="" />
     <property name="libs.struts.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\struts-1.3.10-javadoc.zip" />
+    <property name="ignore.failing.tests" value="true" />
     <property name="libs.Comet-GlassFish-v3.classpath" value="" />
-    <property name="libs.javaee-web-api-7.0.src" value="" />
     <property name="libs.restlib_gfv3ee6.javadoc" value="C:\Program Files\NetBeans 7.1\enterprise\docs\jsr311-api-1.1.1-javadoc.zip" />
+    <property name="libs.javaee-web-api-7.0.src" value="" />
     <property name="libs.primefaces.src" value="" />
     <property name="dist.dir" value="dist" />
     <property name="libs.groovy-all.javadoc" value="" />
     <property name="testng.debug.mode" value="" />
-    <property name="libs.groovy-all.classpath" value="C:\Program Files\NetBeans 8.0\groovy\modules\ext\groovy-all.jar" />
     <property name="javac.fork" value="false" />
+    <property name="libs.groovy-all.classpath" value="C:\Program Files\NetBeans 8.0\groovy\modules\ext\groovy-all.jar" />
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
     <property name="default.javac.source" value="1.7" />
     <property name="platforms.JDK_1.7.compiler" value="modern" />
     <property name="debug-transport-by-os" value="dt_shmem" />
-    <property name="sun.jnu.encoding" value="Cp1252" />
     <property name="libs.MySQLDriver.src" value="" />
+    <property name="sun.jnu.encoding" value="Cp1252" />
     <property name="platforms.JDK_1.7.bootclasspath" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_45\jre\classes;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext\zipfs.jar" />
-    <property name="build.test.results.dir" value="build/test/results" />
     <property name="java.runtime.version" value="1.7.0_45-b18" />
+    <property name="build.test.results.dir" value="build/test/results" />
     <property name="default.javac.target" value="1.7" />
     <property name="libs.junit_4.classpath" value="C:\Program Files\NetBeans 8.0\platform\modules\ext\junit-4.10.jar" />
     <property name="user.timezone" value="" />
-    <property name="nb.junit.single" value="true" />
+    <property name="nb.junit.single" value="false" />
     <property name="libs.GWT2.4.0.javadoc" value="C:\Program Files (x86)\gwt-2.4.0\doc\javadoc" />
     <property name="libs.javaee-endorsed-api-6.0.maven-pom" value="" />
     <property name="netbeans.dirs" value="C:\Program Files\NetBeans 8.0\nb;C:\Program Files\NetBeans 8.0\ergonomics;C:\Program Files\NetBeans 8.0\ide;C:\Program Files\NetBeans 8.0\extide;C:\Program Files\NetBeans 8.0\java;C:\Program Files\NetBeans 8.0\apisupport;C:\Program Files\NetBeans 8.0\webcommon;C:\Program Files\NetBeans 8.0\websvccommon;C:\Program Files\NetBeans 8.0\enterprise;C:\Program Files\NetBeans 8.0\mobility;C:\Program Files\NetBeans 8.0\profiler;C:\Program Files\NetBeans 8.0\python;C:\Program Files\NetBeans 8.0\php;C:\Program Files\NetBeans 8.0\identity;C:\Program Files\NetBeans 8.0\harness;C:\Program Files\NetBeans 8.0\cnd;C:\Program Files\NetBeans 8.0\dlight;C:\Program Files\NetBeans 8.0\groovy;C:\Program Files\NetBeans 8.0\extra;C:\Program Files\NetBeans 8.0\javacard;C:\Program Files\NetBeans 8.0\javafx" />
-    <property name="libs.jstl.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
     <property name="libs.jsf20.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
-    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
+    <property name="libs.jstl.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
     <property name="libs.restlib_gfv3ee6.src" value="" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
     <property name="libs.metro.src" value="" />
     <property name="libs.absolutelayout.classpath" value="C:\Program Files\NetBeans 8.0\java\modules\ext\AbsoluteLayout.jar" />
     <property name="excludes" value="" />
-    <property name="libs.metro.classpath" value="C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-tools.jar" />
     <property name="libs.restlib.maven-pom" value="" />
+    <property name="libs.metro.classpath" value="C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\metro\webservices-tools.jar" />
     <property name="libs.jpa2-persistence.javadoc" value="" />
-    <property name="java.class.path" value="C:\Documents and Settings\Administrator\My Documents\RockBotV2\lib\gson-2.2.4.jar;C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\classes;C:\Program Files\NetBeans 8.0\platform\modules\ext\junit-4.10.jar;C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore\build\test\classes;C:\Documents and Settings\Administrator\My Documents\RockBotV2\RockBotCore;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-junit4.jar" />
     <property name="apple.laf.useScreenMenuBar" value="true" />
+    <property name="java.class.path" value="C:\Projects\tradebot\RockBotV2\lib\gson-2.2.4.jar;C:\Projects\tradebot\RockBotV2\RockBotCore\build\classes;C:\Program Files\NetBeans 8.0\platform\modules\ext\junit-4.10.jar;C:\Projects\tradebot\RockBotV2\RockBotCore\build\test\classes;C:\Projects\tradebot\RockBotV2\RockBotCore;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-junit.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-junit4.jar" />
     <property name="libs.absolutelayout.src" value="" />
     <property name="libs.jpa20-persistence.classpath" value="C:\Program Files\NetBeans 8.0\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar" />
     <property name="os.version" value="5.2" />
@@ -370,11 +367,11 @@
     <property name="libs.Comet-GlassFish-v3.src" value="" />
     <property name="libs.restlib.javadoc" value="" />
     <property name="libs.JAXB-ENDORSED.classpath" value="C:\Program Files\NetBeans 8.0\ide\modules\ext\jaxb\api\jaxb-api.jar" />
-    <property name="nb.internal.action.name" value="run.single.method" />
-    <property name="libs.javaee-api-7.0.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
+    <property name="nb.internal.action.name" value="test" />
     <property name="libs.eclipselink.classpath" value="C:\Program Files\NetBeans 8.0\java\modules\ext\eclipselink\eclipselink.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\eclipselink\javax.persistence_2.1.0.v201304241213.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar" />
-    <property name="libs.beans-binding.javadoc" value="C:\Program Files\NetBeans 8.0\java\docs\beansbinding-1.2.1-doc.zip" />
+    <property name="libs.javaee-api-7.0.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="libs.beans-binding.javadoc" value="C:\Program Files\NetBeans 8.0\java\docs\beansbinding-1.2.1-doc.zip" />
     <property name="java.vm.vendor" value="Oracle Corporation" />
     <property name="libs.CopyLibs.classpath" value="C:\Program Files\NetBeans 8.0\java\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" />
     <property name="libs.spring-framework300.classpath" value="C:\Program Files\NetBeans 8.0\ide\modules\org-apache-commons-logging.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\cglib-2.2.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-aop-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-aspects-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-beans-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-build-src-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-context-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-context-support-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-core-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-expression-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-framework-bom-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-instrument-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-instrument-tomcat-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-jdbc-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-jms-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-orm-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-oxm-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-struts-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-test-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-tx-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-web-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-webmvc-3.2.7.RELEASE.jar;C:\Program Files\NetBeans 8.0\java\modules\ext\spring-3.0\spring-webmvc-portlet-3.2.7.RELEASE.jar" />
@@ -390,21 +387,24 @@
     <property name="libs.hibernate4-persistencemodelgen.classpath" value="C:\Program Files\NetBeans 8.0\java\modules\ext\hibernate4\hibernate-jpamodelgen-1.3.0.Final.jar" />
     <property name="libs.junit.src" value="" />
     <property name="annotation.processing.source.output" value="build/generated-sources/ap-source-output" />
-    <property name="libs.CopyLibs.src" value="" />
     <property name="build.dir" value="build" />
+    <property name="libs.CopyLibs.src" value="" />
     <property name="libs.jsp-compilation.classpath" value="C:\Program Files\NetBeans 8.0\extide\ant\lib\ant.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\servlet3.1-jsp2.3-api.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\glassfish-jspparser-4.0.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jsf-2_2\javax.faces.jar;C:\Program Files\NetBeans 8.0\enterprise\modules\ext\jstl-api.jar;C:\Program Files\NetBeans 8.0\extide\ant\lib\ant-launcher.jar" />
     <property name="ant.version" value="Apache Ant(TM) version 1.9.2 compiled on July 8 2013" />
     <property name="file.encoding" value="Cp1252" />
     <property name="build.classes.excludes" value="**/*.java,**/*.form" />
     <property name="libs.GWT2.4.0.classpath" value="C:\Program Files (x86)\gwt-2.4.0\gwt-user.jar" />
-    <property name="javadoc.nonavbar" value="false" />
     <property name="jdkBug6558476" value="false" />
+    <property name="javadoc.nonavbar" value="false" />
     <property name="libs.spring-webmvc4.0.classpath" value="C:\Program Files\NetBeans 8.0\java\modules\ext\spring-4\spring-webmvc-4.0.1.RELEASE.jar" />
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
     <property name="libs.javaee-web-api-7.0.javadoc" value="C:\Program Files\NetBeans 8.0\enterprise\docs\javaee-doc-api.jar" />
   </properties>
-  <testcase classname="com.kungfuactiongrip.test.IOTest" name="CanFetchOpenBuyOrders_ExpectNoErrorOrOrders" time="0.016" />
+  <testcase classname="com.kungfuactiongrip.test.IOTest" name="CanCreateBotIOObject_ExpectValidObject" time="0.0" />
+  <testcase classname="com.kungfuactiongrip.test.IOTest" name="CanFetchOpenBuyOrders_ExpectNoErrorOrOrders" time="0.0" />
+  <testcase classname="com.kungfuactiongrip.test.IOTest" name="CanFetchOpenSellOrders_ExpectNoErrorOrOrders" time="0.0" />
+  <testcase classname="com.kungfuactiongrip.test.IOTest" name="CanCreateBotIOObject_WithPropertiesFile_ExpectPropertiesConfigured" time="0.0" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
