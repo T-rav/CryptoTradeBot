@@ -26,7 +26,11 @@ public class PropertyBag {
     }
     
     public String FetchKey(String key){
-        return _grid.get(key).replace("\"", "");
+        try{
+            return _grid.get(key).replace("\"", "");
+        }catch(NullPointerException npe){
+            return null;
+        }
     }
     
 }

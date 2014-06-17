@@ -6,12 +6,10 @@
 
 package com.kungfuactiongrip.exchange.io;
 
-import com.kungfuactiongrip.exchange.io.MySQLDBObject;
-import org.junit.After;
-import org.junit.AfterClass;
+import com.kungfuactiongrip.to.BuyOrder;
+import com.kungfuactiongrip.to.SellOrder;
+import java.util.List;
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -52,6 +50,44 @@ public class MySQLDBObjectTest {
         
         assertNotNull(obj);
         assertEquals("username", obj.FetchUser());
+    }
+    
+    @Test
+    public void CanFetchOpenBuyOrdersForMarket_WhenNoOrdersExsit_ExpectEmptyList(){
+        MySQLDBObject obj = new MySQLDBObject(null);
+        
+        assertNotNull(obj);
+        List<BuyOrder> order = obj.FetchOpenBuyOrdersForMarket(173);
+        assertTrue(order.isEmpty());
+    }
+    
+    @Test
+    public void CanFetchOpenBuySellOrdersForMarket_WhenNoOrdersExsit_ExpectEmptyList(){
+        MySQLDBObject obj = new MySQLDBObject(null);
+        
+        assertNotNull(obj);
+        List<SellOrder> order = obj.FetchOpenSellOrdersForMarket(173);
+        assertTrue(order.isEmpty());
+    }
+    
+    @Test
+    public void CanFetchOpenBuyOrdersForMarket_WhenOrdersExsit_ExpectFiveItemList(){
+        MySQLDBObject obj = new MySQLDBObject(null);
+        
+        assertNotNull(obj);
+        List<BuyOrder> order = obj.FetchOpenBuyOrdersForMarket(173);
+        assertFalse(order.isEmpty());
+        assertEquals(5,order.size());
+    }
+    
+    @Test
+    public void CanFetchOpenBuySellOrdersForMarket_WhenOrdersExsit_ExpectFiveItemList(){
+        MySQLDBObject obj = new MySQLDBObject(null);
+        
+        assertNotNull(obj);
+        List<SellOrder> order = obj.FetchOpenSellOrdersForMarket(173);
+        assertFalse(order.isEmpty());
+        assertEquals(5,order.size());
     }
     
     

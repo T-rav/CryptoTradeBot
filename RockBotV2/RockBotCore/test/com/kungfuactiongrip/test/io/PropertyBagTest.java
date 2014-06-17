@@ -41,8 +41,26 @@ public class PropertyBagTest {
         PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
         
         assertNotNull(bg);
+    }
+    
+    @Test
+    public void CanFetchProperty_WhenUsingValidKey_ExpectData(){
+        
+        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
+        
+        assertNotNull(bg);
         String result = bg.FetchKey("USER");
         assertEquals("tradebot", result);
+    }
+    
+    @Test
+    public void CannotFetchProperty_WhenUsingInvalidKey_ExpectNull(){
+        
+        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
+        
+        assertNotNull(bg);
+        String result = bg.FetchKey("USER_FAKE");
+        assertNull(result);
     }
     
     @Test
