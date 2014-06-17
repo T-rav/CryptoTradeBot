@@ -18,6 +18,7 @@ public class CryptsyTest {
     
     public CryptsyTest() {
         
+        // foo
     }
 
    @Test
