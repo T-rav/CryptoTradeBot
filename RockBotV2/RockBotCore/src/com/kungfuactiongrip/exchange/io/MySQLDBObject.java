@@ -6,6 +6,8 @@
 
 package com.kungfuactiongrip.exchange.io;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
+import com.kungfuactiongrip.config.exchange.PropertyBagFactory;
 import com.kungfuactiongrip.to.BuyOrder;
 import com.kungfuactiongrip.to.SellOrder;
 import java.util.ArrayList;
@@ -15,27 +17,37 @@ import java.util.List;
  *
  * @author Administrator
  */
-class MySQLDBObject implements IBotIO {
+public class MySQLDBObject implements IBotIO {
 
      // JDBC driver name and database URL
-   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/EMP";
-
+   String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   String DB_URL = "";
    //  Database credentials
-   static final String USER = "username";
-   static final String PASS = "password";
+   String USER = "username";
+   String PASS = "password";
     
-    MySQLDBObject() {
+    protected MySQLDBObject() {
         this(null);
     }
     
-    MySQLDBObject(String propertyFileName){
+    /**
+     *
+     * @param propertyFileName
+     */
+    protected MySQLDBObject(String propertyFileName){
         
         if(propertyFileName != null){
-            // TODO : Do something ;)
+            PropertyBag bg = PropertyBagFactory.GenerateFromConfig(propertyFileName);
+            DB_URL = bg.FetchKey("DB_URL");
+            USER = bg.FetchKey("USER");
+            PASS = bg.FetchKey("PASS");
         }
     }
 
+    public String FetchUser(){
+        return USER;
+    }
+    
     @Override
     public List<BuyOrder> FetchOpenBuyOrdersForMarket(int marketID) {
         return new ArrayList<>();

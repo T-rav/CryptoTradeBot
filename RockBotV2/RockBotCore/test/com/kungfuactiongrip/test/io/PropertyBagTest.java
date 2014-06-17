@@ -8,10 +8,6 @@ package com.kungfuactiongrip.test.io;
 
 import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.config.exchange.PropertyBagFactory;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -47,5 +43,13 @@ public class PropertyBagTest {
         assertNotNull(bg);
         String result = bg.FetchKey("USER");
         assertEquals("tradebot", result);
+    }
+    
+    @Test
+    public void CanCreatePropertyBag_WhenUsingInvalidPropertyFile_ExpectNull(){
+        
+        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB_FAKE");
+        
+        assertNull(bg);
     }
 }

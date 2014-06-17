@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class PropertyBagFactory {
     
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
     public static PropertyBag GenerateFromConfig(String config){
         InputStream stream = null;
         PropertyBag result = new PropertyBag();
@@ -38,7 +39,7 @@ public class PropertyBagFactory {
                 String value = prop.getProperty(key);
                 result.AddPair(key, value);
             }
-        }catch(IOException e){
+        }catch(Exception e){
             Logger.getGlobal().log(Level.WARNING, config, e);
             return null;
         }finally{

@@ -82,7 +82,7 @@ public class IOTest {
     
     /*** Helper Methods ***/
     private IBotIO CreateIOObject() {
-        IBotIO botIO = IOFactory.CreateDBObject("testing_db");
+        IBotIO botIO = IOFactory.CreateDBObject("Test_DB");
         return botIO;
     }
     
