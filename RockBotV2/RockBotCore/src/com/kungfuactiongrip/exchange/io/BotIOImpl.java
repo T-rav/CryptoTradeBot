@@ -8,6 +8,9 @@ package com.kungfuactiongrip.exchange.io;
 
 import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.config.exchange.PropertyBagFactory;
+import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
+import com.kungfuactiongrip.exchange.io.data.IDbDAO;
+import com.kungfuactiongrip.exchange.io.data.MySQLDBObject;
 import com.kungfuactiongrip.to.BuyOrder;
 import com.kungfuactiongrip.to.SellOrder;
 import java.util.ArrayList;
@@ -19,14 +22,9 @@ import java.util.List;
  */
 public class BotIOImpl implements IBotIO {
 
-     // JDBC driver name and database URL
-   String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   String DB_URL = "";
-   //  Database credentials
-   String USER = "username";
-   String PASS = "password";
+   private IDbDAO _dbObject;
     
-    protected BotIOImpl() {
+    BotIOImpl() {
         this(null);
     }
     
@@ -34,18 +32,20 @@ public class BotIOImpl implements IBotIO {
      *
      * @param propertyFileName
      */
-    protected BotIOImpl(String propertyFileName){
+    BotIOImpl(String propertyFileName){
         
         if(propertyFileName != null){
-            PropertyBag bg = PropertyBagFactory.GenerateFromConfig(propertyFileName);
-            DB_URL = bg.FetchKey("DB_URL");
-            USER = bg.FetchKey("USER");
-            PASS = bg.FetchKey("PASS");
+            _dbObject = DBProviderFactory.GenerateMySQLDBObject(propertyFileName);
         }
     }
 
     public String FetchUser(){
-        return USER;
+        
+        if(_dbObject != null){
+            return _dbObject.FetchUser();
+        }
+        
+        return "";
     }
     
     @Override

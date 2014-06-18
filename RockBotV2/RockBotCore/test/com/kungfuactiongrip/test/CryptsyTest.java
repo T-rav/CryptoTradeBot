@@ -1,6 +1,6 @@
 package com.kungfuactiongrip.test;
 
-import com.kungfuactiongrip.exchange.Exchange;
+import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.IExchange;
 import com.kungfuactiongrip.exchange.TransactionType;
 import com.kungfuactiongrip.exchange.objects.CryptsyOrder;
@@ -26,7 +26,7 @@ public class CryptsyTest {
        // Setup
        
        // Execute
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        String classOf = exchange.getClass().getSimpleName();
        
        // Assert
@@ -36,7 +36,7 @@ public class CryptsyTest {
    @Test
    public void CanGetMarketInfo_ExpectValidMarketInfoString(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -54,7 +54,7 @@ public class CryptsyTest {
    @Test
    public void CanGetMarketFees_ExpectFeesString(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -72,7 +72,7 @@ public class CryptsyTest {
    @Test
    public void CanFetchMarketTrades_ExpectValidMarketTradesString(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -90,7 +90,7 @@ public class CryptsyTest {
    @Test
    public void CanFetchMarketOrders_ExpectValidMarketOrdersString(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -108,7 +108,7 @@ public class CryptsyTest {
    @Test
    public void CanFetchMyOpenOrders_ExpectValidOpenOrdersString(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -126,7 +126,7 @@ public class CryptsyTest {
    @Test
    public void CanCreateMarketTradeLowerThenMin_ExpectError(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -144,7 +144,7 @@ public class CryptsyTest {
    @Test
    public void CanCancelMarketTradeThatDoesNotExist_ExpectErrorString(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
@@ -162,7 +162,7 @@ public class CryptsyTest {
    @Test
    public void CanFetchAllActiveMarketData_ExpectValidMarketDataString(){
         // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String activeMarketData = null;
@@ -184,7 +184,7 @@ public class CryptsyTest {
    @Test
    public void CanCreateMarketTradeAboveMinAndCancelIt_ExpectTransactionWorks(){
        // Setup
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String tradeCreate = null;
@@ -214,7 +214,7 @@ public class CryptsyTest {
    
    @Test
    public void CanFetchMarketData_ExpectMarketData(){
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        String marketData = "";
         try {
@@ -228,7 +228,7 @@ public class CryptsyTest {
    
    @Test
    public void CanFetchOrderData_ExpectOrderData(){
-       IExchange exchange = Exchange.Cryptsy.GenerateExchangeObject();
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        String marketData = "";
         try {

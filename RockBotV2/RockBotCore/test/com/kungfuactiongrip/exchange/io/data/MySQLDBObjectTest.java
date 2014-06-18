@@ -6,11 +6,10 @@
 
 package com.kungfuactiongrip.exchange.io.data;
 
-import com.kungfuactiongrip.to.BuyOrder;
-import com.kungfuactiongrip.to.SellOrder;
-import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  *
@@ -21,16 +20,9 @@ public class MySQLDBObjectTest {
     public MySQLDBObjectTest() {
     }
 
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
-    
     @Test
     public void CanCreateObjectWithoutPropertyFile_ExpectValidObject(){
-        MySQLDBObject2 obj = new MySQLDBObject2();
+        IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject();
         
         assertNotNull(obj);
         assertEquals("username", obj.FetchUser());
@@ -38,18 +30,43 @@ public class MySQLDBObjectTest {
     
     @Test
     public void CanCreateObjectWithPropertyFile_ExpectValidObject(){
-        MySQLDBObject2 obj = new MySQLDBObject2("Test_DB");
+        IDbDAO obj = GenerateTestDB();
         
         assertNotNull(obj);
-        assertEquals("tradebot", obj.FetchUser());
+        assertEquals("tradebotTest", obj.FetchUser());
     }
-    
+
     @Test
     public void CanCreateObjectWithNullPropertyFile_ExpectDefaultObject(){
-        MySQLDBObject2 obj = new MySQLDBObject2(null);
+        IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject(null);
         
         assertNotNull(obj);
         assertEquals("username", obj.FetchUser());
     }
+    
+    @Test
+    public void CanCreateConnection_ExpectValidConnectionObject(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            con = obj.CreateConnection();
+            assertNotNull(con);
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
+   
+    private IDbDAO GenerateTestDB() {
+        IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject("Test_DB");
+        return obj;
+    }
+    
+    
     
 }

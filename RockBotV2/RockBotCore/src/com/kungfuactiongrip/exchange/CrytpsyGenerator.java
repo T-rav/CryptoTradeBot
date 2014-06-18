@@ -12,7 +12,7 @@ package com.kungfuactiongrip.exchange;
  */
 class CrytpsyGenerator implements IExchangeGenerator {
 
-    public CrytpsyGenerator() {
+    protected CrytpsyGenerator() {
     }
 
     @Override
