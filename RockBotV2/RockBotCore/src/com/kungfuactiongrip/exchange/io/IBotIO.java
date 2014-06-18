@@ -6,8 +6,8 @@
 
 package com.kungfuactiongrip.exchange.io;
 
-import com.kungfuactiongrip.to.BuyOrder;
-import com.kungfuactiongrip.to.SellOrder;
+import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.to.TradeOrder;
 import java.util.List;
 
 /**
@@ -19,10 +19,17 @@ public interface IBotIO {
     /**
      *
      * @param marketID
+     * @param exchange
      * @return 
      */
-    public List<BuyOrder> FetchOpenBuyOrdersForMarket(int marketID);
+    public List<TradeOrder> FetchOpenBuyOrdersForMarket(int marketID, ExchangeList exchange);
 
-    public List<SellOrder> FetchOpenSellOrdersForMarket(int marketID);
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @return
+     */
+    public List<TradeOrder> FetchOpenSellOrdersForMarket(int marketID, ExchangeList exchange);
     
 }

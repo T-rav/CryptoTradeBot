@@ -6,10 +6,24 @@
 
 package com.kungfuactiongrip.to;
 
+import com.kungfuactiongrip.exchange.ExchangeList;
+
 /**
  *
  * @author Administrator
  */
-public class SellOrder {
+public class SellOrder extends TradeOrder{
+
+    SellOrder(){
+        super();
+    }
     
+    SellOrder(int rowID, String tradeID, double pricePer, String linkedID, ExchangeList exchange, String rowTS) {
+        super(rowID, tradeID, pricePer, linkedID, exchange, rowTS);
+    }
+
+    @Override
+    public TradeType TradeType() {
+        return TradeType.SELL;
+    }
 }

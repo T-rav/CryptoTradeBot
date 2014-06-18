@@ -50,7 +50,7 @@ public class PropertyBagTest {
         
         assertNotNull(bg);
         String result = bg.FetchKey("USER");
-        assertEquals("tradebot", result);
+        assertEquals("tradebotTest", result);
     }
     
     @Test

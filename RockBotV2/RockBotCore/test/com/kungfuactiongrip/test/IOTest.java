@@ -6,10 +6,12 @@
 
 package com.kungfuactiongrip.test;
 
+import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import com.kungfuactiongrip.exchange.io.IOFactory;
 import com.kungfuactiongrip.to.BuyOrder;
 import com.kungfuactiongrip.to.SellOrder;
+import com.kungfuactiongrip.to.TradeOrder;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -49,7 +51,7 @@ public class IOTest {
     public void CanFetchOpenBuyOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<BuyOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173);
+        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(174, ExchangeList.Cryptsy);
         
         assertTrue(orders.isEmpty());
     }
@@ -58,27 +60,39 @@ public class IOTest {
     public void CanFetchOpenSellOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<SellOrder> orders = botIO.FetchOpenSellOrdersForMarket(173);
+        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(174, ExchangeList.Cryptsy);
         
         assertTrue(orders.isEmpty());
     }
     
     @Test
-    public void CanFetchOpenBuyOrders_WithMarketIDWhereOrder_ExpectFiveOrders(){
+    public void CanFetchOpenBuyOrders_WithMarketIDWhereOrder_ExpectOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<BuyOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173);
+        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173, ExchangeList.Cryptsy);
         
+        // Assert
         assertFalse(orders.isEmpty());
+        TradeOrder order = orders.get(0);
+        assertEquals(1, order.RowID);
+        assertEquals(0.1, order.PricePer, 0.00000001);
+        assertEquals("CRYPTSY", order.Exchange.name().toUpperCase());
+        assertEquals("Dummy-1", order.TradeID);
     }
     
     @Test
-    public void CanFetchOpenSellOrders_WithMarketIDWhereOrder_ExpectFiveOrders(){
+    public void CanFetchOpenSellOrders_WithMarketIDWhereOrder_ExpectOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<SellOrder> orders = botIO.FetchOpenSellOrdersForMarket(173);
+        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(173, ExchangeList.Cryptsy);
         
+        // Assert
         assertFalse(orders.isEmpty());
+        TradeOrder order = orders.get(0);
+        assertEquals(2, order.RowID);
+        assertEquals(0.1, order.PricePer, 0.00000001);
+        assertEquals("CRYPTSY", order.Exchange.name().toUpperCase());
+        assertEquals("Dummy-2", order.TradeID);
     }
     
     /*** Helper Methods ***/

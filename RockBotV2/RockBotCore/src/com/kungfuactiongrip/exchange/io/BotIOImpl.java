@@ -6,13 +6,12 @@
 
 package com.kungfuactiongrip.exchange.io;
 
-import com.kungfuactiongrip.config.exchange.PropertyBag;
-import com.kungfuactiongrip.config.exchange.PropertyBagFactory;
+import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
 import com.kungfuactiongrip.exchange.io.data.IDbDAO;
-import com.kungfuactiongrip.exchange.io.data.MySQLDBObject;
 import com.kungfuactiongrip.to.BuyOrder;
 import com.kungfuactiongrip.to.SellOrder;
+import com.kungfuactiongrip.to.TradeOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,16 +46,24 @@ public class BotIOImpl implements IBotIO {
         
         return "";
     }
-    
+
     @Override
-    public List<BuyOrder> FetchOpenBuyOrdersForMarket(int marketID) {
+    public List<TradeOrder> FetchOpenBuyOrdersForMarket(int marketID, ExchangeList exchange) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOpenBuyOrdersForMarket(marketID, exchange);
+        }
+        
         return new ArrayList<>();
     }
 
     @Override
-    public List<SellOrder> FetchOpenSellOrdersForMarket(int marketID) {
+    public List<TradeOrder> FetchOpenSellOrdersForMarket(int marketID, ExchangeList exchange) {
+        if(_dbObject != null){
+            return _dbObject.FetchOpenSellOrdersForMarket(marketID, exchange);
+        }
+        
         return new ArrayList<>();
     }
-
     
 }
