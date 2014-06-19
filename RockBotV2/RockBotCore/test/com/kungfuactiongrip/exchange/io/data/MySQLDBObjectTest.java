@@ -25,6 +25,7 @@ public class MySQLDBObjectTest {
     private static int ValidOrderMarketID = 173;
     private static int InvalidOrderMarketID = 175;
     private static int InsertOrderMarketID = 177;
+    private static int AbortedOrderMarketID = 179;
     
     public MySQLDBObjectTest() {
     }
@@ -185,6 +186,96 @@ public class MySQLDBObjectTest {
             
             // Assert
             assertTrue(result);
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
+    
+    @Test
+    public void FetchNumberOfAbortedBuyTrades_WhenArePresent_ExpectNumberGreaterThenZero(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            
+            int result = obj.FetchNumberOfAbortedTradesForInterval(TradeType.BUY, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
+            
+            // Assert
+            assertEquals(1, result);
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
+    
+    @Test
+    public void FetchNumberOfAbortedSellTrades_WhenArePresent_ExpectNumberGreaterThenZero(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            int result = obj.FetchNumberOfAbortedTradesForInterval(TradeType.SELL, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
+            
+            // Assert
+            assertEquals(1, result);
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
+    
+    @Test
+    public void FetchNumberOfOpenBuyTrades_WhenPresent_ExpectNumberGreaterThenZero(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            
+            int result = obj.FetchOpenOrderCount(TradeType.BUY, ExchangeList.Cryptsy, ValidOrderMarketID);
+            
+            // Assert
+            assertEquals(1, result);
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
+    
+    @Test
+    public void FetchNumberOfOpenSellTrades_WhenPresent_ExpectNumberGreaterThenZero(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            int result = obj.FetchOpenOrderCount(TradeType.SELL, ExchangeList.Cryptsy, ValidOrderMarketID);
+            
+            // Assert
+            assertEquals(1, result);
         }catch(Exception e){
             fail("Exception Thrown [ " + e.getMessage()+ " ]");
         }finally{

@@ -55,4 +55,5 @@ public interface IBotIO {
      * @return
      */
     public boolean UpdateOrderState(int rowID, TradeState state);
+   
 }

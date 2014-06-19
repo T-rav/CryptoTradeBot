@@ -7,8 +7,6 @@
 package com.kungfuactiongrip.exchange.io.data;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
-import com.kungfuactiongrip.to.BuyOrder;
-import com.kungfuactiongrip.to.SellOrder;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeOrderFactory;
 import com.kungfuactiongrip.to.TradeState;
@@ -47,6 +45,12 @@ public class MySQLDBObject implements IDbDAO {
     
     private final String updateOrder = "update BotTrade set orderState = ? where rID = ?";
     
+    private final String orderStateCountInterval = "select count(rID) as 'total' from BotTrade where orderState = ? "
+                                            + "and orderType = ? and exchangeName = ? and marketID = ? and "
+                                            + "rTS >= now() - INTERVAL ? HOUR";
+    
+    private final String orderStateCount = "select count(rID) as 'total' from BotTrade where orderState = ? "
+                                            + "and orderType = ? and exchangeName = ? and marketID = ?";
     
     protected MySQLDBObject(){
         this("url", "username", "password");
@@ -264,5 +268,137 @@ public class MySQLDBObject implements IDbDAO {
         return result;
     }
     
+    @Override
+    public int FetchNumberOfAbortedTradesForInterval(TradeType tradeType, ExchangeList exchange, int marketID, int hourInterval) {
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(orderStateCountInterval);
+               if(ps != null){
+                   String typeName = tradeType.name();
+                   String stateName = TradeState.ABORTED.name();
+                   String exchangeName = exchange.name().toUpperCase();
+                 
+                   ps.setString(1, stateName);
+                   ps.setString(2, typeName);
+                   ps.setString(3, exchangeName);
+                   ps.setInt(4, marketID);
+                   ps.setInt(5, hourInterval);
+                 
+                   rs = ps.executeQuery();
+                   
+                   if(rs.next()){
+                       result = rs.getInt("total");
+                   }
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            // close result set
+            try {
+                if(rs != null && !rs.isClosed()){
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+       return result;
+    }
     
+    
+    @Override
+    public int FetchOpenOrderCount(TradeType tradeType, ExchangeList exchange, int marketID) {
+         int result = 0;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(orderStateCount);
+               if(ps != null){
+                   String typeName = tradeType.name();
+                   String stateName = TradeState.OPEN.name();
+                   String exchangeName = exchange.name().toUpperCase();
+                 
+                   ps.setString(1, stateName);
+                   ps.setString(2, typeName);
+                   ps.setString(3, exchangeName);
+                   ps.setInt(4, marketID);
+                 
+                   rs = ps.executeQuery();
+                   
+                   if(rs.next()){
+                       result = rs.getInt("total");
+                   }
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            // close result set
+            try {
+                if(rs != null && !rs.isClosed()){
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+       return result;
+    }  
 }
