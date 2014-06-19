@@ -12,7 +12,6 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -25,7 +24,7 @@ class Cryptsy implements IExchange {
 
     // https://github.com/abwaters/cryptsy-api/blob/master/src/com/abwaters/cryptsy/Cryptsy.java
 
-    private static final String USER_AGENT = "Mozilla/5.0 (compatible; CRYPTSY-API/1.0; MSIE 6.0 compatible; +RockBot)";
+    private static final String USER_AGENT = "Mozilla/5.0 (compatible; CRYPTSY-API/1.1; MSIE 6.0 compatible; +RockBot2)";
     // Needs to inc by 1 each request ;)
     private static long Nonce = 0;
     private boolean Inited = false;
@@ -152,7 +151,8 @@ class Cryptsy implements IExchange {
     private String ExecuteAuthorizedQuery(String method, Map<String, String> args) throws Exception{
         // Setup for execute ;)
         Init();
-        Nonce++;
+        Nonce = System.currentTimeMillis();
+        //Nonce++;
         
         Map<String, String> invokeArgs = new HashMap<>();
         
