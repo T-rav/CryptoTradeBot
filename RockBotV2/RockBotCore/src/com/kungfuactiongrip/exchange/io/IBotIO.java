@@ -20,6 +20,12 @@ public interface IBotIO {
 
     /**
      *
+     * @return
+     */
+    public String FetchUser();
+    
+    /**
+     *
      * @param marketID
      * @param exchange
      * @return 
@@ -46,7 +52,20 @@ public interface IBotIO {
      * @param linkedID
      * @return
      */
-    public boolean InsertOrder(TradeType type, TradeState state,ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID);
+    public int InsertOrder(TradeType type, TradeState state,ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID);
+    
+    /**
+     *
+     * @param type
+     * @param state
+     * @param exchange
+     * @param marketID
+     * @param pricePer
+     * @param totalValue
+     * @param tradeID
+     * @return
+     */
+    public int InsertOrder(TradeType type, TradeState state,ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID);
  
     /**
      *
@@ -55,5 +74,74 @@ public interface IBotIO {
      * @return
      */
     public boolean UpdateOrderState(int rowID, TradeState state);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @param hourInterval
+     * @return
+     */
+    public int FetchNumberOfOpenBuyOrdersForMarketForInterval(int marketID, ExchangeList exchange, int hourInterval);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @param hourInterval
+     * @return
+     */
+    public int FetchNumberOfOpenSellOrdersForMarketForInterval(int marketID, ExchangeList exchange, int hourInterval);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @return
+     */
+    public int FetchNumberOfOpenBuyOrdersForMarketForDay(int marketID, ExchangeList exchange);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @return
+     */
+    public int FetchNumberOfOpenSellOrdersForMarketForDay(int marketID, ExchangeList exchange);
+    
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @param hourInterval
+     * @return
+     */
+    public int FetchNumberOfAbortedSellOrdersForInterval(int marketID, ExchangeList exchange, int hourInterval);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @param hourInterval
+     * @return
+     */
+    public int FetchNumberOfAbortedBuyOrdersForInterval(int marketID, ExchangeList exchange, int hourInterval);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @return
+     */
+    public int FetchNumberOfAbortedSellOrdersForDay(int marketID, ExchangeList exchange);
+    
+    /**
+     *
+     * @param marketID
+     * @param exchange
+     * @return
+     */
+    public int FetchNumberOfAbortedBuyOrdersForDay(int marketID, ExchangeList exchange);
    
 }

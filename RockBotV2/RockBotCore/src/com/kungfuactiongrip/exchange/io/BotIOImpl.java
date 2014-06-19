@@ -32,6 +32,7 @@ public class BotIOImpl implements IBotIO {
         }
     }
 
+    @Override
     public String FetchUser(){
         
         if(_dbObject != null){
@@ -45,7 +46,7 @@ public class BotIOImpl implements IBotIO {
     public List<TradeOrder> FetchOpenBuyOrdersForMarket(int marketID, ExchangeList exchange) {
         
         if(_dbObject != null){
-            return _dbObject.FetchOpenBuyOrdersForMarket(marketID, exchange);
+            return _dbObject.FetchOrdersForMarket(marketID, TradeType.BUY, TradeState.OPEN, exchange);
         }
         
         return new ArrayList<>();
@@ -53,21 +54,122 @@ public class BotIOImpl implements IBotIO {
 
     @Override
     public List<TradeOrder> FetchOpenSellOrdersForMarket(int marketID, ExchangeList exchange) {
+        
         if(_dbObject != null){
-            return _dbObject.FetchOpenSellOrdersForMarket(marketID, exchange);
+            return _dbObject.FetchOrdersForMarket(marketID, TradeType.SELL, TradeState.OPEN, exchange);
         }
         
         return new ArrayList<>();
     }
 
     @Override
-    public boolean InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
+        
+        if(_dbObject != null){
+            return _dbObject.InsertOrder(type, state, exchange, marketID, pricePer, totalValue, tradeID, linkedID);
+        }
+        
+        return -1;
     }
 
     @Override
-    public boolean UpdateOrderState(int rowID, TradeState state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID) {
+        
+        if(_dbObject != null){
+            return _dbObject.InsertOrder(type, state, exchange, marketID, pricePer, totalValue, tradeID, null);
+        }
+        
+        return -1;
     }
+    
+    @Override
+    public boolean UpdateOrderState(int rowID, TradeState state) {
+        
+        if(_dbObject != null && rowID > 0){
+            return _dbObject.UpdateOrderState(rowID, state);
+        }
+        
+        return false;
+    }
+
+    // -- TODO : Test Here Down
+    @Override
+    public int FetchNumberOfOpenBuyOrdersForMarketForInterval(int marketID, ExchangeList exchange, int hourInterval) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, hourInterval);
+        }
+        
+        return -1;
+    }
+
+    @Override
+    public int FetchNumberOfOpenSellOrdersForMarketForInterval(int marketID, ExchangeList exchange, int hourInterval) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.OPEN, exchange, marketID, hourInterval);
+        }
+        
+        return -1;
+    }
+    
+    @Override
+    public int FetchNumberOfOpenBuyOrdersForMarketForDay(int marketID, ExchangeList exchange) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, 24);
+        }
+        
+        return -1;
+    }
+
+    @Override
+    public int FetchNumberOfOpenSellOrdersForMarketForDay(int marketID, ExchangeList exchange) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.OPEN, exchange, marketID, 24);
+        }
+        
+        return -1;
+    }
+
+    @Override
+    public int FetchNumberOfAbortedSellOrdersForInterval(int marketID, ExchangeList exchange, int hourInterval) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, hourInterval);
+        }
+        
+        return -1;
+    }
+
+    @Override
+    public int FetchNumberOfAbortedBuyOrdersForInterval(int marketID, ExchangeList exchange, int hourInterval) {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, hourInterval);
+        }
+        
+        return -1;
+    }
+
+    @Override
+    public int FetchNumberOfAbortedSellOrdersForDay(int marketID, ExchangeList exchange) {
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, 24);
+        }
+        
+        return -1;
+    }
+
+    @Override
+    public int FetchNumberOfAbortedBuyOrdersForDay(int marketID, ExchangeList exchange) {
+        if(_dbObject != null){
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, 24);
+        }
+        
+        return -1;
+    }
+
 
 }

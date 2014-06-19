@@ -22,10 +22,10 @@ import org.junit.Test;
  */
 public class MySQLDBObjectTest {
     
-    private static int ValidOrderMarketID = 173;
-    private static int InvalidOrderMarketID = 175;
-    private static int InsertOrderMarketID = 177;
-    private static int AbortedOrderMarketID = 179;
+    public static int ValidOrderMarketID = 173;
+    public static int InvalidOrderMarketID = 175;
+    public static int InsertOrderMarketID = 177;
+    public static int AbortedOrderMarketID = 179;
     
     public MySQLDBObjectTest() {
     }
@@ -79,7 +79,7 @@ public class MySQLDBObjectTest {
         assertNotNull(obj);
         Connection con = null;
         try{
-            List<TradeOrder> orders = obj.FetchOpenBuyOrdersForMarket(ValidOrderMarketID, ExchangeList.Cryptsy);
+            List<TradeOrder> orders = obj.FetchOrdersForMarket(ValidOrderMarketID, TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy);
                        
             // Assert
             assertNotNull(orders);
@@ -107,7 +107,7 @@ public class MySQLDBObjectTest {
         assertNotNull(obj);
         Connection con = null;
         try{
-            List<TradeOrder> orders = obj.FetchOpenSellOrdersForMarket(ValidOrderMarketID, ExchangeList.Cryptsy);
+            List<TradeOrder> orders = obj.FetchOrdersForMarket(ValidOrderMarketID, TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy);
             
             // Assert
             assertNotNull(orders);
@@ -135,7 +135,7 @@ public class MySQLDBObjectTest {
         assertNotNull(obj);
         Connection con = null;
         try{
-            List<TradeOrder> orders = obj.FetchOpenBuyOrdersForMarket(InvalidOrderMarketID, ExchangeList.Cryptsy);
+            List<TradeOrder> orders = obj.FetchOrdersForMarket(InvalidOrderMarketID, TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy);
                        
              // Assert
             assertNotNull(orders);
@@ -158,7 +158,7 @@ public class MySQLDBObjectTest {
         assertNotNull(obj);
         Connection con = null;
         try{
-            List<TradeOrder> orders = obj.FetchOpenSellOrdersForMarket(InvalidOrderMarketID, ExchangeList.Cryptsy);
+            List<TradeOrder> orders = obj.FetchOrdersForMarket(InvalidOrderMarketID, TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy);
             
             // Assert
             assertNotNull(orders);
@@ -182,10 +182,10 @@ public class MySQLDBObjectTest {
         Connection con = null;
         try{
             
-            boolean result = obj.InsertOrder(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, InsertOrderMarketID,0.1, 0.3,"DUMMY-INSERT",null);
+            int result = obj.InsertOrder(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, InsertOrderMarketID,0.1, 0.3,"DUMMY-INSERT",null);
             
             // Assert
-            assertTrue(result);
+            assertTrue(result > 0);
         }catch(Exception e){
             fail("Exception Thrown [ " + e.getMessage()+ " ]");
         }finally{
@@ -205,7 +205,7 @@ public class MySQLDBObjectTest {
         Connection con = null;
         try{
             
-            int result = obj.FetchNumberOfAbortedTradesForInterval(TradeType.BUY, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
+            int result = obj.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
             
             // Assert
             assertEquals(1, result);
@@ -227,7 +227,7 @@ public class MySQLDBObjectTest {
         assertNotNull(obj);
         Connection con = null;
         try{
-            int result = obj.FetchNumberOfAbortedTradesForInterval(TradeType.SELL, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
+            int result = obj.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
             
             // Assert
             assertEquals(1, result);
@@ -250,7 +250,7 @@ public class MySQLDBObjectTest {
         Connection con = null;
         try{
             
-            int result = obj.FetchOpenOrderCount(TradeType.BUY, ExchangeList.Cryptsy, ValidOrderMarketID);
+            int result = obj.FetchOrderCountOfType(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, ValidOrderMarketID);
             
             // Assert
             assertEquals(1, result);
@@ -272,7 +272,7 @@ public class MySQLDBObjectTest {
         assertNotNull(obj);
         Connection con = null;
         try{
-            int result = obj.FetchOpenOrderCount(TradeType.SELL, ExchangeList.Cryptsy, ValidOrderMarketID);
+            int result = obj.FetchOrderCountOfType(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, ValidOrderMarketID);
             
             // Assert
             assertEquals(1, result);

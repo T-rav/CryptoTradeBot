@@ -16,6 +16,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -82,18 +83,7 @@ public class MySQLDBObject implements IDbDAO {
     }
     
     @Override
-    public List<TradeOrder> FetchOpenBuyOrdersForMarket(int marketID, ExchangeList exchange) {
-       return FetchOrders(TradeType.BUY, TradeState.OPEN, marketID, exchange);
-    }
-
-    @Override
-    public List<TradeOrder> FetchOpenSellOrdersForMarket(int marketID, ExchangeList exchange) {
-        return FetchOrders(TradeType.SELL, TradeState.OPEN, marketID, exchange);
-    }
-    
-    // Generic Fetch Orders Method ;)
-    private List<TradeOrder> FetchOrders(TradeType type, TradeState state, int marketID, ExchangeList exchange) {
-       
+    public List<TradeOrder> FetchOrdersForMarket(int marketID, TradeType typeOf, TradeState state, ExchangeList exchange){
         List<TradeOrder> result = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -104,7 +94,7 @@ public class MySQLDBObject implements IDbDAO {
            if(conn != null){
                ps = conn.prepareStatement(fetchBuyOrders);
                if(ps != null){
-                   String typeName = type.name();
+                   String typeName = typeOf.name();
                    String stateName = state.name();
                    String exchangeName = exchange.name().toUpperCase();
                    
@@ -124,7 +114,7 @@ public class MySQLDBObject implements IDbDAO {
                        String rowTS = rs.getString("rTS");
                        
                        // add to result collection ;)
-                       result.add(TradeOrderFactory.GenerateOrder(type, rowID, tradeID, pricePer, linkedTradeID, exchange, rowTS));
+                       result.add(TradeOrderFactory.GenerateOrder(typeOf, rowID, tradeID, pricePer, linkedTradeID, exchange, rowTS));
                    }
                }
            }
@@ -167,15 +157,16 @@ public class MySQLDBObject implements IDbDAO {
     }
     
     @Override
-    public boolean InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
+    public int InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
         Connection conn = null;
         PreparedStatement ps = null;
-        boolean result = false;
+        ResultSet rs = null;
+        int result = -1;
         
         try{
            conn = CreateConnection();
            if(conn != null){
-               ps = conn.prepareStatement(insertOrder);
+               ps = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS);
                if(ps != null){
                    String typeName = type.name();
                    String stateName = state.name();
@@ -191,13 +182,28 @@ public class MySQLDBObject implements IDbDAO {
                    ps.setString(8, linkedID);
                    
                    ps.execute();
-                   result = true;
-                  
+                   rs = ps.getGeneratedKeys();
+                   if(rs.next()){
+                       result = rs.getInt(1);
+                   }                  
                }
            }
        }catch (SQLException ex) {
             Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
        }finally{
+            
+            // close result set
+            try {
+                if(rs != null && !rs.isClosed()){
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             // close the prepared statement
             if(ps != null ){
@@ -269,7 +275,7 @@ public class MySQLDBObject implements IDbDAO {
     }
     
     @Override
-    public int FetchNumberOfAbortedTradesForInterval(TradeType tradeType, ExchangeList exchange, int marketID, int hourInterval) {
+    public int FetchOrderCountOfTypeForInterval(TradeType tradeType, TradeState state, ExchangeList exchange, int marketID, int hourInterval) {
         int result = 0;
         Connection conn = null;
         PreparedStatement ps = null;
@@ -281,7 +287,7 @@ public class MySQLDBObject implements IDbDAO {
                ps = conn.prepareStatement(orderStateCountInterval);
                if(ps != null){
                    String typeName = tradeType.name();
-                   String stateName = TradeState.ABORTED.name();
+                   String stateName = state.name();
                    String exchangeName = exchange.name().toUpperCase();
                  
                    ps.setString(1, stateName);
@@ -337,8 +343,8 @@ public class MySQLDBObject implements IDbDAO {
     
     
     @Override
-    public int FetchOpenOrderCount(TradeType tradeType, ExchangeList exchange, int marketID) {
-         int result = 0;
+    public int FetchOrderCountOfType(TradeType tradeType, TradeState state, ExchangeList exchange, int marketID) {
+        int result = 0;
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -349,7 +355,7 @@ public class MySQLDBObject implements IDbDAO {
                ps = conn.prepareStatement(orderStateCount);
                if(ps != null){
                    String typeName = tradeType.name();
-                   String stateName = TradeState.OPEN.name();
+                   String stateName = state.name();
                    String exchangeName = exchange.name().toUpperCase();
                  
                    ps.setString(1, stateName);

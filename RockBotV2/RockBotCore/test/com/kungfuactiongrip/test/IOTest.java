@@ -9,9 +9,10 @@ package com.kungfuactiongrip.test;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import com.kungfuactiongrip.exchange.io.IOFactory;
-import com.kungfuactiongrip.to.BuyOrder;
-import com.kungfuactiongrip.to.SellOrder;
+import com.kungfuactiongrip.exchange.io.data.MySQLDBObjectTest;
 import com.kungfuactiongrip.to.TradeOrder;
+import com.kungfuactiongrip.to.TradeState;
+import com.kungfuactiongrip.to.TradeType;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -24,52 +25,86 @@ public class IOTest {
     
     public IOTest() {
     }
-    
-
+   
     @Test
-    public void CanCreateBotIOObject_ExpectValidObject(){
+    public void CreateBotIOObject_ExpectValidObject(){
         IBotIO botIO = IOFactory.CreateIOObject();
         
+        // Assert
         assertNotNull(botIO);
     }
     
     @Test
-    public void CanCreateBotIOObject_WithPropertiesFile_ExpectValidObject(){
+    public void CreateBotIOObject_WithPropertiesFile_ExpectValidObject(){
         IBotIO botIO = CreateIOObject();
         
+        // Assert
         assertNotNull(botIO);
     }
     
     @Test
-    public void CanCreateBotIOObject_WithNullPropertiesFile_ExpectNull(){
+    public void CreateBotIOObject_WithNullPropertiesFile_ExpectValidObject(){
         IBotIO botIO = IOFactory.CreateIOObject(null);
         
-         assertNull(botIO);
+        // Assert
+        assertNotNull(botIO);
     }
     
     @Test
-    public void CanFetchOpenBuyOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
+    public void FetchUser_WithInvalidDB_ExpectEmptyUser(){
+        IBotIO botID = CreateBadIOObject();
+        
+        String user = botID.FetchUser();
+        
+        // Assert
+        assertEquals("", user);
+    }
+    
+    @Test
+    public void FetchOpenBuyOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(174, ExchangeList.Cryptsy);
+        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(MySQLDBObjectTest.InvalidOrderMarketID, ExchangeList.Cryptsy);
         
+        // Assert
+        assertTrue(orders.isEmpty());
+    }
+    
+        @Test
+    public void FetchOpenBuyOrders_WithMarketIDWhereNoOrderAndInvalidDB_ExpectNoOrders(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(MySQLDBObjectTest.InvalidOrderMarketID, ExchangeList.Cryptsy);
+        
+        // Assert
         assertTrue(orders.isEmpty());
     }
     
     @Test
-    public void CanFetchOpenSellOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
+    public void FetchOpenSellOrders_WithMarketIDWhereNoOrder_ExpectNoOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(174, ExchangeList.Cryptsy);
+        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(MySQLDBObjectTest.InvalidOrderMarketID, ExchangeList.Cryptsy);
         
+        // Assert
         assertTrue(orders.isEmpty());
     }
     
     @Test
-    public void CanFetchOpenBuyOrders_WithMarketIDWhereOrder_ExpectOrders(){
+    public void FetchOpenSellOrders_WithMarketIDWhereNoOrderAndInvalidDB_ExpectNoOrders(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(MySQLDBObjectTest.InvalidOrderMarketID, ExchangeList.Cryptsy);
+        
+        // Assert
+        assertTrue(orders.isEmpty());
+    }
+    
+    @Test
+    public void FetchOpenBuyOrders_WithMarketIDWhereOrder_ExpectOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(173, ExchangeList.Cryptsy);
+        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(MySQLDBObjectTest.ValidOrderMarketID, ExchangeList.Cryptsy);
         
         // Assert
         assertFalse(orders.isEmpty());
@@ -81,10 +116,20 @@ public class IOTest {
     }
     
     @Test
-    public void CanFetchOpenSellOrders_WithMarketIDWhereOrder_ExpectOrders(){
+    public void FetchOpenBuyOrders_WithMarketIDWhereOrderAndInvalidDB_ExpectNoOrders(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        List<TradeOrder> orders = botIO.FetchOpenBuyOrdersForMarket(MySQLDBObjectTest.ValidOrderMarketID, ExchangeList.Cryptsy);
+        
+        // Assert
+        assertTrue(orders.isEmpty());
+    }
+    
+    @Test
+    public void FetchOpenSellOrders_WithMarketIDWhereOrder_ExpectOrders(){
         IBotIO botIO = CreateIOObject();
         
-        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(173, ExchangeList.Cryptsy);
+        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(MySQLDBObjectTest.ValidOrderMarketID, ExchangeList.Cryptsy);
         
         // Assert
         assertFalse(orders.isEmpty());
@@ -95,9 +140,95 @@ public class IOTest {
         assertEquals("Dummy-2", order.TradeID);
     }
     
+    @Test
+    public void FetchOpenSellOrders_WithMarketIDWhereOrderAndInvalidDB_ExpectNoOrders(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        List<TradeOrder> orders = botIO.FetchOpenSellOrdersForMarket(MySQLDBObjectTest.ValidOrderMarketID, ExchangeList.Cryptsy);
+        
+        // Assert
+        assertTrue(orders.isEmpty());
+    }
+    
+    @Test
+    public void InsertOrder_WhenLinkedID_ExpectValidRowID(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.InsertOrder(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, MySQLDBObjectTest.InsertOrderMarketID, 0.01, 0.1, "DUMMY-INSERT", "DUMMY-LINK");
+        
+        // Assert
+         assertTrue(result > 0);
+    }
+    
+    @Test
+    public void InsertOrder_WhenNullDBObjectWithLinkedTradeID_ExpectBadRowId(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        int result = botIO.InsertOrder(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, MySQLDBObjectTest.InsertOrderMarketID, 0.01, 0.1, "DUMMY-INSERT", "DUMMY-LINK");
+        
+        // Assert
+         assertTrue(result < 0);
+    }
+    
+    @Test
+    public void InsertOrder_WhenNoLinkedID_ExpectValidRowID(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.InsertOrder(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, MySQLDBObjectTest.InsertOrderMarketID, 0.01, 0.1, "DUMMY-INSERT");
+        
+        // Assert
+         assertTrue(result > 0);
+    }
+    
+    @Test
+    public void InsertOrder_WhenNullDBObjectWithNoLinkedTradeID_ExpectBadRowId(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        int result = botIO.InsertOrder(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, MySQLDBObjectTest.InsertOrderMarketID, 0.01, 0.1, "DUMMY-INSERT");
+        
+        // Assert
+        assertTrue(result < 0);
+    }
+    
+    @Test
+    public void UpdateOrderState_WhenOrderPresent_ExpectTrue(){
+        IBotIO botIO = CreateIOObject();
+        
+        boolean result = botIO.UpdateOrderState(23, TradeState.CLOSED);
+        
+        // Assert
+        assertTrue(result);
+    }
+    
+    @Test
+    public void UpdateOrderState_WhenOrderPresentAndBadDB_ExpectFalse(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        boolean result = botIO.UpdateOrderState(23, TradeState.CLOSED);
+        
+        // Assert
+        assertFalse(result);
+    }
+    
+    @Test
+    public void UpdateOrderState_WhenOrderIDInvalid_ExpectFalse(){
+        IBotIO botIO = CreateIOObject();
+        
+        boolean result = botIO.UpdateOrderState(0, TradeState.CLOSED);
+        
+        // Assert
+        assertFalse(result);
+    }
+
+    
     /*** Helper Methods ***/
     private IBotIO CreateIOObject() {
         IBotIO botIO = IOFactory.CreateIOObject("Test_DB");
+        return botIO;
+    }
+    
+    private IBotIO CreateBadIOObject() {
+        IBotIO botIO = IOFactory.CreateIOObject(null);
         return botIO;
     }
     

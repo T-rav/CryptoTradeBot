@@ -18,7 +18,7 @@ public class IOFactory {
     public static IBotIO CreateIOObject(String propertyFile) {
         // Use the properties file passed in to create the db stuff against ;)
         if (propertyFile == null) {
-            return null;
+            return new BotIOImpl();
         }
 
         return new BotIOImpl(propertyFile);
