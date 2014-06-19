@@ -12,6 +12,8 @@ import com.kungfuactiongrip.exchange.io.data.IDbDAO;
 import com.kungfuactiongrip.to.BuyOrder;
 import com.kungfuactiongrip.to.SellOrder;
 import com.kungfuactiongrip.to.TradeOrder;
+import com.kungfuactiongrip.to.TradeState;
+import com.kungfuactiongrip.to.TradeType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +66,16 @@ public class BotIOImpl implements IBotIO {
         }
         
         return new ArrayList<>();
+    }
+
+    @Override
+    public boolean InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean UpdateOrderState(int rowID, TradeState state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -9,22 +9,10 @@ package com.kungfuactiongrip.exchange.io.data;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import java.sql.Connection;
 
-
 public interface IDbDAO extends IBotIO{
     
     public String FetchUser();
     
     public Connection CreateConnection();
-    
-    /*
-    
-    public boolean ExecuteInsert();
-    
-    public boolean ExecuteSelect();
-    
-    public boolean ExecuteUpdate();
-    
-    public boolean ExecuteDelete();
-    
-    */
+
 }

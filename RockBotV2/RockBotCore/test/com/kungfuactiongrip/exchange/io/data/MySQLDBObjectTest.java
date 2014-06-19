@@ -7,8 +7,9 @@
 package com.kungfuactiongrip.exchange.io.data;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
-import com.kungfuactiongrip.to.BuyOrder;
 import com.kungfuactiongrip.to.TradeOrder;
+import com.kungfuactiongrip.to.TradeState;
+import com.kungfuactiongrip.to.TradeType;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MySQLDBObjectTest {
     
     private static int ValidOrderMarketID = 173;
     private static int InvalidOrderMarketID = 175;
+    private static int InsertOrderMarketID = 177;
     
     public MySQLDBObjectTest() {
     }
@@ -160,6 +162,29 @@ public class MySQLDBObjectTest {
             // Assert
             assertNotNull(orders);
             assertTrue(orders.isEmpty());
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
+    
+    @Test
+    public void InsertSellOrder_WhenOrdersValid_ExpectInserted(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            
+            boolean result = obj.InsertOrder(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, InsertOrderMarketID,0.1, 0.3,"DUMMY-INSERT",null);
+            
+            // Assert
+            assertTrue(result);
         }catch(Exception e){
             fail("Exception Thrown [ " + e.getMessage()+ " ]");
         }finally{
