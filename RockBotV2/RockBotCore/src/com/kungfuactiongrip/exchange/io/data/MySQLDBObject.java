@@ -41,6 +41,12 @@ public class MySQLDBObject implements IDbDAO {
                                           + " from BotTrade where orderState = ? and orderType = ? "
                                           + "and marketID = ? and exchangeName = ?";
     
+    private final String insertOrder = "insert into BotTrade(tradeID, exchangeName, marketID, totalCurrencyValue, "
+                                        + "btcPricePer, orderState, orderType, "
+                                        + "linkedTradeID) values(?,?,?,?,?,?,?,?)";
+    
+    private final String updateOrder = "update BotTrade set orderState = ? where rID = ?";
+    
     
     protected MySQLDBObject(){
         this("url", "username", "password");
@@ -155,5 +161,108 @@ public class MySQLDBObject implements IDbDAO {
         
        return result;
     }
+    
+    @Override
+    public boolean InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(insertOrder);
+               if(ps != null){
+                   String typeName = type.name();
+                   String stateName = state.name();
+                   String exchangeName = exchange.name().toUpperCase();
+                   
+                   ps.setString(1, tradeID);
+                   ps.setString(2, exchangeName);
+                   ps.setInt(3, marketID);
+                   ps.setDouble(4, totalValue);
+                   ps.setDouble(5, pricePer);
+                   ps.setString(6, stateName);
+                   ps.setString(7, typeName);
+                   ps.setString(8, linkedID);
+                   
+                   ps.execute();
+                   result = true;
+                  
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    
+    @Override
+    public boolean UpdateOrderState(int rowID, TradeState state) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean result = false;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(updateOrder);
+               if(ps != null){
+                   String stateName = state.name();
+                   
+                   ps.setString(1, stateName);
+                   ps.setInt(2, rowID);
+                   
+                   ps.execute();
+                   result = true;
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
     
 }
