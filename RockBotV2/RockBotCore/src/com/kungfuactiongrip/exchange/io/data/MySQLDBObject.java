@@ -425,7 +425,7 @@ public class MySQLDBObject implements IDbDAO {
                if(ps != null){
                    rs = ps.executeQuery();
                    
-                   if(rs.next()){
+                   while(rs.next()){
                        String optionName = rs.getString("optionName");
                        String optionValue = rs.getString("optionValue");
                        result.AddPair(optionName, optionValue);

@@ -28,46 +28,83 @@ public class PropertyBagTest {
     // public void hello() {}
     
     @Test
-    public void CanCreatePropertyBag_ExpectNotNull(){
+    public void CreatePropertyBag_WhenUsingValidPropertyFile_ExpectNotNull(){
         
-        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
+        PropertyBag bg = CreateGoodPropertyBag();
         
+        // Assert
         assertNotNull(bg);
     }
     
     @Test
-    public void CanCreatePropertyBag_WhenUsingValidPropertyFile_ExpectData(){
+    public void CreatePropertyBag_WhenUsingValidPropertyFile_ExpectData(){
         
-        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
+        PropertyBag bg = CreateGoodPropertyBag();
         
+        // Assert
         assertNotNull(bg);
     }
     
     @Test
-    public void CanFetchProperty_WhenUsingValidKey_ExpectData(){
+    public void FetchProperty_WhenUsingValidKey_ExpectData(){
         
-        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
+        PropertyBag bg = CreateGoodPropertyBag();
         
+        // Assert
         assertNotNull(bg);
         String result = bg.FetchKey("USER");
         assertEquals("tradebotTest", result);
     }
     
     @Test
-    public void CannotFetchProperty_WhenUsingInvalidKey_ExpectNull(){
+    public void FetchProperty_WhenUsingInvalidKey_ExpectNull(){
         
-        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB");
+        PropertyBag bg = CreateGoodPropertyBag();
         
+        // Assert
         assertNotNull(bg);
         String result = bg.FetchKey("USER_FAKE");
         assertNull(result);
     }
     
     @Test
-    public void CanCreatePropertyBag_WhenUsingInvalidPropertyFile_ExpectNull(){
+    public void CreatePropertyBag_WhenUsingInvalidPropertyFile_ExpectNull(){
         
-        PropertyBag bg = PropertyBagFactory.GenerateFromConfig("Test_DB_FAKE");
+        PropertyBag bg = CreateBadPropertyBag();
         
+        // Assert
         assertNull(bg);
     }
+
+    @Test
+    public void TotalProperties_WhenPopulated_ExpectNumberGreaterThenZero(){
+        PropertyBag bg = CreateGoodPropertyBag();
+        
+        // Assert
+        assertNotNull(bg);
+        assertEquals(3, bg.TotalProperties());
+    }
+
+    @Test
+    public void TotalProperties_WhenNotPopulated_ExpectZero(){
+        PropertyBag bg = CreateEmptyPropertyBag();
+        
+        // Assert
+        assertNotNull(bg);
+        assertEquals(0, bg.TotalProperties());
+    }
+    
+    // Helpers
+    private static PropertyBag CreateEmptyPropertyBag() {
+        return PropertyBagFactory.GenerateFromConfig("Test_Empty_DB");
+    }
+    
+    private static PropertyBag CreateBadPropertyBag() {
+        return PropertyBagFactory.GenerateFromConfig("Test_DB_FAKE");
+    }
+    
+    private static PropertyBag CreateGoodPropertyBag() {
+        return PropertyBagFactory.GenerateFromConfig("Test_DB");
+    }
+    
 }

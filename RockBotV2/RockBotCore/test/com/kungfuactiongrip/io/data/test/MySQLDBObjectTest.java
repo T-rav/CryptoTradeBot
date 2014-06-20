@@ -6,6 +6,7 @@
 
 package com.kungfuactiongrip.io.data.test;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
 import com.kungfuactiongrip.exchange.io.data.IDbDAO;
@@ -287,6 +288,30 @@ public class MySQLDBObjectTest {
                 }catch(SQLException e){}
             }
         }
+    }
+    
+    @Test
+    public void FetchEngineConfiguration_WhenOptionsPresent_ExpectConfigurationOptions(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            PropertyBag result = obj.FetchEngineConfiguration();
+            
+            // Assert
+            assertNotNull(result);
+            assertEquals(18, result.TotalProperties());
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+        
     }
    
     private IDbDAO GenerateTestDB() {

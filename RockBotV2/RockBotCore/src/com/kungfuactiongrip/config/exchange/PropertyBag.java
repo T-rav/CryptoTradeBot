@@ -33,4 +33,8 @@ public class PropertyBag {
         }
     }
     
+    public int TotalProperties(){
+        return _grid.size();
+    }
+    
 }
