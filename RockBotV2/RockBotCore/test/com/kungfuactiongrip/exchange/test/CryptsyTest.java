@@ -1,4 +1,4 @@
-package com.kungfuactiongrip.test;
+package com.kungfuactiongrip.exchange.test;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.IExchange;

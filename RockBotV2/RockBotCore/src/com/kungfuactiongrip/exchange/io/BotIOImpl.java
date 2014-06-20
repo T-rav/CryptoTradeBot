@@ -93,6 +93,7 @@ public class BotIOImpl implements IBotIO {
     }
 
     // -- TODO : Test Here Down
+    // The fun starts here - NEED DB Scripts ;)
     @Override
     public int FetchNumberOfOpenBuyOrdersForMarketForInterval(int marketID, ExchangeList exchange, int hourInterval) {
         
@@ -170,6 +171,4 @@ public class BotIOImpl implements IBotIO {
         
         return -1;
     }
-
-
 }

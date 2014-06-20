@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.kungfuactiongrip.test;
+package com.kungfuactiongrip.test.io;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import com.kungfuactiongrip.exchange.io.IOFactory;
-import com.kungfuactiongrip.exchange.io.data.MySQLDBObjectTest;
+import com.kungfuactiongrip.io.data.test.MySQLDBObjectTest;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeState;
 import com.kungfuactiongrip.to.TradeType;

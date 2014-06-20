@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.kungfuactiongrip.test;
+package com.kungfuactiongrip.test.to;
 
 import com.kungfuactiongrip.exchange.objects.*;
 import junit.framework.Assert;

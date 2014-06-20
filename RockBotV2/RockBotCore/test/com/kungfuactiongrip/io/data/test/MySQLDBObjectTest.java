@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.kungfuactiongrip.exchange.io.data;
+package com.kungfuactiongrip.io.data.test;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
+import com.kungfuactiongrip.exchange.io.data.IDbDAO;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeState;
 import com.kungfuactiongrip.to.TradeType;

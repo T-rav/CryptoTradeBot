@@ -6,6 +6,7 @@
 
 package com.kungfuactiongrip.exchange.io.data;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeOrderFactory;
@@ -52,6 +53,8 @@ public class MySQLDBObject implements IDbDAO {
     
     private final String orderStateCount = "select count(rID) as 'total' from BotTrade where orderState = ? "
                                             + "and orderType = ? and exchangeName = ? and marketID = ?";
+    
+    private final String botConfiguration = "SELECT rid, optionName, optionValue FROM TradeOptions";
     
     protected MySQLDBObject(){
         this("url", "username", "password");
@@ -407,4 +410,63 @@ public class MySQLDBObject implements IDbDAO {
         
        return result;
     }  
+
+    @Override
+    public PropertyBag FetchEngineConfiguration() {
+        PropertyBag result = new PropertyBag();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(botConfiguration);
+               if(ps != null){
+                   rs = ps.executeQuery();
+                   
+                   if(rs.next()){
+                       String optionName = rs.getString("optionName");
+                       String optionValue = rs.getString("optionValue");
+                       result.AddPair(optionName, optionValue);
+                   }
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            // close result set
+            try {
+                if(rs != null && !rs.isClosed()){
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+       return result;
+    }
 }

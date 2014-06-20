@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.kungfuactiongrip.test.io;
+package com.kungfuactiongrip.test;
 
 import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.config.exchange.PropertyBagFactory;

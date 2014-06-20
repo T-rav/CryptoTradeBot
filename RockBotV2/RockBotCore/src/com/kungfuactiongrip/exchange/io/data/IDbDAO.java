@@ -6,6 +6,7 @@
 
 package com.kungfuactiongrip.exchange.io.data;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeState;
@@ -72,5 +73,11 @@ public interface IDbDAO {
      * @return
      */
     public boolean UpdateOrderState(int rowID, TradeState state);
+    
+    /**
+     *
+     * @return
+     */
+    public PropertyBag FetchEngineConfiguration();
 
 }
