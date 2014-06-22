@@ -10,6 +10,19 @@
 <project name="RockBotCore" default="default" basedir=".">
     <description>Builds, tests, and runs the project RockBotCore.</description>
     <import file="nbproject/build-impl.xml"/>
+	
+	<!-- Custom DB Scripts Executed Here -->
+	<target name="-post-compile-test">
+        <!-- https://ant.apache.org/manual/Tasks/sql.html -->
+		<sql
+			driver="com.mysql.jdbc.Driver"
+			url="jdbc:mysql://www.kungfuactiongrip.com/tradeDataTest"
+			userid="tradebotTest"
+			password="trad3B0tTe$t"
+			src="test-init.sql"
+		/>
+    </target>
+	
     <!--
 
     There exist several targets which are by default empty and which can be 

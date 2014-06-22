@@ -311,7 +311,6 @@ public class MySQLDBObjectTest {
                 }catch(SQLException e){}
             }
         }
-        
     }
    
     private IDbDAO GenerateTestDB() {
