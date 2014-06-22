@@ -19,8 +19,12 @@
 			url="jdbc:mysql://www.kungfuactiongrip.com/tradeDataTest"
 			userid="tradebotTest"
 			password="trad3B0tTe$t"
-			src="test-init.sql"
-		/>
+			src="test_resources/test-init.sql"
+		>
+                    <classpath>
+                            <pathelement location="../lib/mysql-connector-java-5.1.31-bin.jar"/>
+                    </classpath>
+		</sql>
     </target>
 	
     <!--
