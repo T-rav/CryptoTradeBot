@@ -7,7 +7,7 @@ UPDATE tradeDataTest.BotTrade set rTS = now() where marketID = 179;
 UPDATE BotTrade set rTS = now() - INTERVAL 8 HOUR where rID in(36,37, 38, 39);
 
 -- Update SELL and BUY Trades Interval
-UPDATE BotTrade set rTS = now() - INTERVAL 8 HOUR where rID in(43,44);
+UPDATE BotTrade set rTS = now() - INTERVAL 2 HOUR where rID in(43,44);
 
 -- UPDATE CLOSED BUY and SELL for Day and Interval
 UPDATE BotTrade set rTS = now() - INTERVAL 2 HOUR where rID in(41,42);
