@@ -29,6 +29,10 @@ public class MySQLDBObjectTest {
     public static int InvalidOrderMarketID = 175;
     public static int InsertOrderMarketID = 177;
     public static int AbortedOrderMarketID = 179;
+    public static int OpenIntervalMarketID = 181;
+    public static int OpenDayMarketID = 181;
+    public static int AbortedDayMarketID = 181;
+    public static int AbortedIntervalMarketID = 181;
     
     public MySQLDBObjectTest() {
     }

@@ -219,6 +219,174 @@ public class IOTest {
         // Assert
         assertFalse(result);
     }
+    
+    @Test
+    public void FetchNumberOfOpenBuyOrdersForMarketForInterval_WhenOrderIDValid_ExpectOneOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenBuyOrdersForMarketForInterval(MySQLDBObjectTest.OpenIntervalMarketID,ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(1, result);
+    }
+    
+    @Test
+    public void FetchNumberOfOpenBuyOrdersForMarketForInterval_WhenOrderIDInvalid_ExpectNoOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenBuyOrdersForMarketForInterval((MySQLDBObjectTest.OpenIntervalMarketID-1),ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+    
+    @Test
+    public void FetchNumberOfOpenSellOrdersForMarketForInterval_WhenOrderIDValid_ExpectOneOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenSellOrdersForMarketForInterval(MySQLDBObjectTest.OpenIntervalMarketID,ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(1, result);
+    }
+    
+    @Test
+    public void FetchNumberOfOpenSellOrdersForMarketForInterval_WhenOrderIDInvalid_ExpectNoOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenSellOrdersForMarketForInterval((MySQLDBObjectTest.OpenIntervalMarketID-1),ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+    
+    // ------ OPEN TEST ------
+    @Test
+    public void FetchNumberOfOpenBuyOrdersForMarketForDay_WhenOrderIDValid_ExpectThreeOrders(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenBuyOrdersForMarketForDay(MySQLDBObjectTest.OpenDayMarketID,ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(3, result);
+    }
+    
+    @Test
+    public void FetchNumberOfOpenBuyOrdersForMarketForDay_WhenOrderIDInvalid_ExpectNoOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenBuyOrdersForMarketForDay((MySQLDBObjectTest.OpenDayMarketID-1),ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+    
+    @Test
+    public void FetchNumberOfOpenSellOrdersForMarketForDay_WhenOrderIDValid_ExpectThreeOrders(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenSellOrdersForMarketForDay(MySQLDBObjectTest.OpenDayMarketID,ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(3, result);
+    }
+    
+    @Test
+    public void FetchNumberOfOpenSellOrdersForMarketForDay_WhenOrderIDInvalid_ExpectNoOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfOpenSellOrdersForMarketForDay((MySQLDBObjectTest.OpenIntervalMarketID-1),ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+
+    // --- ABORTED TEST ---
+        
+    @Test
+    public void FetchNumberOfAbortedBuyOrdersForInterval_WhenOrderIDValid_ExpectOneOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedBuyOrdersForInterval(MySQLDBObjectTest.AbortedIntervalMarketID,ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(1, result);
+    }
+    
+    
+    @Test
+    public void FetchNumberOfAbortedBuyOrdersForInterval_WhenOrderIDInvalid_ExpectOneOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedBuyOrdersForInterval((MySQLDBObjectTest.AbortedIntervalMarketID-1),ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+    
+    @Test
+    public void FetchNumberOfAbortedSellOrdersForInterval_WhenOrderIDValid_ExpectOneOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedSellOrdersForInterval(MySQLDBObjectTest.AbortedIntervalMarketID,ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(1, result);
+    }
+    
+    @Test
+    public void FetchNumberOfAbortedSellOrdersForInterval_WhenOrderIDInvalid_ExpectOneOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedBuyOrdersForInterval((MySQLDBObjectTest.AbortedIntervalMarketID-1),ExchangeList.Cryptsy,6);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+    
+    // ----
+    
+    @Test
+    public void FetchNumberOfAbortedBuyOrdersForDay_WhenOrderIDValid_ExpectTwoOrders(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedBuyOrdersForDay(MySQLDBObjectTest.AbortedDayMarketID,ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(2, result);
+    }
+    
+    
+    @Test
+    public void FetchNumberOfAbortedBuyOrdersForDay_WhenOrderIDInvalid_ExpectNoOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedBuyOrdersForDay((MySQLDBObjectTest.AbortedDayMarketID-1),ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+    
+    @Test
+    public void FetchNumberOfAbortedSellOrdersForDay_WhenOrderIDValid_ExpectTwoOrders(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedSellOrdersForDay(MySQLDBObjectTest.AbortedDayMarketID,ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(2, result);
+    }
+    
+    @Test
+    public void FetchNumberOfAbortedSellOrdersForDay_WhenOrderIDInvalid_ExpectNoOrder(){
+        IBotIO botIO = CreateIOObject();
+        
+        int result = botIO.FetchNumberOfAbortedBuyOrdersForDay((MySQLDBObjectTest.AbortedDayMarketID-1),ExchangeList.Cryptsy);
+        
+        // Assert
+        assertEquals(0, result);
+    }
+
 
     
     /*** Helper Methods ***/

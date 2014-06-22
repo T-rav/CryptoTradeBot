@@ -92,8 +92,6 @@ public class BotIOImpl implements IBotIO {
         return false;
     }
 
-    // -- TODO : Test Here Down
-    // The fun starts here - NEED DB Scripts ;)
     @Override
     public int FetchNumberOfOpenBuyOrdersForMarketForInterval(int marketID, ExchangeList exchange, int hourInterval) {
         
@@ -138,7 +136,7 @@ public class BotIOImpl implements IBotIO {
     public int FetchNumberOfAbortedSellOrdersForInterval(int marketID, ExchangeList exchange, int hourInterval) {
         
         if(_dbObject != null){
-            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, hourInterval);
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, exchange, marketID, hourInterval);
         }
         
         return -1;
@@ -148,7 +146,7 @@ public class BotIOImpl implements IBotIO {
     public int FetchNumberOfAbortedBuyOrdersForInterval(int marketID, ExchangeList exchange, int hourInterval) {
         
         if(_dbObject != null){
-            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, hourInterval);
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, exchange, marketID, hourInterval);
         }
         
         return -1;
@@ -157,7 +155,7 @@ public class BotIOImpl implements IBotIO {
     @Override
     public int FetchNumberOfAbortedSellOrdersForDay(int marketID, ExchangeList exchange) {
         if(_dbObject != null){
-            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, 24);
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, exchange, marketID, 24);
         }
         
         return -1;
@@ -166,7 +164,7 @@ public class BotIOImpl implements IBotIO {
     @Override
     public int FetchNumberOfAbortedBuyOrdersForDay(int marketID, ExchangeList exchange) {
         if(_dbObject != null){
-            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, exchange, marketID, 24);
+            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, exchange, marketID, 24);
         }
         
         return -1;

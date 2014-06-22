@@ -13,7 +13,6 @@
 	
 	<!-- Custom DB Scripts Executed Here -->
 	<target name="-post-compile-test">
-        <!-- https://ant.apache.org/manual/Tasks/sql.html -->
 		<sql
 			driver="com.mysql.jdbc.Driver"
 			url="jdbc:mysql://www.kungfuactiongrip.com/tradeDataTest"
@@ -21,9 +20,9 @@
 			password="trad3B0tTe$t"
 			src="test_resources/test-init.sql"
 		>
-                    <classpath>
-                            <pathelement location="../lib/mysql-connector-java-5.1.31-bin.jar"/>
-                    </classpath>
+			<classpath>
+					<pathelement location="../lib/mysql-connector-java-5.1.31-bin.jar"/>
+			</classpath>
 		</sql>
     </target>
 	

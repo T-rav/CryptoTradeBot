@@ -5,6 +5,10 @@ public enum ExchangeList implements IExchangeGenerator{
 
     // ExchangeList List ;)
     Cryptsy(new CrytpsyGenerator());
+    //https://www.bittrex.com/Home/Api
+    //https://www.mintpal.com/
+    //https://www.coins-e.com/
+    //https://bter.com/
 
     // Cool Java Enum Stuff ;)
     private final IExchangeGenerator _generator;
