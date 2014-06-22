@@ -154,6 +154,7 @@ public class BotIOImpl implements IBotIO {
 
     @Override
     public int FetchNumberOfAbortedSellOrdersForDay(int marketID, ExchangeList exchange) {
+        
         if(_dbObject != null){
             return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, exchange, marketID, 24);
         }
@@ -163,6 +164,7 @@ public class BotIOImpl implements IBotIO {
 
     @Override
     public int FetchNumberOfAbortedBuyOrdersForDay(int marketID, ExchangeList exchange) {
+        
         if(_dbObject != null){
             return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, exchange, marketID, 24);
         }
