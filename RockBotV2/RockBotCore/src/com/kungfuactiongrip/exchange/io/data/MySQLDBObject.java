@@ -59,9 +59,6 @@ public class MySQLDBObject implements IDbDAO {
                                             + "and orderType = ? and exchangeName = ? and marketID = ?";
     
     private final String botConfiguration = "SELECT rid, optionName, optionValue FROM TradeOptions";
-
-    private final String insertMarketOrder = "insert into MarketOrderData(price, qty, total, orderType, "
-                                             + "marketID, exchangeName, orderKey) values(?,?,?,?,?,?,?)";
     
     protected MySQLDBObject(){
         this("url", "username", "password");
@@ -476,77 +473,6 @@ public class MySQLDBObject implements IDbDAO {
        return result;
     }
 
-    @Override
-    public int InsertMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, double price, double qty, double total) {
-        int result = 0;
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        
-        try{
-           conn = CreateConnection();
-           if(conn != null){
-               ps = conn.prepareStatement(insertMarketOrder, Statement.RETURN_GENERATED_KEYS);
-               if(ps != null){
-                   String typeName = tradeType.name();
-                   String exchangeName = exchange.name().toUpperCase();
-                 
-                   String orderKey = marketID+"_"+exchangeName+"_"+typeName+"_"+total+"_"+qty+"_"+price;
-                   
-                   ps.setDouble(1, price);
-                   ps.setDouble(2, qty);
-                   ps.setDouble(3, total);
-                   ps.setString(4, tradeType.name());
-                   ps.setInt(5, marketID);
-                   ps.setString(6, exchangeName);
-                   ps.setString(7, orderKey);
-                 
-                   ps.execute();
-                   
-                   rs = ps.getGeneratedKeys();
-                   if(rs.next()){
-                       result = rs.getInt(1);
-                   }    
-               }
-           }
-       }catch (SQLException ex) {
-            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-       }finally{
-            // close result set
-            try {
-                if(rs != null && !rs.isClosed()){
-                    try {
-                        rs.close();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            // close the prepared statement
-            if(ps != null ){
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            //close the connection
-            if(conn != null){
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
-       return result;
-    }
-    
 //    
 //    @Override
 //    public int FetchMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, int hourInterval, int minTradeCount) {

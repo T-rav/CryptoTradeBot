@@ -12,14 +12,25 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author Administrator
  */
-public class MarketSellOrder {
+public class MarketSellOrder implements Comparable<MarketSellOrder> {
     
     @SerializedName("sellprice")
-    public double Price;
+    public Double Price;
     
     @SerializedName("quantity")
-    public double Qty;
+    public Double Qty;
     
     @SerializedName("total")
-    public double Total;
+    public Double Total;
+    
+    public MarketSellOrder(double price, double qty, double total){
+        Price = price;
+        Qty = qty;
+        Total = total;
+    }
+    
+    @Override
+    public int compareTo(MarketSellOrder o) {
+          return o.Price.compareTo(Price);
+    }
 }

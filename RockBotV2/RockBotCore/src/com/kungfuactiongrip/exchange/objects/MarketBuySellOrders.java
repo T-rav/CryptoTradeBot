@@ -7,6 +7,8 @@
 package com.kungfuactiongrip.exchange.objects;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,5 +24,25 @@ public class MarketBuySellOrders {
     public MarketBuySellOrders(){
         SellOrders = new ArrayList<>();
         BuyOrders = new ArrayList<>();
+    }
+    
+    public double FetchBestBuyPrice(){
+        if(BuyOrders.isEmpty()){
+            return -1;
+        }
+        
+        Collections.sort(BuyOrders);
+        
+        return BuyOrders.get(0).Price;
+    }
+    
+    public double FetchBestSellPrice(){
+        if(SellOrders.isEmpty()){
+            return -1;
+        }
+        
+        Collections.sort(SellOrders);
+        
+        return SellOrders.get(0).Price;
     }
 }

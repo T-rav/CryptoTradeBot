@@ -5,7 +5,6 @@ import com.kungfuactiongrip.exchange.IExchange;
 import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
 import com.kungfuactiongrip.exchange.io.data.IDbDAO;
 import com.kungfuactiongrip.exchange.objects.MarketBuySellOrders;
-import com.kungfuactiongrip.exchange.objects.MarketTrade;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeState;
 import com.kungfuactiongrip.to.TradeType;
@@ -199,7 +198,7 @@ public class BotIOImpl implements IBotIO {
 //        return null;
 //    }
     
-     @Override
+    @Override
     public MarketBuySellOrders FetchMarketOrders(int marketID) {
 
         MarketBuySellOrders result = null;

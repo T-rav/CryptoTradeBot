@@ -1,8 +1,6 @@
 package com.kungfuactiongrip.exchange;
 
 import com.kungfuactiongrip.exchange.objects.MarketBuySellOrders;
-import com.kungfuactiongrip.exchange.objects.MarketTrade;
-import java.util.List;
 
 /**
  *
