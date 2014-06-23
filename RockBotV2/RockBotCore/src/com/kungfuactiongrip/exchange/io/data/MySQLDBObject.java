@@ -26,7 +26,11 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Administrator
+ * @author Travis.Frisinger ;)
+ * 
+ * TODO : Build process to poll data from exchange
+ *        Build process to insert into DB
+ *        Build process to ag the stats for bot
  */
 public class MySQLDBObject implements IDbDAO {
 
@@ -55,6 +59,9 @@ public class MySQLDBObject implements IDbDAO {
                                             + "and orderType = ? and exchangeName = ? and marketID = ?";
     
     private final String botConfiguration = "SELECT rid, optionName, optionValue FROM TradeOptions";
+
+    private final String insertMarketOrder = "insert into MarketOrderData(price, qty, total, orderType, "
+                                             + "marketID, exchangeName, orderKey) values(?,?,?,?,?,?,?)";
     
     protected MySQLDBObject(){
         this("url", "username", "password");
@@ -344,7 +351,6 @@ public class MySQLDBObject implements IDbDAO {
        return result;
     }
     
-    
     @Override
     public int FetchOrderCountOfType(TradeType tradeType, TradeState state, ExchangeList exchange, int marketID) {
         int result = 0;
@@ -469,4 +475,143 @@ public class MySQLDBObject implements IDbDAO {
         
        return result;
     }
+
+    @Override
+    public int InsertMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, double price, double qty, double total) {
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(insertMarketOrder, Statement.RETURN_GENERATED_KEYS);
+               if(ps != null){
+                   String typeName = tradeType.name();
+                   String exchangeName = exchange.name().toUpperCase();
+                 
+                   String orderKey = marketID+"_"+exchangeName+"_"+typeName+"_"+total+"_"+qty+"_"+price;
+                   
+                   ps.setDouble(1, price);
+                   ps.setDouble(2, qty);
+                   ps.setDouble(3, total);
+                   ps.setString(4, tradeType.name());
+                   ps.setInt(5, marketID);
+                   ps.setString(6, exchangeName);
+                   ps.setString(7, orderKey);
+                 
+                   ps.execute();
+                   
+                   rs = ps.getGeneratedKeys();
+                   if(rs.next()){
+                       result = rs.getInt(1);
+                   }    
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            // close result set
+            try {
+                if(rs != null && !rs.isClosed()){
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+       return result;
+    }
+    
+//    
+//    @Override
+//    public int FetchMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, int hourInterval, int minTradeCount) {
+//        int result = 0;
+//        Connection conn = null;
+//        PreparedStatement ps = null;
+//        ResultSet rs = null;
+//        
+//        try{
+//           conn = CreateConnection();
+//           if(conn != null){
+//               ps = conn.prepareStatement(orderStateCountInterval);
+//               if(ps != null){
+//                   String typeName = tradeType.name();
+//                   String exchangeName = exchange.name().toUpperCase();
+//                 
+//                   ps.setString(1, stateName);
+//                   ps.setString(2, typeName);
+//                   ps.setString(3, exchangeName);
+//                   ps.setInt(4, marketID);
+//                   ps.setInt(5, hourInterval);
+//                 
+//                   rs = ps.executeQuery();
+//                   
+//                   if(rs.next()){
+//                       result = rs.getInt("total");
+//                   }
+//               }
+//           }
+//       }catch (SQLException ex) {
+//            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+//       }finally{
+//            // close result set
+//            try {
+//                if(rs != null && !rs.isClosed()){
+//                    try {
+//                        rs.close();
+//                    } catch (SQLException ex) {
+//                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            
+//            // close the prepared statement
+//            if(ps != null ){
+//                try {
+//                    ps.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//            
+//            //close the connection
+//            if(conn != null){
+//                try {
+//                    conn.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+//        
+//       return result;
+//    }
+//    
 }

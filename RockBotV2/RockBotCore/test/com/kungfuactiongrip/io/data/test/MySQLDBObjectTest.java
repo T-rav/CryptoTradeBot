@@ -316,6 +316,29 @@ public class MySQLDBObjectTest {
             }
         }
     }
+    
+    @Test
+    public void InsertMarketOrderOfType_ExpectInsertedRID(){
+        IDbDAO obj = GenerateTestDB();
+        
+        assertNotNull(obj);
+        Connection con = null;
+        try{
+            
+            int result = obj.InsertMarketOrderOfType(TradeType.BUY, ExchangeList.Cryptsy, InsertOrderMarketID, 0.01, 10, 0.1);
+            
+            // Assert
+            assertTrue(result >= 1);
+        }catch(Exception e){
+            fail("Exception Thrown [ " + e.getMessage()+ " ]");
+        }finally{
+            if(con != null){
+                try{
+                    con.close();
+                }catch(SQLException e){}
+            }
+        }
+    }
    
     private IDbDAO GenerateTestDB() {
         IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject("Test_DB");

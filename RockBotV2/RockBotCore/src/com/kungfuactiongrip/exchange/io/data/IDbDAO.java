@@ -79,5 +79,29 @@ public interface IDbDAO {
      * @return
      */
     public PropertyBag FetchEngineConfiguration();
+    
+//    /**
+//     *
+//     * @param tradeType
+//     * @param exchange
+//     * @param marketID
+//     * @param hourInterval
+//     * @param minTradeCount
+//     * @return
+//     */
+    //public int FetchMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, int hourInterval, int minTradeCount);
+    
+    /**
+     *
+     * @param tradeType
+     * @param exchange
+     * @param marketID
+     * @param price
+     * @param qty
+     * @param total
+     * @return
+     */
+        
+    public int InsertMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, double price, double qty, double total);
 
 }

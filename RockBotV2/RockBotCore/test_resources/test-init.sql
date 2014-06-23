@@ -17,3 +17,6 @@ UPDATE BotTrade set rTS = now() - INTERVAL 8 HOUR where rID in(45,47);
 
 -- UPDATE ABORTED BUY and SELL for Interval 
 UPDATE BotTrade set rTS = now() - INTERVAL 2 HOUR where rID in(46,48);
+
+-- CLEAN UP MarketOrderData TABLE
+TRUNCATE MarketOrderData;

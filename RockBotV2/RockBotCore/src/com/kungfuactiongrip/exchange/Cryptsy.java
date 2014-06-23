@@ -1,5 +1,8 @@
 package com.kungfuactiongrip.exchange;
 
+import com.kungfuactiongrip.exchange.objects.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.objects.MarketTrade;
+import com.kungfuactiongrip.exchange.objects.ObjectConverter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +15,7 @@ import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -40,7 +44,7 @@ class Cryptsy implements IExchange {
             
     }
     
-     @Override
+    @Override
     public String FetchMarketInfo() throws Exception {
         return ExecuteAuthorizedQuery("getinfo", null);
     }
@@ -57,23 +61,41 @@ class Cryptsy implements IExchange {
     }
     
     @Override
-    public String FetchMarketTrades(int marketID) throws Exception {
+    public MarketBuySellOrders FetchMarketOrders(int marketID) throws Exception {
         Map<String,String> args = new HashMap<>() ;
         args.put("marketid", Integer.toString(marketID));
         
-        return ExecuteAuthorizedQuery("markettrades", args);
+        
+        String data = ExecuteAuthorizedQuery("marketorders", args);
+        ObjectConverter oc = new ObjectConverter();
+        
+        return oc.MakeMaketOrderList(data);
     }
 
-    @Override
-    public String FetchMarketOrders(int marketID) throws Exception{
-        Map<String,String> args = new HashMap<>() ;
-        args.put("marketid", Integer.toString(marketID));
-        
-        return ExecuteAuthorizedQuery("marketorders", args);
-    }
+//    @Override
+//    public List<MarketTrade> FetchMarketTrades(int marketID) throws Exception{
+//        Map<String,String> args = new HashMap<>() ;
+//        args.put("marketid", Integer.toString(marketID));
+//        
+//        List<MarketTrade> result = new ArrayList<>();
+//        
+//        String data = ExecuteAuthorizedQuery("markettrades", args);
+//
+//        Gson json = new Gson();
+//        // TODO : Fetch buy and sell regions ;)
+//        JSONObject obj = JsonPath.read(data, "$.return.markets[*]");
+//        Set<Map.Entry<String, Object>> toIterate = obj.entrySet();
+//        for(Map.Entry e : toIterate){
+//            MarketBuySellOrders mo = json.fromJson(e.getValue().toString(), MarketTrade.class);
+//            // Add to collection ;)
+//            result.add(mo);
+//        }
+//        
+//        return result;
+//    }
     
     @Override
-    public String FetchOpenOrdersForMarket(int marketID) throws Exception {
+    public String FetchMyOpenOrdersForMarket(int marketID) throws Exception {
         Map<String,String> args = new HashMap<>() ;
         args.put("marketid", Integer.toString(marketID));
         

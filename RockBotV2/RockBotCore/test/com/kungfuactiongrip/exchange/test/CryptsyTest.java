@@ -22,7 +22,7 @@ public class CryptsyTest {
     }
 
    @Test
-   public void CanGeneratCryptsyObject(){
+   public void GeneratCryptsyObject(){
        // Setup
        
        // Execute
@@ -34,7 +34,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanGetMarketInfo_ExpectValidMarketInfoString(){
+   public void GetMarketInfo_ExpectValidMarketInfoString(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
@@ -52,7 +52,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanGetMarketFees_ExpectFeesString(){
+   public void GetMarketFees_ExpectFeesString(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
@@ -70,14 +70,14 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanFetchMarketTrades_ExpectValidMarketTradesString(){
+   public void FetchMarketTrades_ExpectValidMarketTradesString(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
         try {
-            amt = exchange.FetchMarketTrades(173);
+            //amt = exchange.FetchMarketTrades(173);
         } catch (Exception ex) {
             Logger.getLogger(CryptsyTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,32 +88,32 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanFetchMarketOrders_ExpectValidMarketOrdersString(){
-       // Setup
-       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
-       
-       // Execute
-       String amt = null;
+   public void FetchMarketOrders_ExpectValidMarketOrdersString(){
+        // Setup
+        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
+
+        // Execute
+        String amt = null;
         try {
-            amt = exchange.FetchMarketOrders(173);
+            //amt = exchange.FetchMarketOrders(173);
         } catch (Exception ex) {
             Logger.getLogger(CryptsyTest.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-       // Assert
-       Assert.assertNotNull(amt);
-       Assert.assertTrue(amt.contains("{\"success\":\"1\",\"return\":{\"sellorders\":"));
+        // Assert
+        Assert.assertNotNull(amt);
+        Assert.assertTrue(amt.contains("{\"success\":\"1\",\"return\":{\"sellorders\":"));
    }
    
    @Test
-   public void CanFetchMyOpenOrders_ExpectValidOpenOrdersString(){
+   public void FetchMyOpenOrders_ExpectValidOpenOrdersString(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        // Execute
        String amt = null;
         try {
-            amt = exchange.FetchOpenOrdersForMarket(173);
+            amt = exchange.FetchMyOpenOrdersForMarket(173);
         } catch (Exception ex) {
             Logger.getLogger(CryptsyTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,7 +124,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanCreateMarketTradeLowerThenMin_ExpectError(){
+   public void CreateMarketTradeLowerThenMin_ExpectError(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
@@ -142,7 +142,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanCancelMarketTradeThatDoesNotExist_ExpectErrorString(){
+   public void CancelMarketTradeThatDoesNotExist_ExpectErrorString(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
@@ -160,7 +160,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanFetchAllActiveMarketData_ExpectValidMarketDataString(){
+   public void FetchAllActiveMarketData_ExpectValidMarketDataString(){
         // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
@@ -182,7 +182,7 @@ public class CryptsyTest {
    // ** Integration Test ** //
    
    @Test
-   public void CanCreateMarketTradeAboveMinAndCancelIt_ExpectTransactionWorks(){
+   public void CreateMarketTradeAboveMinAndCancelIt_ExpectTransactionWorks(){
        // Setup
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
@@ -213,7 +213,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanFetchMarketData_ExpectMarketData(){
+   public void FetchMarketData_ExpectMarketData(){
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        String marketData = "";
@@ -227,7 +227,7 @@ public class CryptsyTest {
    }
    
    @Test
-   public void CanFetchOrderData_ExpectOrderData(){
+   public void FetchOrderData_ExpectOrderData(){
        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
        String marketData = "";
