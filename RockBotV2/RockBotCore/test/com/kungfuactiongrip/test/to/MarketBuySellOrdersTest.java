@@ -6,9 +6,9 @@
 
 package com.kungfuactiongrip.test.to;
 
-import com.kungfuactiongrip.exchange.objects.MarketBuyOrder;
-import com.kungfuactiongrip.exchange.objects.MarketBuySellOrders;
-import com.kungfuactiongrip.exchange.objects.MarketSellOrder;
+import com.kungfuactiongrip.exchange.to.MarketBuyOrder;
+import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketSellOrder;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

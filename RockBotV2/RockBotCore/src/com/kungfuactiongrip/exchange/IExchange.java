@@ -1,6 +1,8 @@
 package com.kungfuactiongrip.exchange;
 
-import com.kungfuactiongrip.exchange.objects.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketTrade;
+import java.util.List;
 
 /**
  *
@@ -25,13 +27,13 @@ public interface IExchange {
      */
     public String CalculateTransactionCost(TransactionType typeOf, double amt, double price) throws Exception;
 
-//    /**
-//     *
-//     * @param marketID
-//     * @return JSON String with Market Trades
-//     * @throws Exception
-//     */
-//    public List<MarketTrade> FetchMarketTrades(int marketID) throws Exception;
+    /**
+     *
+     * @param marketID
+     * @return JSON String with Market Trades
+     * @throws Exception
+     */
+    public List<MarketTrade> FetchMarketTrades(int marketID) throws Exception;
 
     /**
      *

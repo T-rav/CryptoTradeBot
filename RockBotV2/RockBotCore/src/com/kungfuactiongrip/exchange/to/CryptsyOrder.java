@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.kungfuactiongrip.exchange.objects;
+package com.kungfuactiongrip.exchange.to;
 
 /**
  *
  * @author Administrator
  */
-public class CryptsyStatus {
-    public int success;
+public class CryptsyOrder extends CryptsyResult{
+    public String orderid;
+    public String moreinfo;
 }

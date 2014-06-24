@@ -3,8 +3,11 @@ package com.kungfuactiongrip.exchange.test;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.IExchange;
 import com.kungfuactiongrip.exchange.TransactionType;
-import com.kungfuactiongrip.exchange.objects.CryptsyOrder;
-import com.kungfuactiongrip.exchange.objects.ObjectConverter;
+import com.kungfuactiongrip.exchange.to.CryptsyOrder;
+import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketTrade;
+import com.kungfuactiongrip.exchange.to.ObjectConverter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
@@ -70,21 +73,21 @@ public class CryptsyTest {
    }
    
    @Test
-   public void FetchMarketTrades_ExpectValidMarketTradesString(){
-       // Setup
-       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
+   public void FetchMarketTrades_ExpectValidMarketTradesList(){
+        // Setup
+        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
-       // Execute
-       String amt = null;
+        // Execute
+        List<MarketTrade> trades = null;
         try {
-            //amt = exchange.FetchMarketTrades(173);
+            trades = exchange.FetchMarketTrades(173);
         } catch (Exception ex) {
             Logger.getLogger(CryptsyTest.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-       // Assert
-       Assert.assertNotNull(amt);
-       Assert.assertTrue(amt.contains("{\"success\":\"1\",\"return\":[{\"tradeid\""));
+        // Assert
+        Assert.assertNotNull(trades);
+        Assert.assertFalse(trades.isEmpty());
    }
    
    @Test
@@ -93,16 +96,17 @@ public class CryptsyTest {
         IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
 
         // Execute
-        String amt = null;
+        MarketBuySellOrders result = null;
         try {
-            //amt = exchange.FetchMarketOrders(173);
+            result = exchange.FetchMarketOrders(173);
         } catch (Exception ex) {
             Logger.getLogger(CryptsyTest.class.getName()).log(Level.SEVERE, null, ex);
         }
        
         // Assert
-        Assert.assertNotNull(amt);
-        Assert.assertTrue(amt.contains("{\"success\":\"1\",\"return\":{\"sellorders\":"));
+        Assert.assertNotNull(result);
+        Assert.assertFalse(result.BuyOrders.isEmpty());
+        Assert.assertFalse(result.SellOrders.isEmpty());
    }
    
    @Test

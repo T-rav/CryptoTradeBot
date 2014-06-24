@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.kungfuactiongrip.exchange.objects;
+package com.kungfuactiongrip.exchange.to;
 
 import java.util.ArrayList;
 import java.util.Collections;
