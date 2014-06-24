@@ -21,14 +21,15 @@ public class MarketTrade {
     public String DateTime;
     
     @SerializedName("tradeprice")
-    public double TradePrice;
+    public double Price;
     
     @SerializedName("quantity")
-    public double TradeQty;
+    public double Qty;
     
     @SerializedName("total")
     public double Total;
     
     @SerializedName("initiate_ordertype")
-    public String OrderType;
+    public String InitiatedType;
+
 }

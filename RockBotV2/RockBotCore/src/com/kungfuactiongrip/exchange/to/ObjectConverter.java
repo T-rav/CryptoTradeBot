@@ -8,8 +8,12 @@ package com.kungfuactiongrip.exchange.to;
 
 import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
+import com.kungfuactiongrip.exchange.io.BotIOImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
@@ -23,26 +27,36 @@ public class ObjectConverter {
     public ObjectConverter() {
     }
     
-    public CryptsyResult MakeResultObject(String payload){
+    public MarketBalanceList MakeMarketBalanceList(String payload){
+        MarketBalanceList result  = new MarketBalanceList();
+        
         try{
-            return g.fromJson(payload, CryptsyResult.class);
+            JSONObject obj = JsonPath.read(payload, "$.return.balances_available[*]");
+            Set<String> keys = obj.keySet();
+            for(String key : keys){
+                Object balance = obj.get(key);
+                result.AddBalance(key, Double.parseDouble(balance.toString()));
+            }
         }catch(Exception e){
-            return null;
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
         }
-    }
-
-    public CryptsyInfo MakeInfoObject(String payload) {
-        try{
-            return g.fromJson(payload, CryptsyInfo.class);
-        }catch(Exception e){
-            return null;
-        }
+        
+        return result;
     }
     
-    public CryptsyOrder MakeOrderObject(String payload){
+    public MarketCreateOrderResult MakeMarketOrderCreateResultObject(String payload){
         try{
-            return g.fromJson(payload, CryptsyOrder.class);
+            String obj = JsonPath.read(payload, "$.success");
+            
+            // error ;(
+            if(obj.equals("0")){
+                String error = JsonPath.read(payload, "$.error");
+                return new MarketCreateOrderResult(error);
+            }
+            
+            return g.fromJson(payload, MarketCreateOrderResult.class);
         }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
             return null;
         }
     }
@@ -59,10 +73,31 @@ public class ObjectConverter {
 
             result = new MarketTradeFee(Double.parseDouble(fee.toString()), Double.parseDouble(net.toString()));
         }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
             return null;
         }
         
         return result;
+    }
+    
+    public MarketCancelOrderResult MakeCancelOrderResultObject(String payload){
+
+        try{
+            String obj = JsonPath.read(payload, "$.success");
+            
+            // error ;(
+            if(obj.equals("0")){
+                String error = JsonPath.read(payload, "$.error");
+                return new MarketCancelOrderResult(error, true);
+            }else{
+                String error = JsonPath.read(payload, "$.return");
+                return new MarketCancelOrderResult(error, false);
+            }
+        }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
+        }
+        
+        return null;
     }
     
     public List<MarketOpenOrder> MakeMyOpenOrderList(String payload){
@@ -79,6 +114,7 @@ public class ObjectConverter {
                 result.add(mo);
             }
         }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
         }
         
         return result;
@@ -105,6 +141,7 @@ public class ObjectConverter {
                 result.BuyOrders.add(mo);
             }
         }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
             return null;
         }
         
@@ -122,9 +159,28 @@ public class ObjectConverter {
                 result.add(mt);
             }
         }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
             return null;
         }
         
         return result;
     }
+    
+    public List<MarketTradeVerbose> MakeMyTradeList(String payload){
+        List<MarketTradeVerbose> result = new ArrayList<>();
+        Gson json = new Gson();
+        try{
+            JSONArray obj = JsonPath.read(payload, "$.return[*]");
+            for(Object e : obj){
+                MarketTradeVerbose mt = json.fromJson(e.toString(), MarketTradeVerbose.class);
+                // Add to collection ;)
+                result.add(mt);
+            }
+        }catch(Exception e){
+            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);
+            return null;
+        }
+        
+        return result;
+    }  
 }

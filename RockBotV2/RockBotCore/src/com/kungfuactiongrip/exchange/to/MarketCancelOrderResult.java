@@ -10,6 +10,14 @@ package com.kungfuactiongrip.exchange.to;
  *
  * @author Administrator
  */
-public class CryptsyStatus {
-    public int success;
+public class MarketCancelOrderResult {
+
+    public String Message;
+    public Boolean IsError;
+    
+    public MarketCancelOrderResult(String error, boolean isError) {
+        Message = error;
+        IsError = isError;
+    }
+    
 }

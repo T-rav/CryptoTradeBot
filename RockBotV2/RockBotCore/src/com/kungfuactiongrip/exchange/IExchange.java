@@ -1,8 +1,13 @@
 package com.kungfuactiongrip.exchange;
 
+import com.kungfuactiongrip.exchange.to.MarketBalanceList;
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketCancelOrderResult;
+import com.kungfuactiongrip.exchange.to.MarketCreateOrderResult;
+import com.kungfuactiongrip.exchange.to.MarketOpenOrder;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
 import com.kungfuactiongrip.exchange.to.MarketTradeFee;
+import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
 import java.util.List;
 
 /**
@@ -13,10 +18,18 @@ public interface IExchange {
 
     /**
      *
-     * @return JSON Market Data
+     * @return
      * @throws Exception
      */
-    public String FetchMarketInfo() throws Exception;
+    public MarketBalanceList FetchBalances() throws Exception;
+    
+    /**
+     *
+     * @param marketID
+     * @return
+     * @throws Exception
+     */
+    public List<MarketTradeVerbose> FetchMyTradesForMarket(int marketID) throws Exception;
     
     /**
      *
@@ -50,7 +63,7 @@ public interface IExchange {
      * @return JSON String with Open Market Orders
      * @throws Exception
      */
-    public String FetchMyOpenOrdersForMarket(int marketID) throws Exception;
+    public List<MarketOpenOrder> FetchMyOpenOrdersForMarket(int marketID) throws Exception;
 
     /**
      *
@@ -61,7 +74,7 @@ public interface IExchange {
      * @return JSON String of Trade Creation Data
      * @throws Exception
      */
-    public String CreateTrade(int marketID, TransactionType transactionType, double amt, double price) throws Exception;
+    public MarketCreateOrderResult CreateTrade(int marketID, TransactionType transactionType, double amt, double price) throws Exception;
 
     /**
      *
@@ -69,7 +82,7 @@ public interface IExchange {
      * @return JSON String of Cancel Data
      * @throws Exception
      */
-    public String CancelTrade(String orderID) throws Exception;
+    public MarketCancelOrderResult CancelTrade(String orderID) throws Exception;
 
     /**
      *

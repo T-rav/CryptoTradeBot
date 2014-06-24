@@ -1,8 +1,13 @@
 package com.kungfuactiongrip.exchange;
 
+import com.kungfuactiongrip.exchange.to.MarketBalanceList;
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketCancelOrderResult;
+import com.kungfuactiongrip.exchange.to.MarketOpenOrder;
+import com.kungfuactiongrip.exchange.to.MarketCreateOrderResult;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
 import com.kungfuactiongrip.exchange.to.MarketTradeFee;
+import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
 import com.kungfuactiongrip.exchange.to.ObjectConverter;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,8 +53,21 @@ class Cryptsy implements IExchange {
     }
     
     @Override
-    public String FetchMarketInfo() throws Exception {
-        return ExecuteAuthorizedQuery("getinfo", null);
+    public MarketBalanceList FetchBalances() throws Exception{
+        String data = ExecuteAuthorizedQuery("getinfo", null);
+        
+        return oc.MakeMarketBalanceList(data);
+    }
+    
+    @Override
+    public List<MarketTradeVerbose> FetchMyTradesForMarket(int marketID) throws Exception{
+        Map<String,String> args = new HashMap<>();
+        args.put("marketid",Integer.toString(marketID));
+        args.put("limit", "250");
+        
+        String data = ExecuteAuthorizedQuery("mytrades", args);
+        
+        return oc.MakeMyTradeList(data);
     }
 
     @Override
@@ -81,34 +99,39 @@ class Cryptsy implements IExchange {
         String data = ExecuteAuthorizedQuery("markettrades", args);
 
         return oc.MakeMarketTradeList(data);
-
     }
     
     @Override
-    public String FetchMyOpenOrdersForMarket(int marketID) throws Exception {
+    public List<MarketOpenOrder> FetchMyOpenOrdersForMarket(int marketID) throws Exception {
         Map<String,String> args = new HashMap<>() ;
         args.put("marketid", Integer.toString(marketID));
         
-        return ExecuteAuthorizedQuery("myorders", args);
+        String data = ExecuteAuthorizedQuery("myorders", args);
+        
+        return oc.MakeMyOpenOrderList(data);
     }
     
     @Override
-    public String CreateTrade(int marketID, TransactionType transactionType, double amt, double price) throws Exception {
+    public MarketCreateOrderResult CreateTrade(int marketID, TransactionType transactionType, double amt, double price) throws Exception {
         Map<String,String> args = new HashMap<>() ;
         args.put("marketid", Integer.toString(marketID));
         args.put("ordertype", transactionType.toString());
         args.put("quantity", Double.toString(amt));
         args.put("price", Double.toString(price));
         
-        return ExecuteAuthorizedQuery("createorder", args);
+        String data = ExecuteAuthorizedQuery("createorder", args);
+        
+        return oc.MakeMarketOrderCreateResultObject(data);
     }
 
     @Override
-    public String CancelTrade(String orderID) throws Exception {
+    public MarketCancelOrderResult CancelTrade(String orderID) throws Exception {
         Map<String,String> args = new HashMap<>() ;
         args.put("orderid", orderID);
         
-        return ExecuteAuthorizedQuery("cancelorder", args);
+        String data = ExecuteAuthorizedQuery("cancelorder", args);
+        
+        return oc.MakeCancelOrderResultObject(data);
     }
         
     @Override
