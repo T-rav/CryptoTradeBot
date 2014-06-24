@@ -243,7 +243,6 @@ public class MySQLDBObjectTest {
         // Assert
         assertTrue(result);
     }
-    
         
     @Test
     public void InsertTradeHistory_WhenListOfTradesNull_ExpectFalse(){
@@ -257,4 +256,15 @@ public class MySQLDBObjectTest {
         assertFalse(result);
     }
     
+     @Test
+    public void FetchActiveMarkets_WhenMarketsAreActive_ExpectNonEmptyList(){
+        IDbDAO obj = GenerateTestDB();
+
+        // Pre-Assert
+        assertNotNull(obj);
+        List<Integer> result = obj.FetchActiveMarketList(ExchangeList.Cryptsy);
+
+        // Assert
+        assertFalse(result.isEmpty());
+    }
 }

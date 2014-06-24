@@ -65,6 +65,8 @@ public class MySQLDBObject implements IDbDAO {
                                                 + "tradeDateTime, tradeQty, tradeFee, tradeTotal, orderID, exchangeName, marketID) "
                                                 + " VALUES(?,?,?,?,?,?,?,?,?,?);";
     
+    private final String fetchActiveMarkets = "SELECT marketID FROM tradeDataTest.BotMarketData where isActive = 1 and exchangeName = ?";
+    
     protected MySQLDBObject(){
         this("url", "username", "password");
     }
@@ -522,6 +524,67 @@ public class MySQLDBObject implements IDbDAO {
        }catch (SQLException ex) {
             Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
        }finally{
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+       return result;
+    }
+
+    @Override
+    public List<Integer> FetchActiveMarketList(ExchangeList exchange) {
+        List<Integer> result = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(fetchActiveMarkets);
+               if(ps != null){
+                   
+                   String exchangeName = exchange.name().toUpperCase();
+                   ps.setString(1, exchangeName);
+                   
+                   rs = ps.executeQuery();
+                   while(rs.next()){
+                       int marketID = rs.getInt("marketID");
+                       result.add(marketID);
+                   }
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            // close result set
+            try {
+                if(rs != null && !rs.isClosed()){
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             // close the prepared statement
             if(ps != null ){

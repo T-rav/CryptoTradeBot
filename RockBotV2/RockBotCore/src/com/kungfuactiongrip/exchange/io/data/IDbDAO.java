@@ -90,4 +90,11 @@ public interface IDbDAO {
      */
     public boolean InsertTradeHistory(List<MarketTradeVerbose> trades, int marketID, ExchangeList exchange);
 
+    /**
+     *
+     * @param exchange
+     * @return
+     */
+    public List<Integer> FetchActiveMarketList(ExchangeList exchange);
+
 }

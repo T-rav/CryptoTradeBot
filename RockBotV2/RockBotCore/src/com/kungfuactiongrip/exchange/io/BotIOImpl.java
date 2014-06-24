@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Administrator
  */
-public class BotIOImpl implements IBotIO {
+public class BotIOImpl implements IBotIO  {
 
     private IDbDAO _dbObject;
     private ExchangeList _exchangeName;
@@ -212,5 +212,14 @@ public class BotIOImpl implements IBotIO {
         }
         
         return null;
+    }
+
+    @Override
+    public List<Integer> FetchActiveMarketList(ExchangeList exchange) {
+        if(_dbObject != null){
+            return _dbObject.FetchActiveMarketList(exchange);
+        }
+        
+        return new ArrayList<>();
     }
 }

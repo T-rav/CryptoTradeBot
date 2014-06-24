@@ -26,6 +26,18 @@ public class BotIOTest {
     public BotIOTest() {
     }
     
+    /*** Helper Methods ***/
+    private IBotIO CreateIOObject() {
+        IBotIO botIO = IOFactory.CreateIOObject("Test_DB", ExchangeList.Cryptsy);
+        return botIO;
+    }
+    
+    private IBotIO CreateBadIOObject() {
+        IBotIO botIO = IOFactory.CreateIOObject(null, null);
+        return botIO;
+    }
+    
+    
     @Test
     public void CreateBotIOObject_WithPropertiesFile_ExpectValidObject(){
         IBotIO botIO = CreateIOObject();
@@ -379,18 +391,22 @@ public class BotIOTest {
         assertEquals(0, result);
     }
 
-
-    
-    /*** Helper Methods ***/
-    private IBotIO CreateIOObject() {
-        IBotIO botIO = IOFactory.CreateIOObject("Test_DB", ExchangeList.Cryptsy);
-        return botIO;
+    @Test
+    public void FetchActiveMarketList_WhenValidDBObject_ExpectNonEmptyList(){
+        IBotIO botIO = CreateIOObject();
+        
+        List<Integer> result = botIO.FetchActiveMarketList(ExchangeList.Cryptsy);
+        
+        assertFalse(result.isEmpty());
     }
     
-    private IBotIO CreateBadIOObject() {
-        IBotIO botIO = IOFactory.CreateIOObject(null, null);
-        return botIO;
+    @Test
+    public void FetchActiveMarketList_WhenInvalidDBObject_ExpectNonEmptyList(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        List<Integer> result = botIO.FetchActiveMarketList(ExchangeList.Cryptsy);
+        
+        assertTrue(result.isEmpty());
     }
-    
     
 }
