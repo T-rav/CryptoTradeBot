@@ -4,6 +4,7 @@ import com.kungfuactiongrip.exchange.to.CryptsyInfo;
 import com.kungfuactiongrip.exchange.to.CryptsyOrder;
 import com.kungfuactiongrip.exchange.to.CryptsyResult;
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketOpenOrder;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
 import com.kungfuactiongrip.exchange.to.MarketTradeFee;
 import com.kungfuactiongrip.exchange.to.ObjectConverter;
@@ -26,7 +27,7 @@ public class ObjectConversionTest {
     }
     
     @Test
-    public void ConvertErrorStringToObject__WhenValidString_ExpectValidMessage(){
+    public void ConvertErrorStringToObject_WhenValidString_ExpectValidMessage(){
         ObjectConverter oc = MakeObjectConverter();
         CryptsyResult ce = oc.MakeResultObject("{\"success\":\"0\",\"error\":\"Unable to Authorize Request - Check Your Post Data\"}");
         
@@ -37,7 +38,7 @@ public class ObjectConversionTest {
     }
     
     @Test
-    public void ConvertErrorStringToObject__WhenInvalidString_ExpectNull(){
+    public void ConvertErrorStringToObject_WhenInvalidString_ExpectNull(){
         ObjectConverter oc = MakeObjectConverter();
         CryptsyResult ce = oc.MakeResultObject("{\"success\":\"0,\"error\":\"Unable to Authorize Request - Check Your Post Data\"}");
         
@@ -46,7 +47,7 @@ public class ObjectConversionTest {
     }
     
     @Test
-    public void ConvertErrorStringToObject__WhenNullString_ExpectNull(){
+    public void ConvertErrorStringToObject_WhenNullString_ExpectNull(){
         ObjectConverter oc = MakeObjectConverter();
         CryptsyResult ce = oc.MakeResultObject(null);
         
@@ -63,15 +64,6 @@ public class ObjectConversionTest {
         assertEquals(0, ce.success);
         assertTrue(ce.HasError());
         assertEquals("Unable to Authorize Request - Check Your Post Data", ce.FetchError());
-    }
-    
-    @Test
-    public void ConvertErrorStringToObject_WhenInvalidString_ExpectNull(){
-        ObjectConverter oc = MakeObjectConverter();
-        CryptsyResult ce = oc.MakeResultObject("{\"success\":\"0,\"result\":\"Unable to Authorize Request - Check Your Post Data\"}");
-        
-        // Assert
-        assertNull(ce);
     }
     
     @Test
@@ -286,7 +278,57 @@ public class ObjectConversionTest {
         // Assert
         assertNull(mtf);
     }
-            
+     
+    // --------------
+    
+    @Test
+    public void MakeMyOpenOrderList_WhenValidString_ExpectPopulatedList(){
+        ObjectConverter oc = MakeObjectConverter();
+        String data = "{\"success\":\"1\",\"return\":[{\"orderid\":\"109942883\",\"created\":\"2014-06-24 08:38:12\",\"ordertype\":\"Buy\",\"price\":\"0.00001151\",\"quantity\":\"1.00000000\",\"orig_quantity\":\"1.00000000\",\"total\":\"0.00001151\"}]}";
+        List<MarketOpenOrder> result = oc.MakeMyOpenOrderList(data);
         
+        // Assert
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        MarketOpenOrder moo = result.get(0);
+        assertEquals("109942883", moo.OrderID);
+        assertEquals("2014-06-24 08:38:12", moo.CreatedDate);
+        assertEquals("Buy", moo.OrderType);
+        assertEquals(0.00001151, moo.Price,0.0000000001);
+        assertEquals(1, moo.Qty,0.0000000001);
+        assertEquals(1, moo.OrigQty,0.0000000001);
+        assertEquals(0.00001151, moo.Total,0.0000000001);
+    }
+    
+    @Test
+    public void MakeMyOpenOrderList_WhenEmptyString_ExpectEmptyList(){
+        ObjectConverter oc = MakeObjectConverter();
+        String data = "{\"success\":\"1\",\"return\":[]}";
+        List<MarketOpenOrder> result = oc.MakeMyOpenOrderList(data);
         
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void MakeMyOpenOrderList_WhenInvalidString_ExpectEmptyList(){
+        ObjectConverter oc = MakeObjectConverter();
+        String data = "{\"success\":\"1\",\"return\":[}";
+        List<MarketOpenOrder> result = oc.MakeMyOpenOrderList(data);
+        
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void MakeMyOpenOrderList_WhenNullString_ExpectEmptyList(){
+        ObjectConverter oc = MakeObjectConverter();
+        List<MarketOpenOrder> result = oc.MakeMyOpenOrderList(null);
+        
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }        
 }

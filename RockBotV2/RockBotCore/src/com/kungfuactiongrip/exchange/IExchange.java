@@ -2,6 +2,7 @@ package com.kungfuactiongrip.exchange;
 
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
+import com.kungfuactiongrip.exchange.to.MarketTradeFee;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface IExchange {
      * @return JSON String with Fees and Net BTC
      * @throws Exception
      */
-    public String CalculateTransactionCost(TransactionType typeOf, double amt, double price) throws Exception;
+    public MarketTradeFee CalculateTransactionCost(TransactionType typeOf, double amt, double price) throws Exception;
 
     /**
      *

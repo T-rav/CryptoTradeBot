@@ -6,6 +6,7 @@ import com.kungfuactiongrip.exchange.TransactionType;
 import com.kungfuactiongrip.exchange.to.CryptsyOrder;
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
+import com.kungfuactiongrip.exchange.to.MarketTradeFee;
 import com.kungfuactiongrip.exchange.to.ObjectConverter;
 import java.util.List;
 import java.util.logging.Level;
@@ -56,20 +57,21 @@ public class CryptsyTest {
    
    @Test
    public void GetMarketFees_ExpectFeesString(){
-       // Setup
-       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
+        // Setup
+        IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
        
-       // Execute
-       String amt = null;
+        // Execute
+        MarketTradeFee amt = null;
         try {
             amt = exchange.CalculateTransactionCost(TransactionType.Sell, 2.0, 0.0025);
         } catch (Exception ex) {
             Logger.getLogger(CryptsyTest.class.getName()).log(Level.SEVERE, null, ex);
         }
        
-       // Assert
-       Assert.assertNotNull(amt);
-       Assert.assertTrue("{\"success\":\"1\",\"return\":{\"fee\":\"0.00001500\",\"net\":\"0.00498500\"}}".equals(amt));
+        // Assert
+        Assert.assertNotNull(amt);
+        Assert.assertEquals(0.00001500, amt.Fee,0.000000001);
+        Assert.assertEquals(0.00498500, amt.Net,0.000000001);
    }
    
    @Test

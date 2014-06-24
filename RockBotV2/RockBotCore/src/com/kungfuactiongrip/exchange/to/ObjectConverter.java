@@ -65,6 +65,25 @@ public class ObjectConverter {
         return result;
     }
     
+    public List<MarketOpenOrder> MakeMyOpenOrderList(String payload){
+        List<MarketOpenOrder> result = new ArrayList<>();
+        
+        Gson json = new Gson();
+        
+        try{
+            // process sell orders
+            JSONArray obj = JsonPath.read(payload, "$.return[*]");
+            for(Object e : obj){
+                MarketOpenOrder mo = json.fromJson(e.toString(), MarketOpenOrder.class);
+                // Add to collection ;)
+                result.add(mo);
+            }
+        }catch(Exception e){
+        }
+        
+        return result;
+    }
+    
     public MarketBuySellOrders MakeMarketOrderList(String payload){
         MarketBuySellOrders result = new MarketBuySellOrders();
         Gson json = new Gson();

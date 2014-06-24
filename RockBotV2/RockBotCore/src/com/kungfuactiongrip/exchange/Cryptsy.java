@@ -2,6 +2,7 @@ package com.kungfuactiongrip.exchange;
 
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
+import com.kungfuactiongrip.exchange.to.MarketTradeFee;
 import com.kungfuactiongrip.exchange.to.ObjectConverter;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +41,8 @@ class Cryptsy implements IExchange {
     private final String ORDER_DATA_URI = "http://pubapi.cryptsy.com/api.php?method=orderdatav2";
     private final String MARKET_DATA_URI = "http://pubapi.cryptsy.com/api.php?method=marketdatav2";
     
+    ObjectConverter oc = new ObjectConverter();
+    
     protected Cryptsy(){
             
     }
@@ -49,15 +52,15 @@ class Cryptsy implements IExchange {
         return ExecuteAuthorizedQuery("getinfo", null);
     }
 
-    // Buy, Sell
     @Override
-    public String CalculateTransactionCost(TransactionType typeOf, double amt, double price) throws Exception {
+    public MarketTradeFee CalculateTransactionCost(TransactionType typeOf, double amt, double price) throws Exception {
         Map<String,String> args = new HashMap<>();
         args.put("ordertype",typeOf.toString()) ;
         args.put("quantity",Double.toString(amt));
         args.put("price",Double.toString(price));
         
-        return ExecuteAuthorizedQuery("calculatefees", args);
+        String data = ExecuteAuthorizedQuery("calculatefees", args);
+        return oc.MakeTradeFeeObject(data);
     }
     
     @Override
@@ -65,10 +68,7 @@ class Cryptsy implements IExchange {
         Map<String,String> args = new HashMap<>();
         args.put("marketid", Integer.toString(marketID));
         
-        
         String data = ExecuteAuthorizedQuery("marketorders", args);
-        ObjectConverter oc = new ObjectConverter();
-        
         return oc.MakeMarketOrderList(data);
     }
 
@@ -77,7 +77,7 @@ class Cryptsy implements IExchange {
         Map<String,String> args = new HashMap<>() ;
         args.put("marketid", Integer.toString(marketID));
         
-        ObjectConverter oc = new ObjectConverter();
+        
         String data = ExecuteAuthorizedQuery("markettrades", args);
 
         return oc.MakeMarketTradeList(data);
