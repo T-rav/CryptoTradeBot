@@ -301,7 +301,8 @@ public class ObjectConversionTest {
         assertEquals(13.85809313, mtv.Qty,0.000000001);
         assertEquals(0.000000290, mtv.Fee,0.000000001);
         assertEquals("Sell", mtv.InitiatedType);
-        assertEquals("96872051", mtv.OrderID);        
+        assertEquals("96872051", mtv.OrderID);
+        assertEquals("48338454", mtv.TradeID);
     }
     
     @Test

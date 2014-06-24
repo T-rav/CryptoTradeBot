@@ -10,6 +10,8 @@ import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
 import com.kungfuactiongrip.exchange.io.data.IDbDAO;
+import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
+import com.kungfuactiongrip.exchange.to.ObjectConverter;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeState;
 import com.kungfuactiongrip.to.TradeType;
@@ -36,7 +38,17 @@ public class MySQLDBObjectTest {
     
     public MySQLDBObjectTest() {
     }
+    
+    private IDbDAO GenerateTestDB() {
+        IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject("Test_DB");
+        return obj;
+    }
 
+    private ObjectConverter MakeObjectConverter() {
+        ObjectConverter oc = new ObjectConverter();
+        return oc;
+    }
+    
     @Test
     public void CreateObjectWithoutPropertyFile_ExpectValidObject(){
         IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject();
@@ -57,6 +69,7 @@ public class MySQLDBObjectTest {
     public void CreateObjectWithNullPropertyFile_ExpectDefaultObject(){
         IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject(null);
         
+        // Pre-Assert
         assertNotNull(obj);
         assertEquals("username", obj.FetchUser());
     }
@@ -65,6 +78,7 @@ public class MySQLDBObjectTest {
     public void CreateConnection_ExpectValidConnectionObject(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
         Connection con = null;
         try{
@@ -83,243 +97,164 @@ public class MySQLDBObjectTest {
     public void FetchOpenBuyOrders_WhenOrdersExist_ExpectOrdersList(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            List<TradeOrder> orders = obj.FetchOrdersForMarket(ValidOrderMarketID, TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy);
-                       
-            // Assert
-            assertNotNull(orders);
-            assertFalse(orders.isEmpty());
-            TradeOrder order = orders.get(0);
-            assertEquals(1, order.RowID);
-            assertEquals(0.1, order.PricePer, 0.00000001);
-            assertEquals("CRYPTSY", order.Exchange.name().toUpperCase());
-            assertEquals("Dummy-1", order.TradeID);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        List<TradeOrder> orders = obj.FetchOrdersForMarket(ValidOrderMarketID, TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy);
+
+        // Assert
+        assertNotNull(orders);
+        assertFalse(orders.isEmpty());
+        TradeOrder order = orders.get(0);
+        assertEquals(1, order.RowID);
+        assertEquals(0.1, order.PricePer, 0.00000001);
+        assertEquals("CRYPTSY", order.Exchange.name().toUpperCase());
+        assertEquals("Dummy-1", order.TradeID);
     }
     
     @Test
     public void FetchOpenSellOrders_WhenOrdersExist_ExpectOrdersList(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            List<TradeOrder> orders = obj.FetchOrdersForMarket(ValidOrderMarketID, TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy);
-            
-            // Assert
-            assertNotNull(orders);
-            assertFalse(orders.isEmpty());
-            TradeOrder order = orders.get(0);
-            assertEquals(2, order.RowID);
-            assertEquals(0.1, order.PricePer, 0.00000001);
-            assertEquals("CRYPTSY", order.Exchange.name().toUpperCase());
-            assertEquals("Dummy-2", order.TradeID);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        List<TradeOrder> orders = obj.FetchOrdersForMarket(ValidOrderMarketID, TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy);
+
+        // Assert
+        assertNotNull(orders);
+        assertFalse(orders.isEmpty());
+        TradeOrder order = orders.get(0);
+        assertEquals(2, order.RowID);
+        assertEquals(0.1, order.PricePer, 0.00000001);
+        assertEquals("CRYPTSY", order.Exchange.name().toUpperCase());
+        assertEquals("Dummy-2", order.TradeID);
     }
     
     @Test
     public void FetchOpenBuyOrders_WhenOrdersExist_ExpectEmptyOrdersList(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            List<TradeOrder> orders = obj.FetchOrdersForMarket(InvalidOrderMarketID, TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy);
-                       
-             // Assert
-            assertNotNull(orders);
-            assertTrue(orders.isEmpty());
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        List<TradeOrder> orders = obj.FetchOrdersForMarket(InvalidOrderMarketID, TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy);
+
+         // Assert
+        assertNotNull(orders);
+        assertTrue(orders.isEmpty());
     }
     
     @Test
     public void FetchOpenSellOrders_WhenOrdersExist_ExpectEmptyOrdersList(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            List<TradeOrder> orders = obj.FetchOrdersForMarket(InvalidOrderMarketID, TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy);
-            
-            // Assert
-            assertNotNull(orders);
-            assertTrue(orders.isEmpty());
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        List<TradeOrder> orders = obj.FetchOrdersForMarket(InvalidOrderMarketID, TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy);
+
+        // Assert
+        assertNotNull(orders);
+        assertTrue(orders.isEmpty());
     }
     
     @Test
     public void InsertSellOrder_WhenOrdersValid_ExpectInserted(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            
-            int result = obj.InsertOrder(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, InsertOrderMarketID,0.1, 0.3,"DUMMY-INSERT",null);
-            
-            // Assert
-            assertTrue(result > 0);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        int result = obj.InsertOrder(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, InsertOrderMarketID,0.1, 0.3,"DUMMY-INSERT",null);
+
+        // Assert
+        assertTrue(result > 0);
     }
     
     @Test
     public void FetchNumberOfAbortedBuyTrades_WhenArePresent_ExpectNumberGreaterThenZero(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            
-            int result = obj.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
-            
-            // Assert
-            assertEquals(1, result);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        int result = obj.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
+
+        // Assert
+        assertEquals(1, result);
     }
     
     @Test
     public void FetchNumberOfAbortedSellTrades_WhenArePresent_ExpectNumberGreaterThenZero(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            int result = obj.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
-            
-            // Assert
-            assertEquals(1, result);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        int result = obj.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, ExchangeList.Cryptsy, AbortedOrderMarketID, 6);
+
+        // Assert
+        assertEquals(1, result);
     }
     
     @Test
     public void FetchNumberOfOpenBuyTrades_WhenPresent_ExpectNumberGreaterThenZero(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            
-            int result = obj.FetchOrderCountOfType(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, ValidOrderMarketID);
-            
-            // Assert
-            assertEquals(1, result);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        int result = obj.FetchOrderCountOfType(TradeType.BUY, TradeState.OPEN, ExchangeList.Cryptsy, ValidOrderMarketID);
+
+        // Assert
+        assertEquals(1, result);
     }
     
     @Test
     public void FetchNumberOfOpenSellTrades_WhenPresent_ExpectNumberGreaterThenZero(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            int result = obj.FetchOrderCountOfType(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, ValidOrderMarketID);
-            
-            // Assert
-            assertEquals(1, result);
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        int result = obj.FetchOrderCountOfType(TradeType.SELL, TradeState.OPEN, ExchangeList.Cryptsy, ValidOrderMarketID);
+
+        // Assert
+        assertEquals(1, result);
     }
     
     @Test
     public void FetchEngineConfiguration_WhenOptionsPresent_ExpectConfigurationOptions(){
         IDbDAO obj = GenerateTestDB();
         
+        // Pre-Assert
         assertNotNull(obj);
-        Connection con = null;
-        try{
-            PropertyBag result = obj.FetchEngineConfiguration();
-            
-            // Assert
-            assertNotNull(result);
-            assertEquals(18, result.TotalProperties());
-        }catch(Exception e){
-            fail("Exception Thrown [ " + e.getMessage()+ " ]");
-        }finally{
-            if(con != null){
-                try{
-                    con.close();
-                }catch(SQLException e){}
-            }
-        }
+        PropertyBag result = obj.FetchEngineConfiguration();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(18, result.TotalProperties());
     }
     
-    private IDbDAO GenerateTestDB() {
-        IDbDAO obj = DBProviderFactory.GenerateMySQLDBObject("Test_DB");
-        return obj;
-    }
+    @Test
+    public void InsertTradeHistory_WhenListOfTrades_ExpectTrue(){
+        IDbDAO obj = GenerateTestDB();
+        ObjectConverter oc = MakeObjectConverter();
+        String data = "{\"success\":\"1\",\"return\":[{\"tradeid\":\"48338454\",\"tradetype\":\"Sell\",\"datetime\":\"2014-06-01 15:28:02\",\"tradeprice\":\"0.00000851\",\"quantity\":\"13.85809313\",\"fee\":\"0.000000290\",\"total\":\"0.00011793\",\"initiate_ordertype\":\"Sell\",\"order_id\":\"96872051\"}]}";
+    
+        List<MarketTradeVerbose> trades = oc.MakeMyTradeList(data);
+        
+        // Pre-Assert
+        assertNotNull(obj);
+        boolean result = obj.InsertTradeHistory(trades, ValidOrderMarketID, ExchangeList.Cryptsy);
 
+        // Assert
+        assertTrue(result);
+    }
+    
+        
+    @Test
+    public void InsertTradeHistory_WhenListOfTradesNull_ExpectFalse(){
+        IDbDAO obj = GenerateTestDB();
+
+        // Pre-Assert
+        assertNotNull(obj);
+        boolean result = obj.InsertTradeHistory(null, ValidOrderMarketID, ExchangeList.Cryptsy);
+
+        // Assert
+        assertFalse(result);
+    }
+    
 }

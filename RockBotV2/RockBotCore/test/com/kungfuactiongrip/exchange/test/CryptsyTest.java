@@ -266,4 +266,5 @@ public class CryptsyTest {
         Assert.assertFalse(trades.isEmpty());
          
    }
+   
 }

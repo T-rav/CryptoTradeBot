@@ -8,6 +8,7 @@ package com.kungfuactiongrip.exchange.io.data;
 
 import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
 import com.kungfuactiongrip.to.TradeOrder;
 import com.kungfuactiongrip.to.TradeOrderFactory;
 import com.kungfuactiongrip.to.TradeState;
@@ -59,6 +60,10 @@ public class MySQLDBObject implements IDbDAO {
                                             + "and orderType = ? and exchangeName = ? and marketID = ?";
     
     private final String botConfiguration = "SELECT rid, optionName, optionValue FROM TradeOptions";
+    
+    private final String tradeHistoryInsert = "INSERT INTO TradeHistory(tradeID, tradeType, orderType, "
+                                                + "tradeDateTime, tradeQty, tradeFee, tradeTotal, orderID, exchangeName, marketID) "
+                                                + " VALUES(?,?,?,?,?,?,?,?,?,?);";
     
     protected MySQLDBObject(){
         this("url", "username", "password");
@@ -473,71 +478,70 @@ public class MySQLDBObject implements IDbDAO {
        return result;
     }
 
-//    
-//    @Override
-//    public int FetchMarketOrderOfType(TradeType tradeType, ExchangeList exchange, int marketID, int hourInterval, int minTradeCount) {
-//        int result = 0;
-//        Connection conn = null;
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        
-//        try{
-//           conn = CreateConnection();
-//           if(conn != null){
-//               ps = conn.prepareStatement(orderStateCountInterval);
-//               if(ps != null){
-//                   String typeName = tradeType.name();
-//                   String exchangeName = exchange.name().toUpperCase();
-//                 
-//                   ps.setString(1, stateName);
-//                   ps.setString(2, typeName);
-//                   ps.setString(3, exchangeName);
-//                   ps.setInt(4, marketID);
-//                   ps.setInt(5, hourInterval);
-//                 
-//                   rs = ps.executeQuery();
-//                   
-//                   if(rs.next()){
-//                       result = rs.getInt("total");
-//                   }
-//               }
-//           }
-//       }catch (SQLException ex) {
-//            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-//       }finally{
-//            // close result set
-//            try {
-//                if(rs != null && !rs.isClosed()){
-//                    try {
-//                        rs.close();
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            
-//            // close the prepared statement
-//            if(ps != null ){
-//                try {
-//                    ps.close();
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//            
-//            //close the connection
-//            if(conn != null){
-//                try {
-//                    conn.close();
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        }
-//        
-//       return result;
-//    }
-//    
+    @Override
+    public boolean InsertTradeHistory(List<MarketTradeVerbose> trades, int marketID, ExchangeList exchange) {
+        boolean result = true;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        // bad things ;)
+        if(trades == null){
+            return false;
+        }
+        
+        try{
+           conn = CreateConnection();
+           if(conn != null){
+               ps = conn.prepareStatement(tradeHistoryInsert);
+               if(ps != null){
+                   String exchangeName = exchange.name().toUpperCase();
+
+                   for(MarketTradeVerbose mtv : trades){
+                       try{                           
+                            ps.setString(1, mtv.TradeID);
+                            ps.setString(2, mtv.TransactedTradeType.toUpperCase());
+                            ps.setString(3, mtv.InitiatedType);
+                            ps.setString(4, mtv.DateTime);
+                            ps.setDouble(5, mtv.Qty);
+                            ps.setDouble(6, mtv.Fee);
+                            ps.setDouble(7, mtv.Qty);
+                            ps.setString(8, mtv.OrderID);
+                            ps.setString(9, exchangeName);
+                            ps.setInt(10, marketID);
+
+                            ps.execute();
+                       }catch(Exception e){
+                           result = false;
+                           Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, e);
+                       }finally{
+                           ps.clearParameters();
+                       }
+                   }
+               }
+           }
+       }catch (SQLException ex) {
+            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+       }finally{
+            
+            // close the prepared statement
+            if(ps != null ){
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            //close the connection
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+       return result;
+    }
 }
