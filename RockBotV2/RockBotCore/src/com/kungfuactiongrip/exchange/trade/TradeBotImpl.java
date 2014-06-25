@@ -10,7 +10,6 @@ import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 /**
  *
@@ -21,15 +20,38 @@ class TradeBotImpl implements ITradeBot {
     private final List<TradeRule> _rules;
     private final ExchangeList _exchange;
     private final IBotIO _dbObj;
+    private final List<Thread> _tradeRules;
+    private final List<String> _botLog;
     
     TradeBotImpl(ExchangeList exchange, IBotIO dbObj) {
         _rules = new ArrayList<>();
+        _botLog = new ArrayList<>();
+        _tradeRules = new ArrayList<>();
         _exchange = exchange;
         _dbObj = dbObj;
+    }
+    
+    @Override
+    public void Shutdown(){
+        
+        // signal threads to exit
+        for(TradeRule tr : _rules){
+            tr.shutdown();
+        }
+        
+        // wait thread to exit ;)
+        for(Thread t : _tradeRules){
+            if(t.isAlive()){
+                try{
+                    t.join(1000);
+                }catch(InterruptedException e){}
+            }
+        }
     }
 
     @Override
     public boolean AddTradeRule(TradeRule tr) {
+        
         if(tr == null){
             return false;
         }
@@ -50,14 +72,15 @@ class TradeBotImpl implements ITradeBot {
 
     @Override
     public void RunTradeRules() {
-        // TODO : Foreach rule/marketID pair create Thread to host process
+        // for each rule
+        for(TradeRule tr : _rules){
+            // for each activem
+            for(Integer i : FetchActiveMarketList()){
+                tr.setMarketID(i);
+                Thread t = new Thread(tr);
+                _tradeRules.add(t);
+                t.start();
+            }
+        }
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-        // Here is where we log data from each trade rule's execution ;)
-    }
-
 }

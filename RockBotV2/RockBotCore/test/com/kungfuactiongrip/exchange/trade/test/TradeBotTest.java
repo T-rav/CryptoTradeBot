@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  *
@@ -92,5 +93,21 @@ public class TradeBotTest {
         
         assertNotNull(result);
         assertFalse(result.isEmpty());
+    }
+    
+    @Test
+    public void AddRunShutdownTradeRules_WhenRulesLoaded_ExpectRulesRunAndExit(){
+        ITradeBot bot = MakeTradeBot();
+        
+        TradeRule tr = mock(TradeRule.class);
+        
+        bot.AddTradeRule(tr);
+        bot.RunTradeRules();
+        bot.Shutdown();
+        
+        // Assert - Verify Mocks did what they should ;)
+        verify(tr).setMarketID(173);
+        verify(tr).run();
+        verify(tr).shutdown();
     }
 }

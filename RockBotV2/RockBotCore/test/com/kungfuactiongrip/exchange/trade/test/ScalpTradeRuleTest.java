@@ -6,8 +6,8 @@
 
 package com.kungfuactiongrip.exchange.trade.test;
 
-import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.trade.TradeFactory;
+import com.kungfuactiongrip.exchange.trade.TradeRule;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -20,17 +20,11 @@ public class ScalpTradeRuleTest {
     public ScalpTradeRuleTest() {
     }
 
-//    @Test
-//    public void Ctor_ExpectRuleCreated(){
-//        ITradeRule tr = TradeFactory.CreateScalpTradeRule(ExchangeList.Cryptsy);
-//        
-//        assertNotNull(tr);
-    //}
-    
-//    @Test
-//    public void Ctor_ExpectRuleCreated(){
-//        ITradeRule tr = new ScalpTradeRule();
-//        
-//        assertNotNull(tr);
-//    }
+    @Test
+    public void Ctor_ExpectRuleCreated(){
+        TradeRule tr = TradeFactory.CreateScalpTradeRule();
+        
+        assertNotNull(tr);
+    }
+
 }

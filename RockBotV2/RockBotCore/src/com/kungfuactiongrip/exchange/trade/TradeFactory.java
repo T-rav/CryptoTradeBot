@@ -29,7 +29,9 @@ public class TradeFactory {
         
         try{
             IBotIO dbObj = IOFactory.CreateIOObject(propertiesFile, exchange);
-            return new TradeBotImpl(exchange, dbObj);
+            if(dbObj != null){
+                return new TradeBotImpl(exchange, dbObj);
+            }
         }catch(Exception e){
             Logger.getLogger(TradeFactory.class.getName()).log(Level.SEVERE, null, e);
         }

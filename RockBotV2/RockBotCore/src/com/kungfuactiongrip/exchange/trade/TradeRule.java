@@ -1,21 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.kungfuactiongrip.exchange.trade;
-
-import java.util.Observable;
-
 
 /**
  *
  * @author Administrator
  */
-public abstract class TradeRule extends Observable implements Runnable {
+public abstract class TradeRule implements Runnable {
+    
+    private boolean _execute;
+    private int _marketID;
     
     TradeRule(){
+        this._execute = true;
+    }
+    
+    public void setMarketID(int marketID){
+        _marketID = marketID;
+    }
+    
+    public void shutdown(){
+        _execute = false;
     }
 
     @Override

@@ -8,13 +8,12 @@ package com.kungfuactiongrip.exchange.trade;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
 import java.util.List;
-import java.util.Observer;
 
 /**
  *
  * @author Administrator
  */
-public interface ITradeBot extends Observer {
+public interface ITradeBot {
 
     public boolean AddTradeRule(TradeRule tr);
 
@@ -23,5 +22,7 @@ public interface ITradeBot extends Observer {
     public List<Integer> FetchActiveMarketList();
     
     public void RunTradeRules();
+    
+    public void Shutdown();
     
 }
