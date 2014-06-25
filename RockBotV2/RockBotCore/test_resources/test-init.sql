@@ -19,4 +19,4 @@ UPDATE BotTrade set rTS = now() - INTERVAL 8 HOUR where rID in(45,47);
 UPDATE BotTrade set rTS = now() - INTERVAL 2 HOUR where rID in(46,48);
 
 -- CLEAR TRADE HISTORY TABLE
-TRUNCATE TradeHistry;
+TRUNCATE TradeHistory;
