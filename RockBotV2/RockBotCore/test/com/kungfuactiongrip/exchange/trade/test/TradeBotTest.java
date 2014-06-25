@@ -11,6 +11,8 @@ import com.kungfuactiongrip.exchange.trade.ITradeBot;
 import com.kungfuactiongrip.exchange.trade.TradeFactory;
 import com.kungfuactiongrip.exchange.trade.TradeRule;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
@@ -103,6 +105,11 @@ public class TradeBotTest {
         
         bot.AddTradeRule(tr);
         bot.RunTradeRules();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TradeBotTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         bot.Shutdown();
         
         // Assert - Verify Mocks did what they should ;)

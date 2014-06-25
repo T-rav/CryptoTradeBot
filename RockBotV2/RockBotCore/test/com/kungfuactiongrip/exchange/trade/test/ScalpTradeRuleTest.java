@@ -6,6 +6,7 @@
 
 package com.kungfuactiongrip.exchange.trade.test;
 
+import com.kungfuactiongrip.exchange.trade.ExecuteState;
 import com.kungfuactiongrip.exchange.trade.TradeFactory;
 import com.kungfuactiongrip.exchange.trade.TradeRule;
 import static org.junit.Assert.*;
@@ -22,9 +23,42 @@ public class ScalpTradeRuleTest {
 
     @Test
     public void Ctor_ExpectRuleCreated(){
-        TradeRule tr = TradeFactory.CreateScalpTradeRule();
+        TradeRule tr = CreateTradeRule();
         
         assertNotNull(tr);
+    }
+
+    private TradeRule CreateTradeRule() {
+        TradeRule tr = TradeFactory.CreateScalpTradeRule();
+        return tr;
+    }
+    
+    @Test
+    public void Run_WhenMarketIDSetToValidValue_ExpectRuleRuns(){
+        TradeRule tr = CreateTradeRule();
+        
+        Thread t = new Thread(tr);
+        tr.setMarketID(173);
+        t.start();
+        tr.shutdown();
+        
+        ExecuteState es = tr.fetchLastRunState();
+        
+        assertEquals(ExecuteState.NOP, es);
+    }
+    
+    @Test
+    public void Run_WhenMarketIDSetToInvalidValue_ExpectRuleRuns(){
+        TradeRule tr = CreateTradeRule();
+        
+        Thread t = new Thread(tr);
+        tr.setMarketID(0);
+        t.start();
+        tr.shutdown();
+        
+        ExecuteState es = tr.fetchLastRunState();
+        
+        assertEquals(ExecuteState.RULE_RUN_ABORTED, es);
     }
 
 }
