@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Cryptsy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RockBotCore&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.kungfuactiongrip.exchange</a> &gt; <span class="el_source">Cryptsy.java</span></div><h1>Cryptsy.java</h1><pre class="source lang-java linenums">package com.kungfuactiongrip.exchange;
+
+import com.kungfuactiongrip.exchange.to.MarketBalanceList;
+import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketCancelOrderResult;
+import com.kungfuactiongrip.exchange.to.MarketOpenOrder;
+import com.kungfuactiongrip.exchange.to.MarketCreateOrderResult;
+import com.kungfuactiongrip.exchange.to.MarketTrade;
+import com.kungfuactiongrip.exchange.to.MarketTradeFee;
+import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
+import com.kungfuactiongrip.exchange.to.ObjectConverter;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+/**
+ *
+ * @author Administrator
+ */
+class Cryptsy implements IExchange {
+
+    // https://github.com/abwaters/cryptsy-api/blob/master/src/com/abwaters/cryptsy/Cryptsy.java
+
+    private static final String USER_AGENT = &quot;Mozilla/5.0 (compatible; CRYPTSY-API/1.1; MSIE 6.0 compatible; +RockBot2)&quot;;
+    // Needs to inc by 1 each request ;)
+<span class="fc" id="L39">    private static long Nonce = 0;</span>
+<span class="fc" id="L40">    private boolean Inited = false;</span>
+    private Mac mac;
+    
+<span class="fc" id="L43">    private final String key = &quot;633c20c2f359da747d8ba037e509a7f13b5accd5&quot;;</span>
+<span class="fc" id="L44">    private final String secret = &quot;eb81804249c7ee6813ab5970fe009a2840cdcceb3d3590af7e488e83e91763db92a742b822bb4c3d&quot;;</span>
+<span class="fc" id="L45">    private final String URL = &quot;https://api.cryptsy.com/api&quot;;</span>
+<span class="fc" id="L46">    private final String ORDER_DATA_URI = &quot;http://pubapi.cryptsy.com/api.php?method=orderdatav2&quot;;</span>
+<span class="fc" id="L47">    private final String MARKET_DATA_URI = &quot;http://pubapi.cryptsy.com/api.php?method=marketdatav2&quot;;</span>
+    
+<span class="fc" id="L49">    ObjectConverter oc = new ObjectConverter();</span>
+    
+<span class="fc" id="L51">    protected Cryptsy(){</span>
+            
+<span class="fc" id="L53">    }</span>
+    
+    @Override
+    public MarketBalanceList FetchBalances() throws Exception{
+<span class="fc" id="L57">        String data = ExecuteAuthorizedQuery(&quot;getinfo&quot;, null);</span>
+        
+<span class="fc" id="L59">        return oc.MakeMarketBalanceList(data);</span>
+    }
+    
+    @Override
+    public List&lt;MarketTradeVerbose&gt; FetchMyTradesForMarket(int marketID) throws Exception{
+<span class="fc" id="L64">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L65">        args.put(&quot;marketid&quot;,Integer.toString(marketID));</span>
+<span class="fc" id="L66">        args.put(&quot;limit&quot;, &quot;250&quot;);</span>
+        
+<span class="fc" id="L68">        String data = ExecuteAuthorizedQuery(&quot;mytrades&quot;, args);</span>
+        
+<span class="fc" id="L70">        return oc.MakeMyTradeList(data);</span>
+    }
+
+    @Override
+    public MarketTradeFee CalculateTransactionCost(TransactionType typeOf, double amt, double price) throws Exception {
+<span class="fc" id="L75">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L76">        args.put(&quot;ordertype&quot;,typeOf.toString()) ;</span>
+<span class="fc" id="L77">        args.put(&quot;quantity&quot;,Double.toString(amt));</span>
+<span class="fc" id="L78">        args.put(&quot;price&quot;,Double.toString(price));</span>
+        
+<span class="fc" id="L80">        String data = ExecuteAuthorizedQuery(&quot;calculatefees&quot;, args);</span>
+<span class="fc" id="L81">        return oc.MakeTradeFeeObject(data);</span>
+    }
+    
+    @Override
+    public MarketBuySellOrders FetchMarketOrders(int marketID) throws Exception {
+<span class="fc" id="L86">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L87">        args.put(&quot;marketid&quot;, Integer.toString(marketID));</span>
+        
+<span class="fc" id="L89">        String data = ExecuteAuthorizedQuery(&quot;marketorders&quot;, args);</span>
+<span class="fc" id="L90">        return oc.MakeMarketOrderList(data);</span>
+    }
+
+    @Override
+    public List&lt;MarketTrade&gt; FetchMarketTrades(int marketID) throws Exception{
+<span class="fc" id="L95">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;() ;</span>
+<span class="fc" id="L96">        args.put(&quot;marketid&quot;, Integer.toString(marketID));</span>
+        
+        
+<span class="fc" id="L99">        String data = ExecuteAuthorizedQuery(&quot;markettrades&quot;, args);</span>
+
+<span class="fc" id="L101">        return oc.MakeMarketTradeList(data);</span>
+    }
+    
+    @Override
+    public List&lt;MarketOpenOrder&gt; FetchMyOpenOrdersForMarket(int marketID) throws Exception {
+<span class="fc" id="L106">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;() ;</span>
+<span class="fc" id="L107">        args.put(&quot;marketid&quot;, Integer.toString(marketID));</span>
+        
+<span class="fc" id="L109">        String data = ExecuteAuthorizedQuery(&quot;myorders&quot;, args);</span>
+        
+<span class="fc" id="L111">        return oc.MakeMyOpenOrderList(data);</span>
+    }
+    
+    @Override
+    public MarketCreateOrderResult CreateTrade(int marketID, TransactionType transactionType, double amt, double price) throws Exception {
+<span class="fc" id="L116">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;() ;</span>
+<span class="fc" id="L117">        args.put(&quot;marketid&quot;, Integer.toString(marketID));</span>
+<span class="fc" id="L118">        args.put(&quot;ordertype&quot;, transactionType.toString());</span>
+<span class="fc" id="L119">        args.put(&quot;quantity&quot;, Double.toString(amt));</span>
+<span class="fc" id="L120">        args.put(&quot;price&quot;, Double.toString(price));</span>
+        
+<span class="fc" id="L122">        String data = ExecuteAuthorizedQuery(&quot;createorder&quot;, args);</span>
+        
+<span class="fc" id="L124">        return oc.MakeMarketOrderCreateResultObject(data);</span>
+    }
+
+    @Override
+    public MarketCancelOrderResult CancelTrade(String orderID) throws Exception {
+<span class="fc" id="L129">        Map&lt;String,String&gt; args = new HashMap&lt;&gt;() ;</span>
+<span class="fc" id="L130">        args.put(&quot;orderid&quot;, orderID);</span>
+        
+<span class="fc" id="L132">        String data = ExecuteAuthorizedQuery(&quot;cancelorder&quot;, args);</span>
+        
+<span class="fc" id="L134">        return oc.MakeCancelOrderResultObject(data);</span>
+    }
+        
+    @Override
+    public String FetchActiveMarketData() throws Exception {
+<span class="fc" id="L139">        return ExecuteAuthorizedQuery(&quot;getmarkets&quot;, null);</span>
+    }
+    
+    // *** Public Access ***
+    @Override
+    public String FetchAllMarketData() throws Exception {
+<span class="fc" id="L145">        return ExecutePublicQuery(MARKET_DATA_URI);</span>
+    }
+    
+    @Override
+    public String FetchAllOrderData() throws Exception {
+<span class="fc" id="L150">        return ExecutePublicQuery(ORDER_DATA_URI);</span>
+    }
+    
+    // *** Start Private Methods ;) ***
+    private String ExecutePublicQuery(String uri) throws Exception{
+<span class="fc" id="L155">        URL url = new URL(uri);</span>
+        URLConnection conn;
+<span class="fc" id="L157">        StringBuilder response = new StringBuilder();</span>
+<span class="fc" id="L158">        BufferedReader in = null;</span>
+<span class="fc" id="L159">        OutputStreamWriter out = null;</span>
+        try{
+<span class="fc" id="L161">            conn = url.openConnection();</span>
+<span class="fc" id="L162">            conn.setUseCaches(false);</span>
+<span class="fc" id="L163">            conn.setDoOutput(true);</span>
+<span class="fc" id="L164">            conn.setRequestProperty(&quot;User-Agent&quot;, USER_AGENT);</span>
+
+            // read response
+<span class="fc" id="L167">            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));</span>
+            String line;
+<span class="fc bfc" id="L169" title="All 2 branches covered.">            while ((line = in.readLine()) != null){</span>
+<span class="fc" id="L170">                response.append(line);</span>
+            }
+<span class="nc" id="L172">        }catch(IOException e){</span>
+<span class="nc" id="L173">            throw e;</span>
+        }finally{
+<span class="pc bpc" id="L175" title="3 of 4 branches missed.">            if(in != null){                </span>
+<span class="pc" id="L176">                in.close();</span>
+            }
+<span class="pc bpc" id="L178" title="3 of 4 branches missed.">            if(out != null){</span>
+<span class="nc" id="L179">                out.close();</span>
+            }
+        }
+        
+<span class="fc" id="L183">        return response.toString();</span>
+    }
+    
+    private String ExecuteAuthorizedQuery(String method, Map&lt;String, String&gt; args) throws Exception{
+        // Setup for execute ;)
+<span class="fc" id="L188">        Init();</span>
+<span class="fc" id="L189">        Nonce = System.currentTimeMillis();</span>
+        //Nonce++;
+        
+<span class="fc" id="L192">        Map&lt;String, String&gt; invokeArgs = new HashMap&lt;&gt;();</span>
+        
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if(args != null){</span>
+<span class="fc" id="L195">            invokeArgs.putAll(args);</span>
+        }
+        
+        // add method and nonce to args
+<span class="fc" id="L199">        invokeArgs.put(&quot;method&quot;, method);</span>
+<span class="fc" id="L200">        invokeArgs.put(&quot;nonce&quot;, Long.toString(Nonce));</span>
+        
+        // create url form encoded post data
+<span class="fc" id="L203">        String postData = &quot;&quot;;</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        for (String arg : invokeArgs.keySet()) {</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">            if (postData.length() &gt; 0){</span>
+<span class="fc" id="L206">                postData += &quot;&amp;&quot;;</span>
+            }
+<span class="fc" id="L208">            postData += arg + &quot;=&quot; + URLEncoder.encode(invokeArgs.get(arg));</span>
+<span class="fc" id="L209">        }</span>
+
+        // create connection
+        URLConnection conn;
+<span class="fc" id="L213">        StringBuilder response = new StringBuilder();</span>
+<span class="fc" id="L214">        BufferedReader in = null;</span>
+<span class="fc" id="L215">        OutputStreamWriter out = null;</span>
+        try {
+<span class="fc" id="L217">            URL url = new URL(URL);</span>
+<span class="fc" id="L218">            conn = url.openConnection();</span>
+<span class="fc" id="L219">            conn.setUseCaches(false);</span>
+<span class="fc" id="L220">            conn.setDoOutput(true);</span>
+<span class="fc" id="L221">            conn.setRequestProperty(&quot;Key&quot;, key);</span>
+<span class="fc" id="L222">            conn.setRequestProperty(&quot;Sign&quot;,ToHex(mac.doFinal(postData.getBytes(&quot;UTF-8&quot;))));</span>
+<span class="fc" id="L223">            conn.setRequestProperty(&quot;Content-Type&quot;,&quot;application/x-www-form-urlencoded&quot;);</span>
+<span class="fc" id="L224">            conn.setRequestProperty(&quot;User-Agent&quot;, USER_AGENT);</span>
+
+            // write post data
+<span class="fc" id="L227">            out = new OutputStreamWriter(conn.getOutputStream());</span>
+<span class="fc" id="L228">            out.write(postData);</span>
+<span class="fc" id="L229">            out.close();</span>
+
+            // read response
+<span class="fc" id="L232">            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));</span>
+            String line;
+<span class="fc bfc" id="L234" title="All 2 branches covered.">            while ((line = in.readLine()) != null){</span>
+<span class="fc" id="L235">                response.append(line);</span>
+            }
+<span class="nc" id="L237">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L238">            throw new Exception(&quot;Internal error.&quot;, e);</span>
+<span class="nc" id="L239">        } catch (IOException e) {</span>
+<span class="nc" id="L240">            throw new Exception(&quot;Error connecting to Cryptsy.&quot;, e);</span>
+        }finally{
+<span class="pc bpc" id="L242" title="3 of 4 branches missed.">            if(in != null){                </span>
+<span class="pc" id="L243">                in.close();</span>
+            }
+<span class="pc bpc" id="L245" title="3 of 4 branches missed.">            if(out != null){</span>
+<span class="pc" id="L246">                out.close();</span>
+            }
+        }
+        
+<span class="fc" id="L250">        return response.toString();</span>
+    }
+
+    private void Init() throws Exception{
+        
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if(!Inited){</span>
+<span class="fc" id="L256">            SecretKeySpec keyspec = null;</span>
+            try {
+<span class="fc" id="L258">                keyspec = new SecretKeySpec(secret.getBytes(&quot;UTF-8&quot;), &quot;HmacSHA512&quot;);</span>
+<span class="nc" id="L259">            } catch (UnsupportedEncodingException uee) {</span>
+<span class="nc" id="L260">                    throw new Exception(&quot;HMAC-SHA512 doesn't seem to be installed&quot;, uee);</span>
+<span class="fc" id="L261">            }</span>
+
+            try {
+<span class="fc" id="L264">                mac = Mac.getInstance(&quot;HmacSHA512&quot;);</span>
+<span class="nc" id="L265">            } catch (NoSuchAlgorithmException nsae) {</span>
+<span class="nc" id="L266">                throw new Exception(&quot;HMAC-SHA512 doesn't seem to be installed&quot;, nsae);</span>
+<span class="fc" id="L267">            }</span>
+
+            try {
+<span class="fc" id="L270">                mac.init(keyspec);</span>
+<span class="nc" id="L271">            } catch (InvalidKeyException ike) {</span>
+<span class="nc" id="L272">                throw new Exception(&quot;Invalid key for signing request&quot;, ike);</span>
+<span class="fc" id="L273">            }</span>
+            
+<span class="fc" id="L275">            Inited = true;</span>
+        }
+<span class="fc" id="L277">    }</span>
+    
+    private String ToHex(byte[] a) throws UnsupportedEncodingException {
+<span class="fc" id="L280">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        for(byte b:a){</span>
+<span class="fc" id="L282">            sb.append(String.format(&quot;%02x&quot;, b&amp;0xff));</span>
+        }
+<span class="fc" id="L284">        return sb.toString();	</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

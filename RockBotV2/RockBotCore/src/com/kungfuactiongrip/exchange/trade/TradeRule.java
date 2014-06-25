@@ -1,5 +1,7 @@
 package com.kungfuactiongrip.exchange.trade;
 
+import com.kungfuactiongrip.exchange.IExchange;
+import com.kungfuactiongrip.exchange.io.IBotIO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,22 +12,34 @@ import java.util.logging.Logger;
 public abstract class TradeRule implements Runnable {
     
     private boolean _execute;
-    private int _marketID;
+    
+    // Core members for any trade rule ;)
+    int _marketID;
     ExecuteState _lastRunState;
+    IExchange _exchangeObj;
+    IBotIO _dbObj;
     
     TradeRule(){
         this._execute = true;
         _lastRunState = ExecuteState.NOP;
     }
     
-    public ExecuteState fetchLastRunState(){
-        return _lastRunState;
+    void setExchange(IExchange exchange){
+        _exchangeObj = exchange;
     }
     
-    public void setMarketID(int marketID){
+    void setDB(IBotIO dbObj){
+        _dbObj = dbObj;
+    }
+    
+    void setMarketID(int marketID){
         _marketID = marketID;
     }
     
+    public ExecuteState fetchLastRunState(){
+        return _lastRunState;
+    }
+
     public void shutdown(){
         _execute = false;
     }
@@ -33,9 +47,10 @@ public abstract class TradeRule implements Runnable {
     public abstract void runImpl();
     
     @Override
+    @SuppressWarnings("SleepWhileInLoop")
     public void run() {
         
-        if(_marketID <= 0){
+        if(_marketID <= 0 || _dbObj == null || _exchangeObj == null){
             this.shutdown();
             _lastRunState = ExecuteState.RULE_RUN_ABORTED;
         }

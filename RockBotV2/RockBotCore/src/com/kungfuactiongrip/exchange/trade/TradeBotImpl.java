@@ -6,10 +6,16 @@
 
 package com.kungfuactiongrip.exchange.trade;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.exchange.IExchange;
+import com.kungfuactiongrip.exchange.IExchangeGenerator;
 import com.kungfuactiongrip.exchange.io.IBotIO;
+import com.kungfuactiongrip.exchange.to.MarketBalanceList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,15 +25,15 @@ class TradeBotImpl implements ITradeBot {
 
     private final List<TradeRule> _rules;
     private final ExchangeList _exchange;
+    private final IExchange _exchangeObj;
     private final IBotIO _dbObj;
     private final List<Thread> _tradeRules;
-    private final List<String> _botLog;
     
-    TradeBotImpl(ExchangeList exchange, IBotIO dbObj) {
+    TradeBotImpl(IExchangeGenerator exchangeGenerator, ExchangeList exchange, IBotIO dbObj) {
         _rules = new ArrayList<>();
-        _botLog = new ArrayList<>();
         _tradeRules = new ArrayList<>();
         _exchange = exchange;
+        _exchangeObj = exchangeGenerator.GenerateExchangeObject();
         _dbObj = dbObj;
     }
     
@@ -76,11 +82,38 @@ class TradeBotImpl implements ITradeBot {
         for(TradeRule tr : _rules){
             // for each activem
             for(Integer i : FetchActiveMarketList()){
+                
+                // set key values for rule ;)
                 tr.setMarketID(i);
+                tr.setDB(_dbObj);
+                tr.setExchange(_exchange.GenerateExchangeObject());
+                
+                // run the rule ;)
                 Thread t = new Thread(tr);
                 _tradeRules.add(t);
                 t.start();
             }
         }
+    }
+
+    @Override
+    public double FetchPerTradeAmount() {
+        // fetch from DB
+        // fetch amount from exchange
+        MarketBalanceList mbl;
+        double result = 0.0;
+        try {
+            
+            mbl = _exchangeObj.FetchBalances();
+            double currentBalance = mbl.FetchBalance(TradeConstants.BitcoinKey);
+            PropertyBag properties = _dbObj.FetchEngineConfiguration();
+            String value = properties.FetchKey(TradeConstants.MAX_TRADE_PERCENT_OF_TOTAL);
+            double percentAmount = Double.parseDouble(value);
+            return (currentBalance * percentAmount);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(TradeBotImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 }

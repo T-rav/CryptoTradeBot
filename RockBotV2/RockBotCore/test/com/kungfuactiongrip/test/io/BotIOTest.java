@@ -6,6 +6,7 @@
 
 package com.kungfuactiongrip.test.io;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import com.kungfuactiongrip.exchange.io.IOFactory;
@@ -407,6 +408,25 @@ public class BotIOTest {
         List<Integer> result = botIO.FetchActiveMarketList(ExchangeList.Cryptsy);
         
         assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void FetchEngineConfiguration_WhenValidDBOject_ExpectPropertyBag(){
+        IBotIO botIO = CreateIOObject();
+        
+        PropertyBag result = botIO.FetchEngineConfiguration();
+        
+        assertNotNull(result);
+        assertEquals(18, result.TotalProperties());
+    }
+    
+    @Test
+    public void FetchEngineConfiguration_WhenInvalidDBOject_ExpectPropertyBag(){
+        IBotIO botIO = CreateBadIOObject();
+        
+        PropertyBag result = botIO.FetchEngineConfiguration();
+        
+        assertNull(result);
     }
     
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TradeOrderFactory.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RockBotCore&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.kungfuactiongrip.to</a> &gt; <span class="el_source">TradeOrderFactory.java</span></div><h1>TradeOrderFactory.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.kungfuactiongrip.to;
+
+import com.kungfuactiongrip.exchange.ExchangeList;
+
+/**
+ *
+ * @author Administrator
+ */
+<span class="nc" id="L15">public class TradeOrderFactory {</span>
+
+    public static TradeOrder GenerateOrder(TradeType tradeType) {
+        
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        if(tradeType == TradeType.BUY){</span>
+<span class="fc" id="L20">            return new BuyOrder();</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        }else if(tradeType == TradeType.SELL){</span>
+<span class="fc" id="L22">            return new SellOrder();</span>
+        }
+        
+<span class="nc" id="L25">        return null;</span>
+    }
+
+    public static TradeOrder GenerateOrder(TradeType tradeType, int rowID, String tradeID, double pricePer, String linkedID, ExchangeList exchange, String rowTS) {
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if(tradeType == TradeType.BUY){</span>
+<span class="fc" id="L31">            return new BuyOrder(rowID, tradeID, pricePer, linkedID, exchange,  rowTS );</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        }else if(tradeType == TradeType.SELL){</span>
+<span class="fc" id="L33">            return new SellOrder(rowID, tradeID, pricePer, linkedID, exchange, rowTS);</span>
+        }
+        
+<span class="nc" id="L36">        return null;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

@@ -14,6 +14,7 @@ public enum ExchangeList implements IExchangeGenerator{
     private final IExchangeGenerator _generator;
     private ExchangeList(IExchangeGenerator generator){
         _generator = generator;
+        
     }
 
     @Override

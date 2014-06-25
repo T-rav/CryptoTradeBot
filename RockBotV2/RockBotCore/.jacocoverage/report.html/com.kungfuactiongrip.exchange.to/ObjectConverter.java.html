@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ObjectConverter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RockBotCore&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.kungfuactiongrip.exchange.to</a> &gt; <span class="el_source">ObjectConverter.java</span></div><h1>ObjectConverter.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.kungfuactiongrip.exchange.to;
+
+import com.google.gson.Gson;
+import com.jayway.jsonpath.JsonPath;
+import com.kungfuactiongrip.exchange.io.BotIOImpl;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
+/**
+ *
+ * @author Administrator
+ */
+public class ObjectConverter {
+
+<span class="fc" id="L26">    private final Gson g = new Gson();</span>
+<span class="fc" id="L27">    public ObjectConverter() {</span>
+<span class="fc" id="L28">    }</span>
+    
+    public MarketBalanceList MakeMarketBalanceList(String payload){
+<span class="fc" id="L31">        MarketBalanceList result  = new MarketBalanceList();</span>
+        
+        try{
+<span class="fc" id="L34">            JSONObject obj = JsonPath.read(payload, &quot;$.return.balances_available[*]&quot;);</span>
+<span class="fc" id="L35">            Set&lt;String&gt; keys = obj.keySet();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            for(String key : keys){</span>
+<span class="fc" id="L37">                Object balance = obj.get(key);</span>
+<span class="fc" id="L38">                result.AddBalance(key, Double.parseDouble(balance.toString()));</span>
+<span class="fc" id="L39">            }</span>
+<span class="nc" id="L40">        }catch(Exception e){</span>
+<span class="nc" id="L41">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L42">        }</span>
+        
+<span class="fc" id="L44">        return result;</span>
+    }
+    
+    public MarketCreateOrderResult MakeMarketOrderCreateResultObject(String payload){
+        try{
+<span class="fc" id="L49">            String obj = JsonPath.read(payload, &quot;$.success&quot;);</span>
+            
+            // error ;(
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            if(obj.equals(&quot;0&quot;)){</span>
+<span class="fc" id="L53">                String error = JsonPath.read(payload, &quot;$.error&quot;);</span>
+<span class="fc" id="L54">                return new MarketCreateOrderResult(error);</span>
+            }
+            
+<span class="fc" id="L57">            return g.fromJson(payload, MarketCreateOrderResult.class);</span>
+<span class="fc" id="L58">        }catch(Exception e){</span>
+<span class="fc" id="L59">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L60">            return null;</span>
+        }
+    }
+    
+    public MarketTradeFee MakeTradeFeeObject(String payload){
+<span class="fc" id="L65">        MarketTradeFee result = null;</span>
+
+        // process sell orders
+        try{
+<span class="fc" id="L69">            JSONObject obj = JsonPath.read(payload, &quot;$.return[*]&quot;);</span>
+
+<span class="fc" id="L71">            Object fee = obj.get(&quot;fee&quot;);</span>
+<span class="fc" id="L72">            Object net = obj.get(&quot;net&quot;);</span>
+
+<span class="fc" id="L74">            result = new MarketTradeFee(Double.parseDouble(fee.toString()), Double.parseDouble(net.toString()));</span>
+<span class="fc" id="L75">        }catch(Exception e){</span>
+<span class="fc" id="L76">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L77">            return null;</span>
+<span class="fc" id="L78">        }</span>
+        
+<span class="fc" id="L80">        return result;</span>
+    }
+    
+    public MarketCancelOrderResult MakeCancelOrderResultObject(String payload){
+
+        try{
+<span class="fc" id="L86">            String obj = JsonPath.read(payload, &quot;$.success&quot;);</span>
+            
+            // error ;(
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            if(obj.equals(&quot;0&quot;)){</span>
+<span class="fc" id="L90">                String error = JsonPath.read(payload, &quot;$.error&quot;);</span>
+<span class="fc" id="L91">                return new MarketCancelOrderResult(error, true);</span>
+            }else{
+<span class="fc" id="L93">                String error = JsonPath.read(payload, &quot;$.return&quot;);</span>
+<span class="fc" id="L94">                return new MarketCancelOrderResult(error, false);</span>
+            }
+<span class="fc" id="L96">        }catch(Exception e){</span>
+<span class="fc" id="L97">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+        }
+        
+<span class="fc" id="L100">        return null;</span>
+    }
+    
+    public List&lt;MarketOpenOrder&gt; MakeMyOpenOrderList(String payload){
+<span class="fc" id="L104">        List&lt;MarketOpenOrder&gt; result = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc" id="L106">        Gson json = new Gson();</span>
+        
+        try{
+            // process sell orders
+<span class="fc" id="L110">            JSONArray obj = JsonPath.read(payload, &quot;$.return[*]&quot;);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            for(Object e : obj){</span>
+<span class="fc" id="L112">                MarketOpenOrder mo = json.fromJson(e.toString(), MarketOpenOrder.class);</span>
+                // Add to collection ;)
+<span class="fc" id="L114">                result.add(mo);</span>
+<span class="fc" id="L115">            }</span>
+<span class="fc" id="L116">        }catch(Exception e){</span>
+<span class="fc" id="L117">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L118">        }</span>
+        
+<span class="fc" id="L120">        return result;</span>
+    }
+    
+    public MarketBuySellOrders MakeMarketOrderList(String payload){
+<span class="fc" id="L124">        MarketBuySellOrders result = new MarketBuySellOrders();</span>
+<span class="fc" id="L125">        Gson json = new Gson();</span>
+        
+        try{
+            // process sell orders
+<span class="fc" id="L129">            JSONArray obj = JsonPath.read(payload, &quot;$.return.sellorders[*]&quot;);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">            for(Object e : obj){</span>
+<span class="fc" id="L131">                MarketSellOrder mo = json.fromJson(e.toString(), MarketSellOrder.class);</span>
+                // Add to collection ;)
+<span class="fc" id="L133">                result.SellOrders.add(mo);</span>
+<span class="fc" id="L134">            }</span>
+
+            // process buy orders
+<span class="fc" id="L137">            obj = JsonPath.read(payload, &quot;$.return.buyorders[*]&quot;);</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">            for(Object e : obj){</span>
+<span class="fc" id="L139">                MarketBuyOrder mo = json.fromJson(e.toString(), MarketBuyOrder.class);</span>
+                // Add to collection ;)
+<span class="fc" id="L141">                result.BuyOrders.add(mo);</span>
+<span class="fc" id="L142">            }</span>
+<span class="fc" id="L143">        }catch(Exception e){</span>
+<span class="fc" id="L144">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L145">            return null;</span>
+<span class="fc" id="L146">        }</span>
+        
+<span class="fc" id="L148">        return result;</span>
+    }
+
+    public List&lt;MarketTrade&gt; MakeMarketTradeList(String payload) {
+<span class="fc" id="L152">        List&lt;MarketTrade&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L153">        Gson json = new Gson();</span>
+        try{
+<span class="fc" id="L155">            JSONArray obj = JsonPath.read(payload, &quot;$.return[*]&quot;);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            for(Object e : obj){</span>
+<span class="fc" id="L157">                MarketTrade mt = json.fromJson(e.toString(), MarketTrade.class);</span>
+                // Add to collection ;)
+<span class="fc" id="L159">                result.add(mt);</span>
+<span class="fc" id="L160">            }</span>
+<span class="fc" id="L161">        }catch(Exception e){</span>
+<span class="fc" id="L162">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L163">            return null;</span>
+<span class="fc" id="L164">        }</span>
+        
+<span class="fc" id="L166">        return result;</span>
+    }
+    
+    public List&lt;MarketTradeVerbose&gt; MakeMyTradeList(String payload){
+<span class="fc" id="L170">        List&lt;MarketTradeVerbose&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L171">        Gson json = new Gson();</span>
+        try{
+<span class="fc" id="L173">            JSONArray obj = JsonPath.read(payload, &quot;$.return[*]&quot;);</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            for(Object e : obj){</span>
+<span class="fc" id="L175">                MarketTradeVerbose mt = json.fromJson(e.toString(), MarketTradeVerbose.class);</span>
+                // Add to collection ;)
+<span class="fc" id="L177">                result.add(mt);</span>
+<span class="fc" id="L178">            }</span>
+<span class="fc" id="L179">        }catch(Exception e){</span>
+<span class="fc" id="L180">            Logger.getLogger(ObjectConverter.class.getName()).log(Level.WARNING, null, e);</span>
+<span class="fc" id="L181">            return null;</span>
+<span class="fc" id="L182">        }</span>
+        
+<span class="fc" id="L184">        return result;</span>
+    }  
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

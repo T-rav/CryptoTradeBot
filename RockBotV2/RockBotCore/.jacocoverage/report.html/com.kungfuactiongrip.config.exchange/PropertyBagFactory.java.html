@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PropertyBagFactory.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RockBotCore&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.kungfuactiongrip.config.exchange</a> &gt; <span class="el_source">PropertyBagFactory.java</span></div><h1>PropertyBagFactory.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.kungfuactiongrip.config.exchange;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Administrator
+ */
+<span class="nc" id="L20">public class PropertyBagFactory {</span>
+    
+    @SuppressWarnings({&quot;BroadCatchBlock&quot;, &quot;TooBroadCatch&quot;})
+    public static PropertyBag GenerateFromConfig(String config){
+<span class="fc" id="L24">        InputStream stream = null;</span>
+<span class="fc" id="L25">        PropertyBag result = new PropertyBag();</span>
+        
+        try{
+<span class="fc" id="L28">            Properties prop = new Properties();</span>
+<span class="fc" id="L29">            ClassLoader loader = Thread.currentThread().getContextClassLoader();       </span>
+<span class="fc" id="L30">            stream = loader.getResourceAsStream(&quot;com/kungfuactiongrip/config/&quot;+config+&quot;.properties&quot;);</span>
+<span class="fc" id="L31">            prop.load(stream);</span>
+
+<span class="fc" id="L33">            Enumeration&lt;?&gt; propertyNames = prop.propertyNames();</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">            while(propertyNames.hasMoreElements()){</span>
+<span class="fc" id="L35">                Object next = propertyNames.nextElement();</span>
+<span class="fc" id="L36">                String key = next.toString();</span>
+<span class="fc" id="L37">                String value = prop.getProperty(key);</span>
+<span class="fc" id="L38">                result.AddPair(key, value);</span>
+<span class="fc" id="L39">            }</span>
+<span class="fc" id="L40">        }catch(Exception e){</span>
+<span class="fc" id="L41">            Logger.getGlobal().log(Level.WARNING, config, e);</span>
+<span class="fc" id="L42">            return null;</span>
+        }finally{
+<span class="pc bpc" id="L44" title="4 of 6 branches missed.">            if(stream != null){</span>
+                try{
+<span class="pc" id="L46">                    stream.close();</span>
+<span class="nc" id="L47">                }catch(IOException e){</span>
+<span class="nc" id="L48">                    Logger.getGlobal().log(Level.WARNING, config, e);</span>
+<span class="pc" id="L49">                }</span>
+            }
+        }
+        
+<span class="fc" id="L53">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

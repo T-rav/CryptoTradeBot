@@ -6,6 +6,7 @@
 
 package com.kungfuactiongrip.exchange.io;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
@@ -157,4 +158,9 @@ public interface IBotIO {
      */
     public List<Integer> FetchActiveMarketList(ExchangeList exchange);
   
+    /**
+     *
+     * @return
+     */
+    public PropertyBag FetchEngineConfiguration();
 }

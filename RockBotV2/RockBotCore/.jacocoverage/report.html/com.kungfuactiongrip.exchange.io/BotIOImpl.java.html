@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BotIOImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RockBotCore&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.kungfuactiongrip.exchange.io</a> &gt; <span class="el_source">BotIOImpl.java</span></div><h1>BotIOImpl.java</h1><pre class="source lang-java linenums">package com.kungfuactiongrip.exchange.io;
+
+import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.exchange.IExchange;
+import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
+import com.kungfuactiongrip.exchange.io.data.IDbDAO;
+import com.kungfuactiongrip.exchange.to.MarketBuySellOrders;
+import com.kungfuactiongrip.exchange.to.MarketTrade;
+import com.kungfuactiongrip.to.TradeOrder;
+import com.kungfuactiongrip.to.TradeState;
+import com.kungfuactiongrip.to.TradeType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Administrator
+ */
+public class BotIOImpl implements IBotIO  {
+
+    private IDbDAO _dbObject;
+    private ExchangeList _exchangeName;
+    private IExchange _exchangeObj;
+    
+    BotIOImpl() {
+<span class="fc" id="L28">        this(null, null);</span>
+<span class="fc" id="L29">    }</span>
+    
+    /**
+     *
+     * @param propertyFileName
+     */
+<span class="fc" id="L35">    BotIOImpl(String propertyFileName, ExchangeList exchange){</span>
+        
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if(propertyFileName != null){</span>
+<span class="fc" id="L38">            _dbObject = DBProviderFactory.GenerateMySQLDBObject(propertyFileName);</span>
+        }
+        
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if(exchange != null){</span>
+<span class="fc" id="L42">            _exchangeName = exchange;</span>
+<span class="fc" id="L43">            _exchangeObj = exchange.GenerateExchangeObject();</span>
+        }
+<span class="fc" id="L45">    }</span>
+
+    @Override
+    public String FetchUser(){
+        
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="nc" id="L51">            return _dbObject.FetchUser();</span>
+        }
+        
+<span class="fc" id="L54">        return &quot;&quot;;</span>
+    }
+
+    @Override
+    public List&lt;TradeOrder&gt; FetchOpenBuyOrdersForMarket(int marketID) {
+        
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if(_dbObject != null){</span>
+<span class="fc" id="L61">            return _dbObject.FetchOrdersForMarket(marketID, TradeType.BUY, TradeState.OPEN, _exchangeName);</span>
+        }
+        
+<span class="fc" id="L64">        return new ArrayList&lt;&gt;();</span>
+    }
+
+    @Override
+    public List&lt;TradeOrder&gt; FetchOpenSellOrdersForMarket(int marketID) {
+        
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if(_dbObject != null){</span>
+<span class="fc" id="L71">            return _dbObject.FetchOrdersForMarket(marketID, TradeType.SELL, TradeState.OPEN, _exchangeName);</span>
+        }
+        
+<span class="fc" id="L74">        return new ArrayList&lt;&gt;();</span>
+    }
+
+    @Override
+    public int InsertOrder(TradeType type, TradeState state, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
+        
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if(_dbObject != null){</span>
+<span class="fc" id="L81">            return _dbObject.InsertOrder(type, state, _exchangeName, marketID, pricePer, totalValue, tradeID, linkedID);</span>
+        }
+        
+<span class="fc" id="L84">        return -1;</span>
+    }
+
+    @Override
+    public int InsertOrder(TradeType type, TradeState state, int marketID, double pricePer, double totalValue, String tradeID) {
+        
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if(_dbObject != null){</span>
+<span class="fc" id="L91">            return _dbObject.InsertOrder(type, state, _exchangeName, marketID, pricePer, totalValue, tradeID, null);</span>
+        }
+        
+<span class="fc" id="L94">        return -1;</span>
+    }
+    
+    @Override
+    public boolean UpdateOrderState(int rowID, TradeState state) {
+        
+<span class="fc bfc" id="L100" title="All 4 branches covered.">        if(_dbObject != null &amp;&amp; rowID &gt; 0){</span>
+<span class="fc" id="L101">            return _dbObject.UpdateOrderState(rowID, state);</span>
+        }
+        
+<span class="fc" id="L104">        return false;</span>
+    }
+
+    @Override
+    public int FetchNumberOfOpenBuyOrdersForMarketForInterval(int marketID, int hourInterval) {
+        
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L111">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, _exchangeName, marketID, hourInterval);</span>
+        }
+        
+<span class="nc" id="L114">        return -1;</span>
+    }
+
+    @Override
+    public int FetchNumberOfOpenSellOrdersForMarketForInterval(int marketID, int hourInterval) {
+        
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L121">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.OPEN, _exchangeName, marketID, hourInterval);</span>
+        }
+        
+<span class="nc" id="L124">        return -1;</span>
+    }
+    
+    @Override
+    public int FetchNumberOfOpenBuyOrdersForMarketForDay(int marketID) {
+        
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L131">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.OPEN, _exchangeName, marketID, 24);</span>
+        }
+        
+<span class="nc" id="L134">        return -1;</span>
+    }
+
+    @Override
+    public int FetchNumberOfOpenSellOrdersForMarketForDay(int marketID) {
+        
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L141">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.OPEN, _exchangeName, marketID, 24);</span>
+        }
+        
+<span class="nc" id="L144">        return -1;</span>
+    }
+
+    @Override
+    public int FetchNumberOfAbortedSellOrdersForInterval(int marketID, int hourInterval) {
+        
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L151">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, _exchangeName, marketID, hourInterval);</span>
+        }
+        
+<span class="nc" id="L154">        return -1;</span>
+    }
+
+    @Override
+    public int FetchNumberOfAbortedBuyOrdersForInterval(int marketID, int hourInterval) {
+        
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L161">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, _exchangeName, marketID, hourInterval);</span>
+        }
+        
+<span class="nc" id="L164">        return -1;</span>
+    }
+
+    @Override
+    public int FetchNumberOfAbortedSellOrdersForDay(int marketID) {
+        
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L171">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.SELL, TradeState.ABORTED, _exchangeName, marketID, 24);</span>
+        }
+        
+<span class="nc" id="L174">        return -1;</span>
+    }
+
+    @Override
+    public int FetchNumberOfAbortedBuyOrdersForDay(int marketID) {
+        
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">        if(_dbObject != null){</span>
+<span class="fc" id="L181">            return _dbObject.FetchOrderCountOfTypeForInterval(TradeType.BUY, TradeState.ABORTED, _exchangeName, marketID, 24);</span>
+        }
+        
+<span class="nc" id="L184">        return -1;</span>
+    }
+
+    @Override
+    public List&lt;MarketTrade&gt; FetchMarketTrades(int marketID) {
+
+<span class="nc" id="L190">        List&lt;MarketTrade&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if(_exchangeObj != null){</span>
+            try {
+<span class="nc" id="L193">                return _exchangeObj.FetchMarketTrades(marketID);</span>
+<span class="nc" id="L194">            } catch (Exception ex) {</span>
+<span class="nc" id="L195">                Logger.getLogger(BotIOImpl.class.getName()).log(Level.SEVERE, null, ex);</span>
+            }
+        }
+        
+<span class="nc" id="L199">        return null;</span>
+    }
+    
+    @Override
+    public MarketBuySellOrders FetchMarketOrders(int marketID) {
+
+<span class="nc" id="L205">        MarketBuySellOrders result = null;</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if(_exchangeObj != null){</span>
+            try {
+<span class="nc" id="L208">                return _exchangeObj.FetchMarketOrders(marketID);</span>
+<span class="nc" id="L209">            } catch (Exception ex) {</span>
+<span class="nc" id="L210">                Logger.getLogger(BotIOImpl.class.getName()).log(Level.SEVERE, null, ex);</span>
+            }
+        }
+        
+<span class="nc" id="L214">        return null;</span>
+    }
+
+    @Override
+    public List&lt;Integer&gt; FetchActiveMarketList(ExchangeList exchange) {
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        if(_dbObject != null){</span>
+<span class="fc" id="L220">            return _dbObject.FetchActiveMarketList(exchange);</span>
+        }
+        
+<span class="fc" id="L223">        return new ArrayList&lt;&gt;();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

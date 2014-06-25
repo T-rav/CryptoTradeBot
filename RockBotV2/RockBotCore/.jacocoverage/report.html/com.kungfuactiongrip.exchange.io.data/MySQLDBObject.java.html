@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MySQLDBObject.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RockBotCore&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.kungfuactiongrip.exchange.io.data</a> &gt; <span class="el_source">MySQLDBObject.java</span></div><h1>MySQLDBObject.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.kungfuactiongrip.exchange.io.data;
+
+import com.kungfuactiongrip.config.exchange.PropertyBag;
+import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
+import com.kungfuactiongrip.to.TradeOrder;
+import com.kungfuactiongrip.to.TradeOrderFactory;
+import com.kungfuactiongrip.to.TradeState;
+import com.kungfuactiongrip.to.TradeType;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+/**
+ *
+ * @author Travis.Frisinger ;)
+ * 
+ * TODO : Build process to poll data from exchange
+ *        Build process to insert into DB
+ *        Build process to ag the stats for bot
+ */
+public class MySQLDBObject implements IDbDAO {
+
+    // JDBC driver name and database URL
+<span class="fc" id="L39">    String JDBC_DRIVER = &quot;com.mysql.jdbc.Driver&quot;;  </span>
+<span class="fc" id="L40">    String DB_URL = &quot;&quot;;</span>
+    //  Database credentials
+<span class="fc" id="L42">    String USER = &quot;username&quot;;</span>
+<span class="fc" id="L43">    String PASS = &quot;password&quot;;</span>
+    
+<span class="fc" id="L45">    private final String fetchBuyOrders = &quot;select rID, tradeID, btcPricePer, linkedTradeID, rTS &quot;</span>
+                                          + &quot; from BotTrade where orderState = ? and orderType = ? &quot;
+                                          + &quot;and marketID = ? and exchangeName = ?&quot;;
+    
+<span class="fc" id="L49">    private final String insertOrder = &quot;insert into BotTrade(tradeID, exchangeName, marketID, totalCurrencyValue, &quot;</span>
+                                        + &quot;btcPricePer, orderState, orderType, &quot;
+                                        + &quot;linkedTradeID) values(?,?,?,?,?,?,?,?)&quot;;
+    
+<span class="fc" id="L53">    private final String updateOrder = &quot;update BotTrade set orderState = ? where rID = ?&quot;;</span>
+    
+<span class="fc" id="L55">    private final String orderStateCountInterval = &quot;select count(rID) as 'total' from BotTrade where orderState = ? &quot;</span>
+                                            + &quot;and orderType = ? and exchangeName = ? and marketID = ? and &quot;
+                                            + &quot;rTS &gt;= now() - INTERVAL ? HOUR&quot;;
+    
+<span class="fc" id="L59">    private final String orderStateCount = &quot;select count(rID) as 'total' from BotTrade where orderState = ? &quot;</span>
+                                            + &quot;and orderType = ? and exchangeName = ? and marketID = ?&quot;;
+    
+<span class="fc" id="L62">    private final String botConfiguration = &quot;SELECT rid, optionName, optionValue FROM TradeOptions&quot;;</span>
+    
+<span class="fc" id="L64">    private final String tradeHistoryInsert = &quot;INSERT INTO TradeHistory(tradeID, tradeType, orderType, &quot;</span>
+                                                + &quot;tradeDateTime, tradeQty, tradeFee, tradeTotal, orderID, exchangeName, marketID) &quot;
+                                                + &quot; VALUES(?,?,?,?,?,?,?,?,?,?);&quot;;
+    
+<span class="fc" id="L68">    private final String fetchActiveMarkets = &quot;SELECT marketID FROM tradeDataTest.BotMarketData where isActive = 1 and exchangeName = ?&quot;;</span>
+    
+    protected MySQLDBObject(){
+<span class="fc" id="L71">        this(&quot;url&quot;, &quot;username&quot;, &quot;password&quot;);</span>
+<span class="fc" id="L72">    }</span>
+    
+<span class="fc" id="L74">    protected MySQLDBObject(String url, String user, String pass){</span>
+<span class="fc" id="L75">        DB_URL = url;</span>
+<span class="fc" id="L76">        USER = user;</span>
+<span class="fc" id="L77">        PASS = pass;</span>
+<span class="fc" id="L78">    }</span>
+
+    @Override
+    public String FetchUser(){
+<span class="fc" id="L82">        return USER;</span>
+    }
+    
+    @Override
+    public Connection CreateConnection(){
+<span class="fc" id="L87">        Connection conn = null;</span>
+        
+        try{
+<span class="fc" id="L90">           Class.forName(JDBC_DRIVER);</span>
+<span class="fc" id="L91">           conn = DriverManager.getConnection(DB_URL,USER,PASS);</span>
+<span class="nc" id="L92">        }catch(SQLException | ClassNotFoundException se){</span>
+<span class="nc" id="L93">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, se);</span>
+<span class="fc" id="L94">        }</span>
+        
+<span class="fc" id="L96">        return conn;</span>
+    }
+    
+    @Override
+    public List&lt;TradeOrder&gt; FetchOrdersForMarket(int marketID, TradeType typeOf, TradeState state, ExchangeList exchange){
+<span class="fc" id="L101">        List&lt;TradeOrder&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L102">        Connection conn = null;</span>
+<span class="fc" id="L103">        PreparedStatement ps = null;</span>
+<span class="fc" id="L104">        ResultSet rs = null;</span>
+        
+        try{
+<span class="fc" id="L107">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L109">               ps = conn.prepareStatement(fetchBuyOrders);</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L111">                   String typeName = typeOf.name();</span>
+<span class="fc" id="L112">                   String stateName = state.name();</span>
+<span class="fc" id="L113">                   String exchangeName = exchange.name().toUpperCase();</span>
+                   
+<span class="fc" id="L115">                   ps.setString(1, stateName);</span>
+<span class="fc" id="L116">                   ps.setString(2, typeName);</span>
+                   
+<span class="fc" id="L118">                   ps.setInt(3, marketID);</span>
+<span class="fc" id="L119">                   ps.setString(4, exchangeName);</span>
+                   
+<span class="fc" id="L121">                   rs = ps.executeQuery();</span>
+                   
+<span class="fc bfc" id="L123" title="All 2 branches covered.">                   while(rs.next()){</span>
+<span class="fc" id="L124">                       int rowID = rs.getInt(&quot;rID&quot;);</span>
+<span class="fc" id="L125">                       String tradeID = rs.getString(&quot;tradeID&quot;);</span>
+<span class="fc" id="L126">                       double pricePer = rs.getDouble(&quot;btcPricePer&quot;);</span>
+<span class="fc" id="L127">                       String linkedTradeID = rs.getString(&quot;linkedTradeID&quot;);</span>
+<span class="fc" id="L128">                       String rowTS = rs.getString(&quot;rTS&quot;);</span>
+                       
+                       // add to result collection ;)
+<span class="fc" id="L131">                       result.add(TradeOrderFactory.GenerateOrder(typeOf, rowID, tradeID, pricePer, linkedTradeID, exchange, rowTS));</span>
+<span class="fc" id="L132">                   }</span>
+               }
+           }
+<span class="nc" id="L135">       }catch (SQLException ex) {</span>
+<span class="nc" id="L136">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            // close result set
+<span class="nc" id="L139">            try {</span>
+<span class="pc bpc" id="L140" title="10 of 12 branches missed.">                if(rs != null &amp;&amp; !rs.isClosed()){</span>
+                    try {
+<span class="pc" id="L142">                        rs.close();</span>
+<span class="nc" id="L143">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L144">                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L145">                    }</span>
+                }
+<span class="nc" id="L147">            } catch (SQLException ex) {</span>
+<span class="nc" id="L148">                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L149">            }</span>
+            
+            // close the prepared statement
+<span class="pc bpc" id="L152" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L154">                    ps.close();</span>
+<span class="nc" id="L155">                } catch (SQLException ex) {</span>
+<span class="nc" id="L156">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L157">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L161" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L163">                    conn.close();</span>
+<span class="nc" id="L164">                } catch (SQLException ex) {</span>
+<span class="nc" id="L165">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L166">                }</span>
+            }
+        }
+        
+<span class="fc" id="L170">       return result;</span>
+    }
+    
+    @Override
+    public int InsertOrder(TradeType type, TradeState state, ExchangeList exchange, int marketID, double pricePer, double totalValue, String tradeID, String linkedID) {
+<span class="fc" id="L175">        Connection conn = null;</span>
+<span class="fc" id="L176">        PreparedStatement ps = null;</span>
+<span class="fc" id="L177">        ResultSet rs = null;</span>
+<span class="fc" id="L178">        int result = -1;</span>
+        
+        try{
+<span class="fc" id="L181">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L183">               ps = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS);</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L185">                   String typeName = type.name();</span>
+<span class="fc" id="L186">                   String stateName = state.name();</span>
+<span class="fc" id="L187">                   String exchangeName = exchange.name().toUpperCase();</span>
+                   
+<span class="fc" id="L189">                   ps.setString(1, tradeID);</span>
+<span class="fc" id="L190">                   ps.setString(2, exchangeName);</span>
+<span class="fc" id="L191">                   ps.setInt(3, marketID);</span>
+<span class="fc" id="L192">                   ps.setDouble(4, totalValue);</span>
+<span class="fc" id="L193">                   ps.setDouble(5, pricePer);</span>
+<span class="fc" id="L194">                   ps.setString(6, stateName);</span>
+<span class="fc" id="L195">                   ps.setString(7, typeName);</span>
+<span class="fc" id="L196">                   ps.setString(8, linkedID);</span>
+                   
+<span class="fc" id="L198">                   ps.execute();</span>
+<span class="fc" id="L199">                   rs = ps.getGeneratedKeys();</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">                   if(rs.next()){</span>
+<span class="fc" id="L201">                       result = rs.getInt(1);</span>
+                   }                  
+               }
+           }
+<span class="nc" id="L205">       }catch (SQLException ex) {</span>
+<span class="nc" id="L206">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            
+            // close result set
+<span class="nc" id="L210">            try {</span>
+<span class="pc bpc" id="L211" title="10 of 12 branches missed.">                if(rs != null &amp;&amp; !rs.isClosed()){</span>
+                    try {
+<span class="pc" id="L213">                        rs.close();</span>
+<span class="nc" id="L214">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L215">                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L216">                    }</span>
+                }
+<span class="nc" id="L218">            } catch (SQLException ex) {</span>
+<span class="nc" id="L219">                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L220">            }</span>
+            
+            // close the prepared statement
+<span class="pc bpc" id="L223" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L225">                    ps.close();</span>
+<span class="nc" id="L226">                } catch (SQLException ex) {</span>
+<span class="nc" id="L227">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L228">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L232" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L234">                    conn.close();</span>
+<span class="nc" id="L235">                } catch (SQLException ex) {</span>
+<span class="nc" id="L236">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L237">                }</span>
+            }
+        }
+        
+<span class="fc" id="L241">        return result;</span>
+    }
+    
+    
+    @Override
+    public boolean UpdateOrderState(int rowID, TradeState state) {
+<span class="fc" id="L247">        Connection conn = null;</span>
+<span class="fc" id="L248">        PreparedStatement ps = null;</span>
+<span class="fc" id="L249">        boolean result = false;</span>
+        
+        try{
+<span class="fc" id="L252">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L254">               ps = conn.prepareStatement(updateOrder);</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L256">                   String stateName = state.name();</span>
+                   
+<span class="fc" id="L258">                   ps.setString(1, stateName);</span>
+<span class="fc" id="L259">                   ps.setInt(2, rowID);</span>
+                   
+<span class="fc" id="L261">                   ps.execute();</span>
+<span class="fc" id="L262">                   result = true;</span>
+               }
+           }
+<span class="nc" id="L265">       }catch (SQLException ex) {</span>
+<span class="nc" id="L266">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            
+            // close the prepared statement
+<span class="pc bpc" id="L270" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L272">                    ps.close();</span>
+<span class="nc" id="L273">                } catch (SQLException ex) {</span>
+<span class="nc" id="L274">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L275">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L279" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L281">                    conn.close();</span>
+<span class="nc" id="L282">                } catch (SQLException ex) {</span>
+<span class="nc" id="L283">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L284">                }</span>
+            }
+        }
+        
+<span class="fc" id="L288">        return result;</span>
+    }
+    
+    @Override
+    public int FetchOrderCountOfTypeForInterval(TradeType tradeType, TradeState state, ExchangeList exchange, int marketID, int hourInterval) {
+<span class="fc" id="L293">        int result = 0;</span>
+<span class="fc" id="L294">        Connection conn = null;</span>
+<span class="fc" id="L295">        PreparedStatement ps = null;</span>
+<span class="fc" id="L296">        ResultSet rs = null;</span>
+        
+        try{
+<span class="fc" id="L299">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L301">               ps = conn.prepareStatement(orderStateCountInterval);</span>
+<span class="pc bpc" id="L302" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L303">                   String typeName = tradeType.name();</span>
+<span class="fc" id="L304">                   String stateName = state.name();</span>
+<span class="fc" id="L305">                   String exchangeName = exchange.name().toUpperCase();</span>
+                 
+<span class="fc" id="L307">                   ps.setString(1, stateName);</span>
+<span class="fc" id="L308">                   ps.setString(2, typeName);</span>
+<span class="fc" id="L309">                   ps.setString(3, exchangeName);</span>
+<span class="fc" id="L310">                   ps.setInt(4, marketID);</span>
+<span class="fc" id="L311">                   ps.setInt(5, hourInterval);</span>
+                 
+<span class="fc" id="L313">                   rs = ps.executeQuery();</span>
+                   
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">                   if(rs.next()){</span>
+<span class="fc" id="L316">                       result = rs.getInt(&quot;total&quot;);</span>
+                   }
+               }
+           }
+<span class="nc" id="L320">       }catch (SQLException ex) {</span>
+<span class="nc" id="L321">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            // close result set
+<span class="nc" id="L324">            try {</span>
+<span class="pc bpc" id="L325" title="10 of 12 branches missed.">                if(rs != null &amp;&amp; !rs.isClosed()){</span>
+                    try {
+<span class="pc" id="L327">                        rs.close();</span>
+<span class="nc" id="L328">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L329">                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L330">                    }</span>
+                }
+<span class="nc" id="L332">            } catch (SQLException ex) {</span>
+<span class="nc" id="L333">                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L334">            }</span>
+            
+            // close the prepared statement
+<span class="pc bpc" id="L337" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L339">                    ps.close();</span>
+<span class="nc" id="L340">                } catch (SQLException ex) {</span>
+<span class="nc" id="L341">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L342">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L346" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L348">                    conn.close();</span>
+<span class="nc" id="L349">                } catch (SQLException ex) {</span>
+<span class="nc" id="L350">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L351">                }</span>
+            }
+        }
+        
+<span class="fc" id="L355">       return result;</span>
+    }
+    
+    @Override
+    public int FetchOrderCountOfType(TradeType tradeType, TradeState state, ExchangeList exchange, int marketID) {
+<span class="fc" id="L360">        int result = 0;</span>
+<span class="fc" id="L361">        Connection conn = null;</span>
+<span class="fc" id="L362">        PreparedStatement ps = null;</span>
+<span class="fc" id="L363">        ResultSet rs = null;</span>
+        
+        try{
+<span class="fc" id="L366">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L368">               ps = conn.prepareStatement(orderStateCount);</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L370">                   String typeName = tradeType.name();</span>
+<span class="fc" id="L371">                   String stateName = state.name();</span>
+<span class="fc" id="L372">                   String exchangeName = exchange.name().toUpperCase();</span>
+                 
+<span class="fc" id="L374">                   ps.setString(1, stateName);</span>
+<span class="fc" id="L375">                   ps.setString(2, typeName);</span>
+<span class="fc" id="L376">                   ps.setString(3, exchangeName);</span>
+<span class="fc" id="L377">                   ps.setInt(4, marketID);</span>
+                 
+<span class="fc" id="L379">                   rs = ps.executeQuery();</span>
+                   
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">                   if(rs.next()){</span>
+<span class="fc" id="L382">                       result = rs.getInt(&quot;total&quot;);</span>
+                   }
+               }
+           }
+<span class="nc" id="L386">       }catch (SQLException ex) {</span>
+<span class="nc" id="L387">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            // close result set
+<span class="nc" id="L390">            try {</span>
+<span class="pc bpc" id="L391" title="10 of 12 branches missed.">                if(rs != null &amp;&amp; !rs.isClosed()){</span>
+                    try {
+<span class="pc" id="L393">                        rs.close();</span>
+<span class="nc" id="L394">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L395">                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L396">                    }</span>
+                }
+<span class="nc" id="L398">            } catch (SQLException ex) {</span>
+<span class="nc" id="L399">                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L400">            }</span>
+            
+            // close the prepared statement
+<span class="pc bpc" id="L403" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L405">                    ps.close();</span>
+<span class="nc" id="L406">                } catch (SQLException ex) {</span>
+<span class="nc" id="L407">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L408">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L412" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L414">                    conn.close();</span>
+<span class="nc" id="L415">                } catch (SQLException ex) {</span>
+<span class="nc" id="L416">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L417">                }</span>
+            }
+        }
+        
+<span class="fc" id="L421">       return result;</span>
+    }  
+
+    @Override
+    public PropertyBag FetchEngineConfiguration() {
+<span class="fc" id="L426">        PropertyBag result = new PropertyBag();</span>
+<span class="fc" id="L427">        Connection conn = null;</span>
+<span class="fc" id="L428">        PreparedStatement ps = null;</span>
+<span class="fc" id="L429">        ResultSet rs = null;</span>
+        
+        try{
+<span class="fc" id="L432">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L433" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L434">               ps = conn.prepareStatement(botConfiguration);</span>
+<span class="pc bpc" id="L435" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L436">                   rs = ps.executeQuery();</span>
+                   
+<span class="fc bfc" id="L438" title="All 2 branches covered.">                   while(rs.next()){</span>
+<span class="fc" id="L439">                       String optionName = rs.getString(&quot;optionName&quot;);</span>
+<span class="fc" id="L440">                       String optionValue = rs.getString(&quot;optionValue&quot;);</span>
+<span class="fc" id="L441">                       result.AddPair(optionName, optionValue);</span>
+<span class="fc" id="L442">                   }</span>
+               }
+           }
+<span class="nc" id="L445">       }catch (SQLException ex) {</span>
+<span class="nc" id="L446">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            // close result set
+<span class="nc" id="L449">            try {</span>
+<span class="pc bpc" id="L450" title="10 of 12 branches missed.">                if(rs != null &amp;&amp; !rs.isClosed()){</span>
+                    try {
+<span class="pc" id="L452">                        rs.close();</span>
+<span class="nc" id="L453">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L454">                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L455">                    }</span>
+                }
+<span class="nc" id="L457">            } catch (SQLException ex) {</span>
+<span class="nc" id="L458">                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L459">            }</span>
+            
+            // close the prepared statement
+<span class="pc bpc" id="L462" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L464">                    ps.close();</span>
+<span class="nc" id="L465">                } catch (SQLException ex) {</span>
+<span class="nc" id="L466">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L467">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L471" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L473">                    conn.close();</span>
+<span class="nc" id="L474">                } catch (SQLException ex) {</span>
+<span class="nc" id="L475">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L476">                }</span>
+            }
+        }
+        
+<span class="fc" id="L480">       return result;</span>
+    }
+
+    @Override
+    public boolean InsertTradeHistory(List&lt;MarketTradeVerbose&gt; trades, int marketID, ExchangeList exchange) {
+<span class="fc" id="L485">        boolean result = true;</span>
+<span class="fc" id="L486">        Connection conn = null;</span>
+<span class="fc" id="L487">        PreparedStatement ps = null;</span>
+        
+        // bad things ;)
+<span class="fc bfc" id="L490" title="All 2 branches covered.">        if(trades == null){</span>
+<span class="fc" id="L491">            return false;</span>
+        }
+        
+        try{
+<span class="fc" id="L495">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L497">               ps = conn.prepareStatement(tradeHistoryInsert);</span>
+<span class="pc bpc" id="L498" title="1 of 2 branches missed.">               if(ps != null){</span>
+<span class="fc" id="L499">                   String exchangeName = exchange.name().toUpperCase();</span>
+
+<span class="fc bfc" id="L501" title="All 2 branches covered.">                   for(MarketTradeVerbose mtv : trades){</span>
+                       try{                           
+<span class="fc" id="L503">                            ps.setString(1, mtv.TradeID);</span>
+<span class="fc" id="L504">                            ps.setString(2, mtv.TransactedTradeType.toUpperCase());</span>
+<span class="fc" id="L505">                            ps.setString(3, mtv.InitiatedType);</span>
+<span class="fc" id="L506">                            ps.setString(4, mtv.DateTime);</span>
+<span class="fc" id="L507">                            ps.setDouble(5, mtv.Qty);</span>
+<span class="fc" id="L508">                            ps.setDouble(6, mtv.Fee);</span>
+<span class="fc" id="L509">                            ps.setDouble(7, mtv.Qty);</span>
+<span class="fc" id="L510">                            ps.setString(8, mtv.OrderID);</span>
+<span class="fc" id="L511">                            ps.setString(9, exchangeName);</span>
+<span class="fc" id="L512">                            ps.setInt(10, marketID);</span>
+
+<span class="fc" id="L514">                            ps.execute();</span>
+<span class="nc" id="L515">                       }catch(Exception e){</span>
+<span class="nc" id="L516">                           result = false;</span>
+<span class="nc" id="L517">                           Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, e);</span>
+                       }finally{
+<span class="pc" id="L519">                           ps.clearParameters();</span>
+<span class="pc" id="L520">                       }</span>
+<span class="fc" id="L521">                   }</span>
+               }
+           }
+<span class="nc" id="L524">       }catch (SQLException ex) {</span>
+<span class="nc" id="L525">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            
+            // close the prepared statement
+<span class="pc bpc" id="L529" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L531">                    ps.close();</span>
+<span class="nc" id="L532">                } catch (SQLException ex) {</span>
+<span class="nc" id="L533">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L534">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L538" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L540">                    conn.close();</span>
+<span class="nc" id="L541">                } catch (SQLException ex) {</span>
+<span class="nc" id="L542">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L543">                }</span>
+            }
+        }
+        
+<span class="fc" id="L547">       return result;</span>
+    }
+
+    @Override
+    public List&lt;Integer&gt; FetchActiveMarketList(ExchangeList exchange) {
+<span class="fc" id="L552">        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L553">        Connection conn = null;</span>
+<span class="fc" id="L554">        PreparedStatement ps = null;</span>
+<span class="fc" id="L555">        ResultSet rs = null;</span>
+        
+        try{
+<span class="fc" id="L558">           conn = CreateConnection();</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">           if(conn != null){</span>
+<span class="fc" id="L560">               ps = conn.prepareStatement(fetchActiveMarkets);</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">               if(ps != null){</span>
+                   
+<span class="fc" id="L563">                   String exchangeName = exchange.name().toUpperCase();</span>
+<span class="fc" id="L564">                   ps.setString(1, exchangeName);</span>
+                   
+<span class="fc" id="L566">                   rs = ps.executeQuery();</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">                   while(rs.next()){</span>
+<span class="fc" id="L568">                       int marketID = rs.getInt(&quot;marketID&quot;);</span>
+<span class="fc" id="L569">                       result.add(marketID);</span>
+<span class="fc" id="L570">                   }</span>
+               }
+           }
+<span class="nc" id="L573">       }catch (SQLException ex) {</span>
+<span class="nc" id="L574">            Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+       }finally{
+            // close result set
+<span class="nc" id="L577">            try {</span>
+<span class="pc bpc" id="L578" title="10 of 12 branches missed.">                if(rs != null &amp;&amp; !rs.isClosed()){</span>
+                    try {
+<span class="pc" id="L580">                        rs.close();</span>
+<span class="nc" id="L581">                    } catch (SQLException ex) {</span>
+<span class="nc" id="L582">                        Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L583">                    }</span>
+                }
+<span class="nc" id="L585">            } catch (SQLException ex) {</span>
+<span class="nc" id="L586">                Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L587">            }</span>
+            
+            // close the prepared statement
+<span class="pc bpc" id="L590" title="5 of 6 branches missed.">            if(ps != null ){</span>
+                try {
+<span class="pc" id="L592">                    ps.close();</span>
+<span class="nc" id="L593">                } catch (SQLException ex) {</span>
+<span class="nc" id="L594">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L595">                }</span>
+            }
+            
+            //close the connection
+<span class="pc bpc" id="L599" title="5 of 6 branches missed.">            if(conn != null){</span>
+                try {
+<span class="pc" id="L601">                    conn.close();</span>
+<span class="nc" id="L602">                } catch (SQLException ex) {</span>
+<span class="nc" id="L603">                    Logger.getLogger(MySQLDBObject.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="pc" id="L604">                }</span>
+            }
+        }
+        
+<span class="fc" id="L608">       return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>

@@ -1,5 +1,6 @@
 package com.kungfuactiongrip.exchange.io;
 
+import com.kungfuactiongrip.config.exchange.PropertyBag;
 import com.kungfuactiongrip.exchange.ExchangeList;
 import com.kungfuactiongrip.exchange.IExchange;
 import com.kungfuactiongrip.exchange.io.data.DBProviderFactory;
@@ -221,5 +222,15 @@ public class BotIOImpl implements IBotIO  {
         }
         
         return new ArrayList<>();
+    }
+
+    @Override
+    public PropertyBag FetchEngineConfiguration() {
+        
+        if(_dbObject != null){
+            return _dbObject.FetchEngineConfiguration();
+        }
+        
+        return null;
     }
 }

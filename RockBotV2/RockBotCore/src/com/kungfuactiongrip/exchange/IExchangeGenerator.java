@@ -13,4 +13,5 @@ package com.kungfuactiongrip.exchange;
 public interface IExchangeGenerator {
     
     public IExchange GenerateExchangeObject();
+
 }

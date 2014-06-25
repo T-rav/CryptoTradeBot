@@ -24,5 +24,7 @@ public interface ITradeBot {
     public void RunTradeRules();
     
     public void Shutdown();
+
+    public double FetchPerTradeAmount();
     
 }

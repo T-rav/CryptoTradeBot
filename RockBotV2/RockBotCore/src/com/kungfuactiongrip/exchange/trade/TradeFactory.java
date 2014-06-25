@@ -7,6 +7,7 @@
 package com.kungfuactiongrip.exchange.trade;
 
 import com.kungfuactiongrip.exchange.ExchangeList;
+import com.kungfuactiongrip.exchange.IExchangeGenerator;
 import com.kungfuactiongrip.exchange.io.IBotIO;
 import com.kungfuactiongrip.exchange.io.IOFactory;
 import java.util.logging.Level;
@@ -22,15 +23,15 @@ public class TradeFactory {
         return new ScalpTradeRule();
     }
 
-    public static ITradeBot CreateBot(ExchangeList exchange, String propertiesFile) {
-        if(exchange == null || propertiesFile == null){
+    public static ITradeBot CreateBot(IExchangeGenerator exchangeGenerator, ExchangeList exchange, String propertiesFile) {
+        if(exchange == null || propertiesFile == null || exchangeGenerator == null){
             return null;
         }
         
         try{
             IBotIO dbObj = IOFactory.CreateIOObject(propertiesFile, exchange);
             if(dbObj != null){
-                return new TradeBotImpl(exchange, dbObj);
+                return new TradeBotImpl(exchangeGenerator, exchange, dbObj);
             }
         }catch(Exception e){
             Logger.getLogger(TradeFactory.class.getName()).log(Level.SEVERE, null, e);
