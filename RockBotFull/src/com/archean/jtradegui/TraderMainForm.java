@@ -141,9 +141,9 @@ public class TraderMainForm extends JPanel {
 
     public void killThreads() {
         stopWorker();
-        for (Thread thread : threadMap.values()) {
+        threadMap.values().stream().forEach((thread) -> {
             thread.interrupt();
-        }
+        });
         threadMap.clear();
     }
 
@@ -177,11 +177,8 @@ public class TraderMainForm extends JPanel {
             @Override
             public void onSuccess(MarketRule rule) {
                 processNotification(String.format(locale.getString("RuleExecuted.notification.template"), formatMarketConditionString(rule.condition), formatMarketActionString(rule.action)));
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshRulesTable();
-                    }
+                SwingUtilities.invokeLater(() -> {
+                    refreshRulesTable();
                 });
             }
 
@@ -211,18 +208,15 @@ public class TraderMainForm extends JPanel {
 
     protected void processError(final String excString) {
         TrayIconController.showMessage(locale.getString("notification.error.title"), excString, TrayIcon.MessageType.ERROR);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                StyledDocument document = textPaneLog.getStyledDocument();
-                SimpleAttributeSet errorStyle = new SimpleAttributeSet();
-                StyleConstants.setForeground(errorStyle, Color.RED);
-                StyleConstants.setBold(errorStyle, true);
-                try {
-                    document.insertString(document.getLength(), excString + "\n", errorStyle);
-                } catch (BadLocationException e1) {
-                    e1.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            StyledDocument document = textPaneLog.getStyledDocument();
+            SimpleAttributeSet errorStyle = new SimpleAttributeSet();
+            StyleConstants.setForeground(errorStyle, Color.RED);
+            StyleConstants.setBold(errorStyle, true);
+            try {
+                document.insertString(document.getLength(), excString + "\n", errorStyle);
+            } catch (BadLocationException e1) {
+                e1.printStackTrace();
             }
         });
     }
@@ -234,18 +228,15 @@ public class TraderMainForm extends JPanel {
 
     protected void processNotification(final String notification) {
         TrayIconController.showMessage(locale.getString("notification.info.title"), notification, TrayIcon.MessageType.INFO);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                StyledDocument document = textPaneLog.getStyledDocument();
-                SimpleAttributeSet notificationStyle = new SimpleAttributeSet();
-                StyleConstants.setForeground(notificationStyle, Color.BLUE);
-                StyleConstants.setItalic(notificationStyle, true);
-                try {
-                    document.insertString(document.getLength(), notification + "\n", notificationStyle);
-                } catch (BadLocationException e1) {
-                    e1.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            StyledDocument document = textPaneLog.getStyledDocument();
+            SimpleAttributeSet notificationStyle = new SimpleAttributeSet();
+            StyleConstants.setForeground(notificationStyle, Color.BLUE);
+            StyleConstants.setItalic(notificationStyle, true);
+            try {
+                document.insertString(document.getLength(), notification + "\n", notificationStyle);
+            } catch (BadLocationException e1) {
+                e1.printStackTrace();
             }
         });
     }
@@ -484,22 +475,19 @@ public class TraderMainForm extends JPanel {
 
     private void updateMarketHistory(final List<BaseTradeApi.StandartObjects.Order> history) {
         lastUpdated.marketHistoryUpdated = System.currentTimeMillis();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                int i = 0;
-                DefaultTableModel model = (DefaultTableModel) tableMarketHistory.getModel();
-                model.setRowCount(history.size());
-                for (BaseTradeApi.StandartObjects.Order order : history) {
-                    model.setValueAt(order.time, i, 0);
-                    model.setValueAt(locale.getString(order.type == BaseTradeApi.Constants.ORDER_SELL ? "sell.text" : "buy.text"), i, 1);
-                    model.setValueAt(order.price, i, 2);
-                    model.setValueAt(order.amount, i, 3);
-                    model.setValueAt(Calculator.totalWithFee(order.type, order.price, order.amount, feePercent), i, 4);
-                    i++;
-                }
-                model.fireTableDataChanged();
+        SwingUtilities.invokeLater(() -> {
+            int i = 0;
+            DefaultTableModel model = (DefaultTableModel) tableMarketHistory.getModel();
+            model.setRowCount(history.size());
+            for (BaseTradeApi.StandartObjects.Order order : history) {
+                model.setValueAt(order.time, i, 0);
+                model.setValueAt(locale.getString(order.type == BaseTradeApi.Constants.ORDER_SELL ? "sell.text" : "buy.text"), i, 1);
+                model.setValueAt(order.price, i, 2);
+                model.setValueAt(order.amount, i, 3);
+                model.setValueAt(Calculator.totalWithFee(order.type, order.price, order.amount, feePercent), i, 4);
+                i++;
             }
+            model.fireTableDataChanged();
         });
 
         synchronized (candlesLock) {
