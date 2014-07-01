@@ -23,16 +23,16 @@ import net.minidev.json.JSONObject;
  */
 public class CoinMarketCapParserV2 {
 
-    public List<CoinCapitalizationV2> Parse(String data) {
+    public List<CoinCapitalization> Parse(String data) {
         Gson json = new Gson();
-        List<CoinCapitalizationV2> result = new ArrayList<>();
+        List<CoinCapitalization> result = new ArrayList<>();
         try{
             // process sell orders
             JSONObject obj = JsonPath.read(data, "$.[*]");
             Set<Entry<String, Object>> setData = obj.entrySet();
             Iterator<Entry<String,Object>> itr = setData.iterator();
             while(itr.hasNext()){
-                CoinCapitalizationV2 coin = new CoinCapitalizationV2();
+                CoinCapitalization coin = new CoinCapitalization();
                 Entry<String, Object> entry = itr.next();
                 String val = entry.getValue().toString();
                 String key = entry.getKey();

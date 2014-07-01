@@ -22,6 +22,7 @@ import com.archean.jtradeapi.HistoryUtils;
 import com.archean.jtradeapi.Utils;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
+import com.kungfuactiongrip.coinmarketcap.CoinCapitalization;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -129,7 +130,7 @@ public class TraderMainForm extends JPanel {
         setUpdateOptions();
         CoinMarketCapParser.getWorker().addEventHandler(System.identityHashCode(this), new CoinMarketCapParser.CoinMarketCapEvent() {
             @Override
-            public void onDataUpdate(List<CoinMarketCapParser.CoinCapitalization> data) {
+            public void onDataUpdate(List<CoinCapitalization> data) {
                 updateMarketCap(data);
             }
 
@@ -575,42 +576,36 @@ public class TraderMainForm extends JPanel {
 
     private void updateAccountBalances(final Map<String, Double> balances) {
         lastUpdated.balancesUpdated = System.currentTimeMillis();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                int i = 0;
-                DefaultTableModel model = (DefaultTableModel) tableBalances.getModel();
-                model.setRowCount(balances.size());
-                for (Map.Entry<String, Double> balance : balances.entrySet()) {
-                    model.setValueAt(balance.getKey(), i, 0); // Currency name
-                    model.setValueAt(balance.getValue(), i, 1); // Amount
-                    i++;
-                }
-                model.fireTableDataChanged();
-                updateLabelTotal();
+        SwingUtilities.invokeLater(() -> {
+            int i = 0;
+            DefaultTableModel model = (DefaultTableModel) tableBalances.getModel();
+            model.setRowCount(balances.size());
+            for (Map.Entry<String, Double> balance : balances.entrySet()) {
+                model.setValueAt(balance.getKey(), i, 0); // Currency name
+                model.setValueAt(balance.getValue(), i, 1); // Amount
+                i++;
             }
+            model.fireTableDataChanged();
+            updateLabelTotal();
         });
     }
 
-    private void updateMarketCap(final List<CoinMarketCapParser.CoinCapitalization> capitalizationList) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                int i = 0;
-                DefaultTableModel model = (DefaultTableModel) tableMarketCap.getModel();
-                model.setRowCount(capitalizationList.size());
-                for (CoinMarketCapParser.CoinCapitalization capitalization : capitalizationList) {
-                    model.setValueAt(i + 1, i, 0);
-                    model.setValueAt(String.format("%s (%s)", capitalization.coinName, capitalization.coinCode), i, 1); // Currency name
-                    model.setValueAt(capitalization.usdCap, i, 2); // USD cap
-                    model.setValueAt(capitalization.btcCap, i, 3); // BTC cap
-                    model.setValueAt(capitalization.usdVolume, i, 4); // USD volume
-                    model.setValueAt(capitalization.btcVolume, i, 5); // BTC volume
-                    model.setValueAt(capitalization.change, i, 6); // Change (24h)
-                    i++;
-                }
-                model.fireTableDataChanged();
+    private void updateMarketCap(final List<CoinCapitalization> capitalizationList) {
+        SwingUtilities.invokeLater(() -> {
+            int i = 0;
+            DefaultTableModel model = (DefaultTableModel) tableMarketCap.getModel();
+            model.setRowCount(capitalizationList.size());
+            for (CoinCapitalization capitalization : capitalizationList) {
+                model.setValueAt(i + 1, i, 0);
+                model.setValueAt(String.format("%s (%s)", capitalization.coinName, capitalization.coinCode), i, 1); // Currency name
+                model.setValueAt(capitalization.usdCap, i, 2); // USD cap
+                model.setValueAt(capitalization.btcCap, i, 3); // BTC cap
+                model.setValueAt(capitalization.usdVolume, i, 4); // USD volume
+                model.setValueAt(capitalization.btcVolume, i, 5); // BTC volume
+                model.setValueAt(capitalization.change, i, 6); // Change (24h)
+                i++;
             }
+            model.fireTableDataChanged();
         });
     }
 

@@ -10,7 +10,7 @@ package com.kungfuactiongrip.coinmarketcap;
  *
  * @author Administrator
  */
-public class CoinCapitalizationV2 {
+public class CoinCapitalization {
     public String coinCode;
     public String coinName;
     public long usdCap;

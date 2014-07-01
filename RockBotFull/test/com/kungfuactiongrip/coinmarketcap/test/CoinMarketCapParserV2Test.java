@@ -6,7 +6,7 @@
 
 package com.kungfuactiongrip.coinmarketcap.test;
 
-import com.kungfuactiongrip.coinmarketcap.CoinCapitalizationV2;
+import com.kungfuactiongrip.coinmarketcap.CoinCapitalization;
 import com.kungfuactiongrip.coinmarketcap.CoinMarketCapParserV2;
 import java.util.List;
 import org.junit.Assert;
@@ -220,7 +220,7 @@ public class CoinMarketCapParserV2Test {
 
         CoinMarketCapParserV2 cmcpv2 = new CoinMarketCapParserV2();
         
-        List<CoinCapitalizationV2> result =  cmcpv2.Parse(data);
+        List<CoinCapitalization> result =  cmcpv2.Parse(data);
         
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -231,10 +231,10 @@ public class CoinMarketCapParserV2Test {
 
         CoinMarketCapParserV2 cmcpv2 = new CoinMarketCapParserV2();
         
-        List<CoinCapitalizationV2> result =  cmcpv2.Parse(data);
+        List<CoinCapitalization> result =  cmcpv2.Parse(data);
         
         assertNotNull(result);
-        CoinCapitalizationV2 coin = result.get(0);
+        CoinCapitalization coin = result.get(0);
         Assert.assertEquals("Darkcoin",coin.coinName);
         Assert.assertEquals("drk",coin.coinCode);
     }
