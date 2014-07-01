@@ -1,0 +1,927 @@
+JFDML JFormDesigner: "5.2.0.0.72" Java: "1.7.0_40" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.archean.jtradegui"
+	"i18n.bundleName": "locale"
+	"i18n.keyPrefix": "TraderMainForm"
+	contentType: "form/swing"
+	root: new FormRoot {
+		auxiliary() {
+			"JavaCodeGenerator.i18nGetBundleFormat": "ResourceBundle.getBundle(${bundleName}, new UTF8Control())"
+		}
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "max(pref;90dlu):grow, labelcompgap, max(pref;92dlu):grow"
+			"$rowSpecs": "default, 10dlu, top:max(default;95dlu), 10dlu, 77dlu, 0dlu, 10dlu, linegap, fill:max(default;55dlu):grow"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBoxPair"
+				"maximumRowCount": 20
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "comboBoxPairActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridWidth": 3
+			} )
+			add( new FormComponent( "javax.swing.JSeparator" ) {
+				name: "separator3"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 2
+				"gridWidth": 3
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "default:grow, labelcompgap, 70dlu, labelcompgap, default:grow"
+				"$rowSpecs": "default, linegap, default, linegap, default, linegap, max(default;18dlu), linegap, default, linegap, default"
+			} ) {
+				name: "panelPrice"
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelBuyPrice"
+					"text": new FormMessage( null, "TraderMainForm.labelBuyPrice.text" )
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+					"labelFor": new FormReference( "textFieldBuyPrice" )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelLastPrice"
+					"text": new FormMessage( null, "TraderMainForm.labelLastPrice.text" )
+					"labelFor": new FormReference( "textFieldLastPrice" )
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 3
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelSellPrice"
+					"text": new FormMessage( null, "TraderMainForm.labelSellPrice.text" )
+					"labelFor": new FormReference( "textFieldSellPrice" )
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 131073, 0, false )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 5
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldBuyPrice"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 3
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldLastPrice"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 3
+					"gridX": 3
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldSellPrice"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 5
+					"gridY": 3
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelLowPrice"
+					"text": new FormMessage( null, "TraderMainForm.labelLowPrice.text" )
+					"font": &SwingDerivedFont0 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+					"labelFor": new FormReference( "textFieldLowPrice" )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 5
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelPriceChange"
+					"text": new FormMessage( null, "TraderMainForm.labelPriceChange.text" )
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 3, 0, false )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 3
+					"gridY": 5
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelHighPrice"
+					"text": new FormMessage( null, "TraderMainForm.labelHighPrice.text" )
+					"font": &SwingDerivedFont1 new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+					"labelFor": new FormReference( "textFieldHighPrice" )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 5
+					"gridY": 5
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldLowPrice"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 7
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelPriceChangePercent"
+					"text": "0%"
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 3
+					"gridY": 7
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldHighPrice"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 7
+					"gridX": 5
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelAvgPrice"
+					"text": new FormMessage( null, "TraderMainForm.labelAvgPrice.text" )
+					"font": #SwingDerivedFont0
+					"labelFor": new FormReference( "textFieldAvgPrice" )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 9
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelApiLag"
+					"text": new FormMessage( null, "TraderMainForm.labelApiLag.text" )
+					"font": new com.jformdesigner.model.SwingDerivedFont( null, 65538, 0, false )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 3
+					"gridY": 9
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelVolume"
+					"text": new FormMessage( null, "TraderMainForm.labelVolume.text" )
+					"font": #SwingDerivedFont1
+					"labelFor": new FormReference( "textFieldVolume" )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 9
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+					"gridX": 5
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldAvgPrice"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 11
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelApiLagValue"
+					"text": "0.0 sec"
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 3
+					"gridY": 11
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+				add( new FormComponent( "javax.swing.JTextField" ) {
+					name: "textFieldVolume"
+					"editable": false
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridY": 11
+					"gridX": 5
+					"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridWidth": 3
+				"gridY": 3
+			} )
+			add( new FormComponent( "javax.swing.JSeparator" ) {
+				name: "separator1"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 4
+				"gridWidth": 3
+			} )
+			add( new FormContainer( "javax.swing.JSplitPane", new FormLayoutManager( class javax.swing.JSplitPane ) ) {
+				name: "splitPane1"
+				"orientation": 0
+				add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+					name: "tabbedPaneTrade"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "5dlu, labelcompgap, 30dlu, labelcompgap, 108dlu, labelcompgap, 45dlu:grow, labelcompgap, max(default;70dlu):grow"
+						"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, 14dlu"
+					} ) {
+						name: "panelBuy"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelBuyOrderPrice"
+							"text": new FormMessage( null, "TraderMainForm.labelBuyOrderPrice.text" )
+							"labelFor": new FormReference( "spinnerBuyOrderPrice" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+							"gridX": 3
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JSpinner" ) {
+							name: "spinnerBuyOrderPrice"
+							"model": &SpinnerNumberModel0 new javax.swing.SpinnerNumberModel {
+								minimum: 0.0
+								stepSize: 1.0
+								value: 0.0
+							}
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "spinnerPriceOrAmountStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 3
+							"gridX": 5
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonBuyOrderPriceSetCurrent"
+							"text": new FormMessage( null, "TraderMainForm.buttonBuyOrderPriceSetCurrent.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonBuyOrderPriceSetCurrentActionPerformed", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 7
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonCommitBuyOrder"
+							"text": new FormMessage( null, "buy.text" )
+							"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+							"background": new java.awt.Color( 45, 195, 22, 255 )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonCommitBuyOrderActionPerformed", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 9
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelBuyOrderAmount"
+							"text": new FormMessage( null, "TraderMainForm.labelBuyOrderAmount.text" )
+							"labelFor": new FormReference( "spinnerBuyOrderAmount" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 5
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+							"gridX": 3
+						} )
+						add( new FormComponent( "javax.swing.JSpinner" ) {
+							name: "spinnerBuyOrderAmount"
+							"model": &SpinnerNumberModel1 new javax.swing.SpinnerNumberModel {
+								minimum: 0.0
+								stepSize: 0.01
+								value: 0.0
+							}
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "spinnerPriceOrAmountStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 5
+							"gridX": 5
+						} )
+						add( new FormComponent( "javax.swing.JSlider" ) {
+							name: "sliderBuyOrderAmount"
+							"value": 0
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "sliderBuyOrderAmountStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 7
+							"gridY": 5
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+							"gridWidth": 3
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelBuyOrderTotal"
+							"text": new FormMessage( null, "TraderMainForm.labelBuyOrderTotal.text" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 7
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelBuyOrderTotalValue"
+							"text": "0 / 0"
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 5
+							"gridY": 7
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+							"gridWidth": 5
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "buy.text" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "5dlu, labelcompgap, 30dlu, labelcompgap, 108dlu, labelcompgap, 45dlu:grow, labelcompgap, max(default;70dlu):grow"
+						"$rowSpecs": "5dlu, linegap, default, linegap, default, linegap, 14dlu"
+					} ) {
+						name: "panelSell"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelSellOrderPrice"
+							"text": new FormMessage( null, "TraderMainForm.labelSellOrderPrice.text" )
+							"labelFor": new FormReference( "spinnerSellOrderPrice" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+							"gridX": 3
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JSpinner" ) {
+							name: "spinnerSellOrderPrice"
+							"model": #SpinnerNumberModel0
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "spinnerPriceOrAmountStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 3
+							"gridX": 5
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonSellOrderPriceSetCurrent"
+							"text": new FormMessage( null, "TraderMainForm.buttonSellOrderPriceSetCurrent.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonSellOrderPriceSetCurrentActionPerformed", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 7
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonCommitSellOrder"
+							"text": new FormMessage( null, "sell.text" )
+							"background": new java.awt.Color( 255, 81, 81, 255 )
+							"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonCommitSellOrderActionPerformed", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 9
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelSellOrderAmount"
+							"text": new FormMessage( null, "TraderMainForm.labelSellOrderAmount.text" )
+							"labelFor": new FormReference( "spinnerSellOrderAmount" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 5
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+							"gridX": 3
+						} )
+						add( new FormComponent( "javax.swing.JSpinner" ) {
+							name: "spinnerSellOrderAmount"
+							"model": #SpinnerNumberModel1
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "spinnerPriceOrAmountStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 5
+							"gridX": 5
+						} )
+						add( new FormComponent( "javax.swing.JSlider" ) {
+							name: "sliderSellOrderAmount"
+							"value": 0
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "sliderSellOrderAmountStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 7
+							"gridY": 5
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+							"gridWidth": 3
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelSellOrderTotal"
+							"text": new FormMessage( null, "TraderMainForm.labelSellOrderTotal.text" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 7
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelSellOrderTotalValue"
+							"text": "0 / 0"
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 5
+							"gridY": 7
+							"hAlign": sfield com.jgoodies.forms.layout.CellConstraints LEFT
+							"gridWidth": 5
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "sell.text" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "default:grow, labelcompgap, right:16dlu"
+						"$rowSpecs": "fill:default"
+					} ) {
+						name: "panelRules"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane2"
+							add( new FormComponent( "javax.swing.JTable" ) {
+								name: "tableRules"
+								"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+									add( new java.util.Vector {
+										add( null )
+										add( null )
+										add( null )
+									} )
+								}, new java.util.Vector {
+									add( "#" )
+									add( "Condition" )
+									add( "Action" )
+								}, new java.util.Vector {
+									add( class java.lang.Integer )
+									add( null )
+									add( null )
+								}, new java.util.Vector {
+									add( false )
+									add( false )
+									add( false )
+								}, new java.util.Vector {
+									add( new com.jformdesigner.model.SwingTableColumn( null, 20, 0, 50, true ) )
+									add( null )
+									add( null )
+								} )
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 1
+							"gridY": 1
+						} )
+						add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+							name: "toolBar1"
+							"orientation": 1
+							"floatable": false
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "buttonAddRule"
+								"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/plus.png" )
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonAddRuleActionPerformed", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "buttonDeleteRule"
+								"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/delete.png" )
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonDeleteRuleActionPerformed", true ) )
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 1
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelRules.tab.title" )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "left"
+				} )
+				add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+					name: "tabbedPaneInfo"
+					addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "tabbedPaneInfoStateChanged", true ) )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "default:grow"
+						"$rowSpecs": "max(default;55dlu)"
+					} ) {
+						name: "panelOrders"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane4"
+							add( new FormComponent( "javax.swing.JTable" ) {
+								name: "tableOpenOrders"
+								"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+									add( new java.util.Vector {
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+									} )
+								}, new java.util.Vector {
+									add( "#" )
+									add( "Type" )
+									add( "Price" )
+									add( "Amount" )
+									add( "Total" )
+								}, new java.util.Vector {
+									add( class java.lang.Object )
+									add( class java.lang.String )
+									add( class java.lang.Double )
+									add( class java.lang.Double )
+									add( class java.lang.Double )
+								}, new java.util.Vector {
+									add( null )
+									add( false )
+									add( false )
+									add( false )
+									add( false )
+								}, new java.util.Vector {
+									add( null )
+									add( null )
+									add( null )
+									add( null )
+									add( null )
+								} )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "tableOpenOrdersPopupMenuHandler", true ) )
+								addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "tableOpenOrdersPopupMenuHandler", true ) )
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 1
+							"gridY": 1
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelOrders.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "112dlu:grow"
+						"$rowSpecs": "max(default;55dlu)"
+					} ) {
+						name: "panelBalance"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane3"
+							add( new FormComponent( "javax.swing.JTable" ) {
+								name: "tableBalances"
+								"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+									add( new java.util.Vector {
+										add( null )
+										add( null )
+									} )
+								}, new java.util.Vector {
+									add( "Currency" )
+									add( "Balance" )
+								}, new java.util.Vector {
+									add( class java.lang.String )
+									add( class java.lang.Double )
+								}, new java.util.Vector {
+									add( false )
+									add( false )
+								}, new java.util.Vector {
+									add( null )
+									add( null )
+								} )
+								"autoCreateRowSorter": true
+								"cellSelectionEnabled": true
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 1
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelBalance.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "max(default;90dlu), labelcompgap, max(default;90dlu)"
+						"$rowSpecs": "default, linegap, fill:max(default;55dlu):grow"
+					} ) {
+						name: "panelDepth"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelBuyOrders"
+							"text": new FormMessage( null, "TraderMainForm.labelBuyOrders.text" )
+							"horizontalAlignment": 0
+							"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+							"labelFor": new FormReference( "tableBuyOrders" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelSellOrders"
+							"text": new FormMessage( null, "TraderMainForm.labelSellOrders.text" )
+							"labelFor": new FormReference( "tableSellOrders" )
+							"horizontalAlignment": 0
+							"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+						} )
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPaneBuyOrders"
+							add( new FormComponent( "javax.swing.JTable" ) {
+								name: "tableBuyOrders"
+								"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+									add( new java.util.Vector {
+										add( null )
+										add( null )
+									} )
+								}, new java.util.Vector {
+									add( "Price" )
+									add( "Amount" )
+								}, new java.util.Vector {
+									add( class java.lang.Double )
+									add( class java.lang.Double )
+								}, new java.util.Vector {
+									add( false )
+									add( false )
+								}, new java.util.Vector {
+									add( null )
+									add( null )
+								} )
+								"autoCreateRowSorter": true
+								"cellSelectionEnabled": true
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridY": 3
+						} )
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPaneSellOrders"
+							add( new FormComponent( "javax.swing.JTable" ) {
+								name: "tableSellOrders"
+								"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+									add( new java.util.Vector {
+										add( null )
+										add( null )
+									} )
+								}, new java.util.Vector {
+									add( "Price" )
+									add( "Amount" )
+								}, new java.util.Vector {
+									add( class java.lang.Double )
+									add( class java.lang.Double )
+								}, new java.util.Vector {
+									add( false )
+									add( false )
+								}, new java.util.Vector {
+									add( null )
+									add( null )
+								} )
+								"autoCreateRowSorter": true
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 3
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelDepth.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+						name: "panelHistory"
+						addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "panelHistoryStateChanged", true ) )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+							"$columnSpecs": "default:grow"
+							"$rowSpecs": "fill:max(default;55dlu):grow"
+						} ) {
+							name: "panelMyTrades"
+							add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+								name: "scrollPane6"
+								add( new FormComponent( "javax.swing.JTable" ) {
+									name: "tableAccountHistory"
+									"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+										add( new java.util.Vector {
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+										} )
+									}, new java.util.Vector {
+										add( "Time" )
+										add( "Type" )
+										add( "Price" )
+										add( "Amount" )
+										add( "Total" )
+									}, new java.util.Vector {
+										add( class java.util.Date )
+										add( class java.lang.String )
+										add( class java.lang.Double )
+										add( class java.lang.Double )
+										add( class java.lang.Double )
+									}, new java.util.Vector {
+										add( false )
+										add( false )
+										add( false )
+										add( false )
+										add( false )
+									}, new java.util.Vector {
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+									} )
+									"autoCreateRowSorter": true
+								} )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "TraderMainForm.panelMyTrades.tab.title" )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+							"$columnSpecs": "default:grow"
+							"$rowSpecs": "fill:max(default;55dlu):grow"
+						} ) {
+							name: "panelMarketTrades"
+							add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+								name: "scrollPane7"
+								add( new FormComponent( "javax.swing.JTable" ) {
+									name: "tableMarketHistory"
+									"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+										add( new java.util.Vector {
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+											add( null )
+										} )
+									}, new java.util.Vector {
+										add( "Time" )
+										add( "Type" )
+										add( "Price" )
+										add( "Amount" )
+										add( "Total" )
+									}, new java.util.Vector {
+										add( class java.util.Date )
+										add( class java.lang.String )
+										add( class java.lang.Double )
+										add( class java.lang.Double )
+										add( class java.lang.Double )
+									}, new java.util.Vector {
+										add( false )
+										add( false )
+										add( false )
+										add( false )
+										add( false )
+									}, new java.util.Vector {
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+									} )
+									"autoCreateRowSorter": true
+								} )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "TraderMainForm.panelMarketTrades.tab.title" )
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelHistory.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "default, labelcompgap, default"
+						"$rowSpecs": "default, linegap, default, linegap, default"
+					} ) {
+						name: "panelCharts"
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelCharts.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "default:grow"
+						"$rowSpecs": "fill:max(default;55dlu):grow"
+					} ) {
+						name: "panelMarketCap"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane1"
+							add( new FormComponent( "javax.swing.JTable" ) {
+								name: "tableMarketCap"
+								"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector {
+									add( new java.util.Vector {
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+										add( null )
+									} )
+								}, new java.util.Vector {
+									add( "#" )
+									add( "Currency" )
+									add( "USD cap" )
+									add( "BTC cap" )
+									add( "USD volume" )
+									add( "BTC volume" )
+									add( "Change (24h)" )
+								}, new java.util.Vector {
+									add( class java.lang.Short )
+									add( class java.lang.String )
+									add( class java.lang.Long )
+									add( class java.lang.Long )
+									add( class java.lang.Long )
+									add( class java.lang.Long )
+									add( class java.lang.Double )
+								}, new java.util.Vector {
+									add( null )
+									add( false )
+									add( false )
+									add( false )
+									add( false )
+									add( false )
+									add( false )
+								}, new java.util.Vector {
+									add( new com.jformdesigner.model.SwingTableColumn( null, 20, 0, 0, true ) )
+									add( null )
+									add( null )
+									add( null )
+									add( null )
+									add( null )
+									add( null )
+								} )
+								"autoCreateRowSorter": true
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 1
+							"gridY": 1
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelMarketCap.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "5dlu, labelcompgap, 67dlu, labelcompgap, 57dlu, labelcompgap, default, labelcompgap, default"
+						"$rowSpecs": "default, linegap, default, linegap, default, linegap, default"
+					} ) {
+						name: "panelSettings"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelFeePercent"
+							"text": new FormMessage( null, "TraderMainForm.labelFeePercent.text" )
+							"labelFor": new FormReference( "spinnerFeePercent" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 1
+						} )
+						add( new FormComponent( "javax.swing.JSpinner" ) {
+							name: "spinnerFeePercent"
+							"model": new javax.swing.SpinnerNumberModel( 0.2, 0.0, 100.0, 0.1 )
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "settingsChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 5
+							"gridY": 1
+						} )
+						add( new FormComponent( "javax.swing.JToggleButton" ) {
+							name: "toggleButtonUpdateAll"
+							"text": new FormMessage( null, "TraderMainForm.toggleButtonUpdateAll.text" )
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "toggleButtonUpdateAllStateChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 9
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelUpdateInterval"
+							"text": new FormMessage( null, "TraderMainForm.labelUpdateInterval.text" )
+							"labelFor": new FormReference( "spinnerUpdateInterval" )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JSpinner" ) {
+							name: "spinnerUpdateInterval"
+							"model": new javax.swing.SpinnerNumberModel( 500, 0, 30000, 50 )
+							addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "settingsChanged", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 5
+							"gridY": 3
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "buttonApplySettings"
+							"text": new FormMessage( null, "TraderMainForm.buttonApplySettings.text" )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonApplySettingsActionPerformed", true ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 5
+							"gridWidth": 3
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelSettings.tab.title" )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "default:grow"
+						"$rowSpecs": "fill:max(default;55dlu):grow"
+					} ) {
+						name: "panelLog"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane5"
+							add( new FormComponent( "javax.swing.JTextPane" ) {
+								name: "textPaneLog"
+							} )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 1
+							"gridY": 1
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": new FormMessage( null, "TraderMainForm.panelLog.tab.title" )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "right"
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 5
+				"vAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+				"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+				"gridWidth": 3
+				"gridHeight": 5
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 490, 570 )
+		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenuOrders"
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "menuItemCancelOrder"
+				"text": new FormMessage( null, "TraderMainForm.menuItemCancelOrder.text" )
+				"foreground": sfield java.awt.Color red
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/delete.png" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemCancelOrderActionPerformed", true ) )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 520, 185 )
+		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenuTimeframe"
+			add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+				name: "radioButtonMenuItem1M"
+				"text": "1M"
+				"$buttonGroup": new FormReference( "buttonGroupTimeframe" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "radioButtonMenuItem1MActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+				name: "radioButtonMenuItem15M"
+				"text": "15M"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 65536, 0, false )
+				"$buttonGroup": new FormReference( "buttonGroupTimeframe" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "radioButtonMenuItem15MActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+				name: "radioButtonMenuItem30M"
+				"text": "30M"
+				"selected": true
+				"$buttonGroup": new FormReference( "buttonGroupTimeframe" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "radioButtonMenuItem30MActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JRadioButtonMenuItem" ) {
+				name: "radioButtonMenuItem1H"
+				"text": "1H"
+				"$buttonGroup": new FormReference( "buttonGroupTimeframe" )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "radioButtonMenuItem1HActionPerformed", true ) )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 525, 270 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroupTimeframe"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 580 )
+		} )
+	}
+}

@@ -1,0 +1,73 @@
+JFDML JFormDesigner: "5.2.0.0.72" Java: "1.7.0_40" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.archean.jtradegui"
+	"i18n.bundleName": "locale"
+	"i18n.keyPrefix": "Controller"
+	contentType: "form/swing"
+	root: new FormRoot {
+		auxiliary() {
+			"JavaCodeGenerator.i18nGetBundleFormat": "ResourceBundle.getBundle(${bundleName}, new UTF8Control())"
+		}
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "max(default;350dlu):grow"
+			"$rowSpecs": "top:16dlu, linegap, fill:max(default;420dlu):grow"
+		} ) {
+			name: "this"
+			"$locationPolicy": 0
+			"$sizePolicy": 0
+			"title": new FormMessage( null, "Controller.this.title" )
+			addEvent( new FormEvent( "java.awt.event.WindowListener", "windowClosing", "thisWindowClosing", true ) )
+			addEvent( new FormEvent( "java.awt.event.WindowStateListener", "windowStateChanged", "thisWindowStateChanged", true ) )
+			add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+				name: "toolBar1"
+				"floatable": false
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonAdd"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/plus.png" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonAddActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonDelete"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/delete.png" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonDeleteActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonSkin"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/skin.png" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonSkinActionPerformed", true ) )
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonAbout"
+					"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/info.png" )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonAboutActionPerformed", true ) )
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
+				"vAlign": sfield com.jgoodies.forms.layout.CellConstraints TOP
+			} )
+			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+				name: "tabbedPaneTraders"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 3
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 525, 650 )
+		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenuTray"
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "menuItemExit"
+				"text": new FormMessage( null, "Controller.menuItemExit.text" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/res/icons/delete.png" )
+				"horizontalAlignment": 2
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "menuItemExitActionPerformed", true ) )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 575, 205 )
+			"size": new java.awt.Dimension( 130, 130 )
+		} )
+	}
+}

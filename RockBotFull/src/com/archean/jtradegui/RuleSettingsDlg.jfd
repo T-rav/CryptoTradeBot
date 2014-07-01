@@ -1,0 +1,233 @@
+JFDML JFormDesigner: "5.2.0.0.72" Java: "1.7.0_40" encoding: "UTF-8"
+
+new FormModel {
+	"i18n.autoExternalize": true
+	"i18n.bundlePackage": "com.archean.jtradegui"
+	"i18n.bundleName": "locale"
+	"i18n.keyPrefix": "RuleSettingsDlg"
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"modal": true
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "dialogPane"
+				"border": sfield com.jgoodies.forms.factories.Borders DIALOG
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+					"$columnSpecs": "default:grow"
+					"$rowSpecs": "fill:85dlu, top:105dlu:grow"
+				} ) {
+					name: "contentPanel"
+					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+						name: "tabbedPaneCondition"
+						"tabPlacement": 3
+						"border": new javax.swing.border.TitledBorder( "i18nKey=RuleSettingsDlg.tabbedPaneCondition.border" )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+							"$columnSpecs": "5dlu:grow, labelcompgap, default, labelcompgap, 81dlu, labelcompgap, default:grow"
+							"$rowSpecs": "3dlu, linegap, default, linegap, default"
+						} ) {
+							name: "panelPriceRule"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "labelPriceType"
+								"text": new FormMessage( null, "RuleSettingsDlg.labelPriceType.text" )
+								"labelFor": new FormReference( "comboBoxPriceType" )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridY": 3
+								"gridX": 3
+								"hAlign": sfield com.jgoodies.forms.layout.CellConstraints RIGHT
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxPriceType"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Last"
+									addElement( "Last" )
+									addElement( "Ask" )
+									addElement( "Bid" )
+									addElement( "High" )
+									addElement( "Low" )
+									addElement( "Avg" )
+								}
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 5
+								"gridY": 3
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxPriceCompareType"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "=="
+									addElement( "==" )
+									addElement( ">" )
+									addElement( "<" )
+									addElement( ">=" )
+									addElement( "<=" )
+								}
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 3
+								"gridY": 5
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinnerPrice"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 0.0
+									stepSize: 1.0
+									value: 1.0E-8
+								}
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 5
+								"gridY": 5
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "RuleSettingsDlg.panelPriceRule.tab.title" )
+						} )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 1
+					} )
+					add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+						name: "tabbedPaneAction"
+						"border": new javax.swing.border.TitledBorder( "i18nKey=RuleSettingsDlg.tabbedPaneAction.border" )
+						"tabPlacement": 3
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+							"$columnSpecs": "5dlu:grow, labelcompgap, default, labelcompgap, 77dlu, labelcompgap, 5dlu, labelcompgap, default, labelcompgap, 52dlu, labelcompgap, default:grow"
+							"$rowSpecs": "3dlu, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default"
+						} ) {
+							name: "panelActionTrade"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "labelTradeType"
+								"text": new FormMessage( null, "RuleSettingsDlg.labelTradeType.text" )
+								"labelFor": new FormReference( "comboBoxTradeType" )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 3
+								"gridY": 3
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxTradeType"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Buy"
+									addElement( "Buy" )
+									addElement( "Sell" )
+								}
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 5
+								"gridY": 3
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "labelTradePriceType"
+								"text": new FormMessage( null, "RuleSettingsDlg.labelTradePriceType.text" )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 9
+								"gridY": 3
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxTradePriceType"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Custom"
+									addElement( "Custom" )
+									addElement( "Last" )
+									addElement( "Ask" )
+									addElement( "Bid" )
+									addElement( "High" )
+									addElement( "Low" )
+									addElement( "Avg" )
+								}
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "comboBoxTradePriceTypeActionPerformed", true ) )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridY": 3
+								"gridX": 11
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "labelAmount"
+								"text": new FormMessage( null, "RuleSettingsDlg.labelAmount.text" )
+								"labelFor": new FormReference( "comboBoxAmount" )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 3
+								"gridY": 5
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "comboBoxAmount"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "Constant"
+									addElement( "Constant" )
+									addElement( "% of balance" )
+								}
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "comboBoxAmountActionPerformed", true ) )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 5
+								"gridY": 5
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinnerTradePriceCustom"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 1.0E-8
+									stepSize: 1.0
+									value: 1.0E-8
+								}
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 9
+								"gridY": 5
+								"gridWidth": 3
+							} )
+							add( new FormComponent( "javax.swing.JSpinner" ) {
+								name: "spinnerAmount"
+								"model": new javax.swing.SpinnerNumberModel {
+									minimum: 0.0
+									stepSize: 0.01
+									value: 0.01
+								}
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 3
+								"gridY": 7
+								"gridWidth": 3
+							} )
+							add( new FormComponent( "javax.swing.JSlider" ) {
+								name: "sliderAmount"
+								"visible": false
+								addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "sliderAmountStateChanged", true ) )
+							}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+								"gridX": 3
+								"gridY": 9
+								"gridWidth": 3
+							} )
+						}, new FormLayoutConstraints( null ) {
+							"title": new FormMessage( null, "RuleSettingsDlg.panelActionTrade.tab.title" )
+						} )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 1
+						"gridY": 2
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+					"$columnSpecs": "glue, button, relgap, button"
+					"$rowSpecs": "pref"
+				} ) {
+					name: "buttonBar"
+					"border": sfield com.jgoodies.forms.factories.Borders BUTTON_BAR_PAD
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "okButton"
+						"text": new FormMessage( null, "RuleSettingsDlg.okButton.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "okButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 2
+						"gridY": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "cancelButton"
+						"text": new FormMessage( null, "RuleSettingsDlg.cancelButton.text" )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelButtonActionPerformed", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 4
+						"gridY": 1
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "South"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 405, 385 )
+		} )
+	}
+}
