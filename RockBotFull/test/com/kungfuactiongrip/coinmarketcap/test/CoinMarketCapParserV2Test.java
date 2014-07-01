@@ -220,7 +220,7 @@ public class CoinMarketCapParserV2Test {
 
         CoinMarketCapParserV2 cmcpv2 = new CoinMarketCapParserV2();
         
-        List<CoinCapitalization> result =  cmcpv2.Parse(data);
+        List<CoinCapitalization> result =  cmcpv2.Parse(data, false);
         
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -231,7 +231,20 @@ public class CoinMarketCapParserV2Test {
 
         CoinMarketCapParserV2 cmcpv2 = new CoinMarketCapParserV2();
         
-        List<CoinCapitalization> result =  cmcpv2.Parse(data);
+        List<CoinCapitalization> result =  cmcpv2.Parse(data, false);
+        
+        assertNotNull(result);
+        CoinCapitalization coin = result.get(0);
+        Assert.assertEquals("Darkcoin",coin.coinName);
+        Assert.assertEquals("drk",coin.coinCode);
+    }
+    
+    @Test
+    public void Parse_WhenValidDataAndSorted_ExpectList(){
+
+        CoinMarketCapParserV2 cmcpv2 = new CoinMarketCapParserV2();
+        
+        List<CoinCapitalization> result =  cmcpv2.Parse(data, true);
         
         assertNotNull(result);
         CoinCapitalization coin = result.get(0);

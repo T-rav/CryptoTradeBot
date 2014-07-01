@@ -76,8 +76,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import org.jfree.chart.ChartMouseEvent;
-import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.xy.OHLCDataItem;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -351,27 +349,27 @@ public class TraderMainForm extends JPanel {
 
     // GUI MVC functions
     private void drawChart(OHLCDataItem[] dataset) {
-        final ChartPanel chartPanel = CandleChart.initOHLCChart(CandleChart.Parameters.builder()
-                .numberFormat(Utils.Strings.moneyFormat.toDecimalFormat())
-                .dateFormat(new SimpleDateFormat())
-                .labelX(locale.getString("Chart.legend.time.string"))
-                .labelY(locale.getString("Chart.legend.price.string"))
-                .title(currentPair).build(), dataset);
-        // chartPanel.setPreferredSize(new Dimension(600, 300));
-        chartPanel.addChartMouseListener(new ChartMouseListener() {
-            @Override
-            public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-                if(chartMouseEvent.getTrigger().getClickCount() >= 2) {
-                    popupMenuTimeframe.show((Component) chartMouseEvent.getTrigger().getSource(), chartMouseEvent.getTrigger().getX(), chartMouseEvent.getTrigger().getY());
-                }
-            }
-
-            @Override
-            public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
-                // nothing
-            }
-        });
-        tabbedPaneInfo.setComponentAt(4, chartPanel);
+//        final ChartPanel chartPanel = CandleChart.initOHLCChart(CandleChart.Parameters.builder()
+//                .numberFormat(Utils.Strings.moneyFormat.toDecimalFormat())
+//                .dateFormat(new SimpleDateFormat())
+//                .labelX(locale.getString("Chart.legend.time.string"))
+//                .labelY(locale.getString("Chart.legend.price.string"))
+//                .title(currentPair).build(), dataset);
+//        // chartPanel.setPreferredSize(new Dimension(600, 300));
+//        chartPanel.addChartMouseListener(new ChartMouseListener() {
+//            @Override
+//            public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
+//                if(chartMouseEvent.getTrigger().getClickCount() >= 2) {
+//                    popupMenuTimeframe.show((Component) chartMouseEvent.getTrigger().getSource(), chartMouseEvent.getTrigger().getX(), chartMouseEvent.getTrigger().getY());
+//                }
+//            }
+//
+//            @Override
+//            public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
+//                // nothing
+//            }
+//        });
+//        tabbedPaneInfo.setComponentAt(4, chartPanel);
     }
 
     private OHLCDataItem[] ohlcDataCache = null;

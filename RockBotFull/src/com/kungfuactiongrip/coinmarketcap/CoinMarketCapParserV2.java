@@ -23,7 +23,7 @@ import net.minidev.json.JSONObject;
  */
 public class CoinMarketCapParserV2 {
 
-    public List<CoinCapitalization> Parse(String data) {
+    public List<CoinCapitalization> Parse(String data, boolean sortData) {
         Gson json = new Gson();
         List<CoinCapitalization> result = new ArrayList<>();
         try{
@@ -62,6 +62,12 @@ public class CoinMarketCapParserV2 {
             
         }catch(Exception e){
             Logger.getLogger(CoinMarketCapParserV2.class.getName()).log(Level.WARNING, null, e);
+        }
+        
+        if(sortData){
+            result.sort((CoinCapitalization o1, CoinCapitalization o2) -> {
+                return (int)(o2.btcCap - o1.btcCap);
+            });
         }
         
         return result;

@@ -29,7 +29,7 @@ public class CoinMarketCapParser {
     public List<CoinCapitalization> getData() throws IOException {
         String response = requestPage();
         CoinMarketCapParserV2 cmcpv2 = new CoinMarketCapParserV2();
-        return cmcpv2.Parse(response);
+        return cmcpv2.Parse(response,true);
     }
 
     // Worker:
@@ -48,14 +48,14 @@ public class CoinMarketCapParser {
         }
         private void onDataUpdateEvent(final List<CoinCapitalization> data) {
             synchronized (eventHandlers) {
-                for(CoinMarketCapEvent event : eventHandlers.values()) {
+                eventHandlers.values().stream().forEach((event) -> {
                     event.onDataUpdate(data);
-                }
+                });
             }
         }
         private final Runnable marketCapUpdateTask = new Utils.Threads.CycledRunnable() {
             private final static int UPDATE_INTERVAL = 10 * 1000; // 10 sec
-            private CoinMarketCapParser parser = new CoinMarketCapParser();
+            private final CoinMarketCapParser parser = new CoinMarketCapParser();
 
             @Override
             protected int onError(Exception e) {
@@ -76,9 +76,11 @@ public class CoinMarketCapParser {
             marketCapUpdateThread.start();
         }
         public void stop() {
-            if(marketCapUpdateThread != null && marketCapUpdateThread.isAlive())
+            if(marketCapUpdateThread != null && marketCapUpdateThread.isAlive()) {
                 marketCapUpdateThread.interrupt();
+            }
         }
+        @Override
         public void close() {
             stop();
         }
