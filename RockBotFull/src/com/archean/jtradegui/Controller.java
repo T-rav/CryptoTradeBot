@@ -124,7 +124,7 @@ public class Controller extends JFrame {
 
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(SkinDlg.getLookAndFeelClassName("Aero"));
+            UIManager.setLookAndFeel(SkinDlg.getLookAndFeelClassName("Aluminium"));
         } catch (Exception e) {
             e.printStackTrace();
         }
