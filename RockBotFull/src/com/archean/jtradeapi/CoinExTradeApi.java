@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
@@ -47,13 +49,28 @@ public class CoinExTradeApi extends BaseTradeApi {
         List<NameValuePair> httpHeaders = new ArrayList<>(1);
         httpHeaders.add(new BasicNameValuePair("Content-Type", "application/json"));
         writeAuthParams(jsonEntity, httpHeaders);
-        return requestSender.getResponseString(requestSender.rawPostRequest(url, new StringEntity(jsonEntity), httpHeaders));
+        try {
+            return requestSender.getResponseString(requestSender.rawPostRequest(url, new StringEntity(jsonEntity), httpHeaders));
+        } catch (IOException ex) {
+            Logger.getLogger(CoinExTradeApi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "";
     }
+    
+    @Override
     protected String executeRequest(boolean needAuth, String url, List<NameValuePair> urlParameters, int httpRequestType) throws IOException {
-        if (urlParameters == null) urlParameters = new ArrayList<>(); // empty list
+        if (urlParameters == null) {
+            urlParameters = new ArrayList<>(); // empty list
+        }        
+        
         List<NameValuePair> httpHeaders = new ArrayList<>();
         cleanAuth(urlParameters, httpHeaders);
-        if (needAuth) writeAuthParams("", httpHeaders);
+        
+        if (needAuth) {
+            writeAuthParams("", httpHeaders);
+        }
+        
         switch (httpRequestType) {
             case Constants.REQUEST_GET:
                 return requestSender.getResponseString(requestSender.getRequest(url, urlParameters, httpHeaders));
@@ -64,6 +81,7 @@ public class CoinExTradeApi extends BaseTradeApi {
         }
     }
 
+    @Override
     protected void cleanAuth(List<NameValuePair> urlParameters, List<NameValuePair> httpHeaders) {
         Iterator<NameValuePair> headerIterator = httpHeaders.iterator();
         while (headerIterator.hasNext()) { // Cleaning
@@ -88,7 +106,7 @@ public class CoinExTradeApi extends BaseTradeApi {
         try {
             httpHeaders.add(new BasicNameValuePair("API-Sign", makeSign(signString)));
             httpHeaders.add(new BasicNameValuePair("API-Key", apiKeyPair.publicKey));
-        } catch (Exception e) {
+        } catch (UnsupportedEncodingException | InvalidKeyException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
@@ -239,38 +257,47 @@ public class CoinExTradeApi extends BaseTradeApi {
 
     // Public:
     private StandartObjects.CurrencyPairMapper pairMapper = null;
+    @Override
     public StandartObjects.CurrencyPairMapper getCurrencyPairs() throws Exception {
         if(pairMapper == null) {
             pairMapper = new StandartObjects.CurrencyPairMapper();
             List<CoinExObjects.CurrencyPair> currencyPairs = internalGetCurrencyPairs();
-            for(CoinExObjects.CurrencyPair currencyPair : currencyPairs) {
+            currencyPairs.stream().map((currencyPair) -> {
                 StandartObjects.CurrencyPair stdCurrencyPair = new StandartObjects.CurrencyPair();
                 String[] urlSlugSplit = currencyPair.url_slug.split("_");
                 stdCurrencyPair.firstCurrency = urlSlugSplit[0].toUpperCase();
                 stdCurrencyPair.secondCurrency = urlSlugSplit[1].toUpperCase();
                 stdCurrencyPair.pairId = currencyPair.id;
+                return stdCurrencyPair;
+            }).map((stdCurrencyPair) -> {
                 stdCurrencyPair.pairName = String.format("%s/%s", stdCurrencyPair.firstCurrency, stdCurrencyPair.secondCurrency);
+                return stdCurrencyPair;
+            }).forEach((stdCurrencyPair) -> {
                 pairMapper.put(stdCurrencyPair.pairId, stdCurrencyPair);
-            }
+            });
         }
         return pairMapper;
     }
 
     // Basic info:
+    @Override
     public StandartObjects.Prices getMarketPrices(Object pair) throws Exception {
         StandartObjects.Prices prices = new StandartObjects.Prices();
         List<CoinExObjects.CurrencyPair> currencyPairs = internalGetCurrencyPairs();
-        for(CoinExObjects.CurrencyPair currencyPair : currencyPairs) if(pair.equals(currencyPair.id)) {
-            prices.average = getNormalNumberNotShit((currencyPair.rate_max + currencyPair.rate_min) / 2);
-            prices.buy = prices.sell = prices.last = getNormalNumberNotShit(currencyPair.last_price);
-            prices.low = getNormalNumberNotShit(currencyPair.rate_min);
-            prices.high = getNormalNumberNotShit(currencyPair.rate_max);
-            prices.volume = currencyPair.market_volume;
-            break;
+        for(CoinExObjects.CurrencyPair currencyPair : currencyPairs) {
+            if(pair.equals(currencyPair.id)) {
+                prices.average = getNormalNumberNotShit((currencyPair.rate_max + currencyPair.rate_min) / 2);
+                prices.buy = prices.sell = prices.last = getNormalNumberNotShit(currencyPair.last_price);
+                prices.low = getNormalNumberNotShit(currencyPair.rate_min);
+                prices.high = getNormalNumberNotShit(currencyPair.rate_max);
+                prices.volume = currencyPair.market_volume;
+                break;
+            }
         }
         return prices;
     }
 
+    @Override
     public StandartObjects.Depth getMarketDepth(Object pair) throws Exception {
         StandartObjects.Depth depth = new StandartObjects.Depth();
         List<StandartObjects.Order> orderList = internalConvertOrders(internalGetMarketOrders((Integer) pair), (Integer) pair);
@@ -284,10 +311,11 @@ public class CoinExTradeApi extends BaseTradeApi {
         return depth;
     }
 
+    @Override
     public List<StandartObjects.Order> getMarketHistory(Object pair) throws Exception {
         List<CoinExObjects.Trade> trades = internalGetMarketHistory((Integer) pair);
         List<StandartObjects.Order> history = new ArrayList<>(trades.size());
-        for(CoinExObjects.Trade trade : trades) {
+        trades.stream().map((trade) -> {
             StandartObjects.Order order = new StandartObjects.Order();
             order.amount = getNormalNumberNotShit(trade.amount);
             order.price = getNormalNumberNotShit(trade.rate);
@@ -295,41 +323,51 @@ public class CoinExTradeApi extends BaseTradeApi {
             order.pair = pair;
             order.type = trade.bid ? Constants.ORDER_BUY : Constants.ORDER_SELL;
             order.time = getNormalDateNotShit(trade.created_at);
+            return order;
+        }).forEach((order) -> {
             history.add(order);
-        }
+        });
         return history;
     }
 
+    @Override
     public StandartObjects.AccountInfo.AccountBalance getAccountBalances() throws Exception {
         StandartObjects.AccountInfo.AccountBalance stdBalanceList = new StandartObjects.AccountInfo.AccountBalance();
         List<CoinExObjects.Balance> balances = internalGetAccountBalances();
-        for(CoinExObjects.Balance balance : balances) {
+        balances.stream().forEach((balance) -> {
             stdBalanceList.put(balance.currency_name, getNormalNumberNotShit(balance.amount));
-        }
+        });
         return stdBalanceList;
     }
 
+    @Override
     public List<StandartObjects.Order> getAccountOpenOrders(Object pair) throws Exception {
         return internalConvertOrders(internalGetAccountOrders((Integer) pair), (Integer) pair);
     }
 
+    @Override
     public List<StandartObjects.Order> getAccountHistory(Object pair) throws Exception {
         return null;
     }
 
     // Misc
+    @Override
     public double getFeePercent(Object pair) throws Exception {
         return 0.2;
     }
 
     // Trading api:
+    @Override
     public Object createOrder(Object pair, int orderType, double quantity, double price) throws Exception {
         List<CoinExObjects.Order> orderList = internalSubmitOrder((Integer) pair, orderType, quantity, price);
         if(orderList == null || orderList.isEmpty()) {
             return 0;
-        } else return orderList.get(0).id;
+        } else {
+            return orderList.get(0).id;
+        }
     }
 
+    @Override
     public boolean cancelOrder(Object orderId) throws Exception {
         List<CoinExObjects.Order> orderList = internalCancelOrder((Integer) orderId);
         return true; // How the fuck i know that query is executed?! Who written this retarded api?

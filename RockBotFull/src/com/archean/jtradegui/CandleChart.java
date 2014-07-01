@@ -11,6 +11,12 @@
 package com.archean.jtradegui;
 
 import com.archean.jtradeapi.HistoryUtils;
+import java.awt.Color;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.Builder;
@@ -25,22 +31,15 @@ import org.jfree.data.xy.AbstractXYDataset;
 import org.jfree.data.xy.DefaultOHLCDataset;
 import org.jfree.data.xy.OHLCDataItem;
 
-import java.awt.*;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
 public class CandleChart {
     @Builder
     @Data
     public static class Parameters {
-        private String title = "";
-        private String labelX = ""; // Price
-        private String labelY = ""; // Date
-        private DateFormat dateFormat = new SimpleDateFormat();
-        private NumberFormat numberFormat = new DecimalFormat();
+        private final String title = "";
+        private final String labelX = ""; // Price
+        private final String labelY = ""; // Date
+        private final DateFormat dateFormat = new SimpleDateFormat();
+        private final NumberFormat numberFormat = new DecimalFormat();
     }
 
     public static AbstractXYDataset getOHLCDataSet(String title, OHLCDataItem[] dataList) {
