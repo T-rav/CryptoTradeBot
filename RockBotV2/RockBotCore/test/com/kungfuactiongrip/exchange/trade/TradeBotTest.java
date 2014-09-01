@@ -152,7 +152,7 @@ public class TradeBotTest {
     }
        
     @Test
-    public void CalcualateTradeAmount_Expect(){
+    public void FetchPerTradeAmount_Expect002(){
         try {
             ITradeBot bot = MakeTradeBot(0.1);
             
@@ -161,6 +161,22 @@ public class TradeBotTest {
             
             // Assert
             assertEquals(0.002, perTradeAmount,0.000000001);
+        } catch (Exception ex) {
+            assertTrue(false);
+            Logger.getLogger(TradeBotTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void FetchPerTradeAmount_WhenBalanceGivesAmountBelowMin_Expect00(){
+        try {
+            ITradeBot bot = MakeTradeBot(0.00000001);
+            
+            // Execution
+            double perTradeAmount = bot.FetchPerTradeAmount();
+            
+            // Assert
+            assertEquals(0.0, perTradeAmount,0.000000001);
         } catch (Exception ex) {
             assertTrue(false);
             Logger.getLogger(TradeBotTest.class.getName()).log(Level.SEVERE, null, ex);

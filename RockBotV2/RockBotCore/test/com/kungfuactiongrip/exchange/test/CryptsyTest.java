@@ -11,13 +11,10 @@ import com.kungfuactiongrip.exchange.to.MarketOpenOrder;
 import com.kungfuactiongrip.exchange.to.MarketTrade;
 import com.kungfuactiongrip.exchange.to.MarketTradeFee;
 import com.kungfuactiongrip.exchange.to.MarketTradeVerbose;
-import com.kungfuactiongrip.exchange.to.ObjectConverter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
 /**
@@ -267,4 +264,11 @@ public class CryptsyTest {
          
    }
    
+   @Test
+   public void FetchTradeMinimum_Expect00000010(){
+       IExchange exchange = ExchangeList.Cryptsy.GenerateExchangeObject();
+       double result = exchange.FetchTradeMinimum();
+       
+       Assert.assertEquals(0.00000010, result, 0.000000001);
+   }
 }

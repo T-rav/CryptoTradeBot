@@ -13,8 +13,8 @@ package com.kungfuactiongrip.coinmarketcap;
 public class CoinCapitalization {
     public String coinCode;
     public String coinName;
-    public long usdCap;
-    public long btcCap;
+    public double usdCap;
+    public double btcCap;
     public double usdPrice;
     public double btcPrice;
     public long totalSupply;

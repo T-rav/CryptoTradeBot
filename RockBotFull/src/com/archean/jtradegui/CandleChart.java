@@ -17,9 +17,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import lombok.Data;
 import lombok.NonNull;
-import lombok.experimental.Builder;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
@@ -32,14 +30,14 @@ import org.jfree.data.xy.DefaultOHLCDataset;
 import org.jfree.data.xy.OHLCDataItem;
 
 public class CandleChart {
-    @Builder
-    @Data
+
     public static class Parameters {
-        private final String title = "";
-        private final String labelX = ""; // Price
-        private final String labelY = ""; // Date
-        private final DateFormat dateFormat = new SimpleDateFormat();
-        private final NumberFormat numberFormat = new DecimalFormat();
+        public String title = "";
+        public String labelX = ""; // Price
+        public String labelY = ""; // Date
+        public DateFormat dateFormat = new SimpleDateFormat();
+        public NumberFormat numberFormat = new DecimalFormat();
+
     }
 
     public static AbstractXYDataset getOHLCDataSet(String title, OHLCDataItem[] dataList) {
@@ -47,15 +45,15 @@ public class CandleChart {
     }
 
     public static ChartPanel initOHLCChart(Parameters parameters, OHLCDataItem[] dataList) {
-        final DateAxis domainAxis = new DateAxis(parameters.getLabelX());
-        NumberAxis rangeAxis = new NumberAxis(parameters.getLabelY());
+        final DateAxis domainAxis = new DateAxis(parameters.labelX);
+        NumberAxis rangeAxis = new NumberAxis(parameters.labelY);
         CandlestickRenderer renderer = new CandlestickRenderer();
-        XYPlot mainPlot = new XYPlot(getOHLCDataSet(parameters.getTitle(), dataList), domainAxis, rangeAxis, renderer);
+        XYPlot mainPlot = new XYPlot(getOHLCDataSet(parameters.title, dataList), domainAxis, rangeAxis, renderer);
         renderer.setSeriesPaint(0, Color.BLACK);
         renderer.setDrawVolume(true);
         rangeAxis.setAutoRangeIncludesZero(false);
-        renderer.setBaseToolTipGenerator(new HighLowItemLabelGenerator(parameters.getDateFormat(), parameters.getNumberFormat()));
-        JFreeChart chart = new JFreeChart(parameters.getTitle(), null, mainPlot, false);
+        renderer.setBaseToolTipGenerator(new HighLowItemLabelGenerator(parameters.dateFormat, parameters.numberFormat));
+        JFreeChart chart = new JFreeChart(parameters.title, null, mainPlot, false);
         mainPlot.setDomainPannable(true);
         mainPlot.setRangePannable(true);
         return new ChartPanel(chart, false);

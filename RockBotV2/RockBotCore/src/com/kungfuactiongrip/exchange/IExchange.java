@@ -104,4 +104,10 @@ public interface IExchange {
      * @throws Exception
      */
     public String FetchActiveMarketData() throws Exception;
+    
+    /**
+     *
+     * @return
+     */
+    public double FetchTradeMinimum();
 }

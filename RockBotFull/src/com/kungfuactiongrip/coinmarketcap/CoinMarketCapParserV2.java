@@ -48,14 +48,14 @@ public class CoinMarketCapParserV2 {
                 
                 coin.coinName = key;
                 coin.coinCode = symbol;
-                coin.usdCap = Long.parseLong(usdCap);
-                coin.btcCap = Long.parseLong(btcCap);
-                coin.usdPrice = Double.parseDouble(usdPrice);
-                coin.btcPrice = Double.parseDouble(btcPrice);
-                coin.totalSupply = (long)Double.parseDouble(totalSupply);
-                coin.usdVolume = (long)Double.parseDouble(usdVol);
-                coin.btcVolume = (long)Double.parseDouble(btcVol);
-                coin.change = Double.parseDouble(change);
+                coin.usdCap = extractDouble(usdCap);
+                coin.btcCap = extractDouble(btcCap);
+                coin.usdPrice = extractDouble(usdPrice);
+                coin.btcPrice = extractDouble(btcPrice);
+                coin.totalSupply = (long)extractDouble(totalSupply);
+                coin.usdVolume = (long)extractDouble(usdVol);
+                coin.btcVolume = (long)extractDouble(btcVol);
+                coin.change = extractDouble(change);
                 
                 result.add(coin);
             }
@@ -71,6 +71,14 @@ public class CoinMarketCapParserV2 {
         }
         
         return result;
+    }
+    
+    private double extractDouble(String value){
+        try{
+            return Double.parseDouble(value);
+        }catch(Exception e){
+            return 0.0;
+        }
     }
     
 }

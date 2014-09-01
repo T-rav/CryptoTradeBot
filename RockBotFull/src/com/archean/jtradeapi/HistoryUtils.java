@@ -11,14 +11,38 @@
 package com.archean.jtradeapi;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public class HistoryUtils {
     public static final long PERIOD_1M = 60 * 1000;
+    public static final long PERIOD_5M = PERIOD_1M * 5;
     public static final long PERIOD_15M = PERIOD_1M * 15;
     public static final long PERIOD_30M = PERIOD_15M * 2;
     public static final long PERIOD_1H = PERIOD_30M * 2;
 
+    public static long getPeriod(String periodLabel){
+        
+        switch(periodLabel){
+            case "1M":
+                return PERIOD_1M;
+            case "5M":
+                return PERIOD_5M;
+            case "15M":
+                return PERIOD_15M;
+            case "30M":
+                return PERIOD_30M;
+            case "1H":
+                return PERIOD_1H;
+            default : 
+                return PERIOD_15M;
+        }
+    }
+    
     public static class Candle implements Comparable<Candle> {
         public enum CandleType {
             BULL, BEAR

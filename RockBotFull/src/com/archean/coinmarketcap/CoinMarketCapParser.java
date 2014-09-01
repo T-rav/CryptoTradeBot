@@ -17,9 +17,11 @@ import com.kungfuactiongrip.coinmarketcap.CoinMarketCapParserV2;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class CoinMarketCapParser {
-    private final static String coinMarketCapJsonUrl = "http://coinmarketcap-nexuist.rhcloud.com/api/all";
+    static ResourceBundle settings = ResourceBundle.getBundle("com.archean.jtradegui.settings");
+    private final static String coinMarketCapJsonUrl = settings.getString("coinmarketcap.url");
     
     private String requestPage() throws IOException {
         BaseTradeApi.RequestSender requestSender = new BaseTradeApi.RequestSender();

@@ -76,6 +76,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import org.jfree.chart.ChartMouseEvent;
+import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.xy.OHLCDataItem;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -340,31 +342,35 @@ public class TraderMainForm extends JPanel {
 
     // GUI MVC functions
     private void drawChart(OHLCDataItem[] dataset) {
-//        final ChartPanel chartPanel = CandleChart.initOHLCChart(CandleChart.Parameters.builder()
-//                .numberFormat(Utils.Strings.moneyFormat.toDecimalFormat())
-//                .dateFormat(new SimpleDateFormat())
-//                .labelX(locale.getString("Chart.legend.time.string"))
-//                .labelY(locale.getString("Chart.legend.price.string"))
-//                .title(currentPair).build(), dataset);
-//        // chartPanel.setPreferredSize(new Dimension(600, 300));
-//        chartPanel.addChartMouseListener(new ChartMouseListener() {
-//            @Override
-//            public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-//                if(chartMouseEvent.getTrigger().getClickCount() >= 2) {
-//                    popupMenuTimeframe.show((Component) chartMouseEvent.getTrigger().getSource(), chartMouseEvent.getTrigger().getX(), chartMouseEvent.getTrigger().getY());
-//                }
-//            }
-//
-//            @Override
-//            public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
-//                // nothing
-//            }
-//        });
-//        tabbedPaneInfo.setComponentAt(4, chartPanel);
+        
+        CandleChart.Parameters parms = new CandleChart.Parameters();
+        parms.numberFormat = Utils.Strings.moneyFormat.toDecimalFormat();
+        parms.dateFormat = new SimpleDateFormat();
+        parms.labelX = locale.getString("Chart.legend.time.string");
+        parms.labelY = locale.getString("Chart.legend.price.string");
+        parms.title = currentPair; 
+        
+        final ChartPanel chartPanel = CandleChart.initOHLCChart(parms, dataset);
+        // chartPanel.setPreferredSize(new Dimension(600, 300));
+        chartPanel.addChartMouseListener(new ChartMouseListener() {
+            @Override
+            public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
+                if(chartMouseEvent.getTrigger().getClickCount() >= 2) {
+                    popupMenuTimeframe.show((Component) chartMouseEvent.getTrigger().getSource(), chartMouseEvent.getTrigger().getX(), chartMouseEvent.getTrigger().getY());
+                }
+            }
+
+            @Override
+            public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
+                // nothing
+            }
+        });
+        tabbedPaneInfo.setComponentAt(4, chartPanel);
     }
 
+    private static final ResourceBundle settings = ResourceBundle.getBundle("com.archean.jtradegui.settings");
     private OHLCDataItem[] ohlcDataCache = null;
-    private volatile long chartPeriod = HistoryUtils.PERIOD_30M;
+    private volatile long chartPeriod = HistoryUtils.getPeriod(settings.getString("candlechart.period"));
     private void clearChartData() {
         synchronized (candlesLock) {
             candles = null;
@@ -377,7 +383,9 @@ public class TraderMainForm extends JPanel {
         clearChartData();
     }
     private void updateChart(List<HistoryUtils.Candle> candles) {
-        if (candles == null || candles.isEmpty()) return;
+        if (candles == null || candles.isEmpty()) {
+            return;
+        }
         HistoryUtils.Candle lastCandle = candles.get(candles.size() - 1);
         if (lastCandle.update == null || !lastChartUpdate.before(lastCandle.update)) {
             return;

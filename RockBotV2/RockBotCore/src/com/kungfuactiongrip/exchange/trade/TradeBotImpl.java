@@ -109,7 +109,11 @@ class TradeBotImpl implements ITradeBot {
             PropertyBag properties = _dbObj.FetchEngineConfiguration();
             String value = properties.FetchKey(TradeConstants.MAX_TRADE_PERCENT_OF_TOTAL);
             double percentAmount = Double.parseDouble(value);
-            return (currentBalance * percentAmount);
+            result =  (currentBalance * percentAmount);
+            
+            if(result < _exchangeObj.FetchTradeMinimum()){
+                result = 0.0;
+            }
             
         } catch (Exception ex) {
             Logger.getLogger(TradeBotImpl.class.getName()).log(Level.SEVERE, null, ex);

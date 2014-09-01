@@ -283,4 +283,9 @@ class Cryptsy implements IExchange {
         }
         return sb.toString();	
     }
+
+    @Override
+    public double FetchTradeMinimum() {
+        return 0.00000010;
+    }
 }
